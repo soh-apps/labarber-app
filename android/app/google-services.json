@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "998357537223",
+    "project_id": "la-barber",
+    "storage_bucket": "la-barber.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:998357537223:android:0f73e0de270229e16709e2",
+        "android_client_info": {
+          "package_name": "com.example.la_barber"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAgERYQJ5XmNRDKbA3YHoM8LLEJ9kT7uvk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
