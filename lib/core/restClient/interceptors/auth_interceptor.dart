@@ -8,9 +8,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthInterceptor extends Interceptor {
   @override
-  Future<void> onRequest(
-      RequestOptions options, RequestInterceptorHandler handler) async {
-    final RequestOptions(:headers, :extra) = options;
+  Future<void> onRequest(RequestOptions options, RequestInterceptorHandler handler) async {
+    final headers = options.headers;
+    final extra = options.extra;
 
     const authHeaderKey = 'Authorization';
     headers.remove(authHeaderKey);
@@ -18,9 +18,7 @@ class AuthInterceptor extends Interceptor {
     if (extra case {'DIO_AUTH_KEY': true}) {
       final sp = await SharedPreferences.getInstance();
 
-      headers.addAll({
-        authHeaderKey: 'Bearer ${sp.getString(LocalStorageKey.accessToken)}'
-      });
+      headers.addAll({authHeaderKey: 'Bearer ${sp.getString(LocalStorageKey.accessToken)}'});
     }
 
     handler.next(options);
@@ -28,9 +26,10 @@ class AuthInterceptor extends Interceptor {
 
   @override
   void onError(DioException err, ErrorInterceptorHandler handler) {
-    final DioException(requestOptions: RequestOptions(:extra), :response) = err;
+    final requestOptions = err.requestOptions;
+    final response = err.response;
 
-    if (extra case {'DIO_AUTH_KEY': true}) {
+    if (requestOptions case {'DIO_AUTH_KEY': true}) {
       if (response != null && response.statusCode == HttpStatus.forbidden) {
         Navigator.of(BarbershopNavGlobalKey.instance.navKey.currentContext!)
             .pushNamedAndRemoveUntil('/auth/login', (route) => false);

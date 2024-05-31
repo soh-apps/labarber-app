@@ -1,8 +1,8 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:developer';
-import 'dart:io';
 
 import 'package:dio/dio.dart';
+import 'package:la_barber/auth/model/user_model.dart';
 import 'package:la_barber/core/exceptions/auth_exception.dart';
 import 'package:la_barber/core/restClient/either.dart';
 import 'package:la_barber/core/restClient/rest_client.dart';
@@ -11,22 +11,24 @@ class AuthRepository {
   final RestClient _restClient;
   AuthRepository({required RestClient restClient}) : _restClient = restClient;
 
-  Future<Either<AuthException, String>> login(
-      String email, String password) async {
+  Future<Either<AuthException, UserModel>> login(String email, String password) async {
     try {
       final Response response = await _restClient.unAuth.post(
-        '/auth',
+        '/Login',
         data: {
-          'email': email,
+          'username': email,
           'password': password,
         },
       );
 
-      return Success(response.data['access_token']);
+      var user = UserModel.fromJson(response.data);
+
+      // return Success(response.data['access_token']);
+      return Success(user);
     } on DioException catch (e, s) {
       if (e.response != null) {
         final Response response = e.response!;
-        if (response.statusCode == HttpStatus.forbidden) {
+        if (response.statusCode == 400) {
           log('Login ou senha inválidos', error: e, stackTrace: s);
           return Failure(AuthUnauthorizedException());
         }
