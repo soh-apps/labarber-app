@@ -1,5 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:la_barber/auth/presentation/cubits/register/register_cubit.dart';
+import 'package:la_barber/features/common/auth/presentation/cubits/register/register_cubit.dart';
 import 'package:la_barber/core/ui/helpers/form_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:la_barber/core/ui/widgets/hours_panel.dart';
@@ -57,10 +57,8 @@ class _CadastroPageState extends State<CadastroPage> {
                   TextFormField(
                     onTapOutside: (_) => context.unfocus(),
                     controller: emailEC,
-                    validator: Validatorless.multiple([
-                      Validatorless.required('E-mail obrigatório'),
-                      Validatorless.email('E-mail obrigatório')
-                    ]),
+                    validator: Validatorless.multiple(
+                        [Validatorless.required('E-mail obrigatório'), Validatorless.email('E-mail obrigatório')]),
                     decoration: const InputDecoration(
                       label: Text('E-mail'),
                     ),
@@ -81,8 +79,7 @@ class _CadastroPageState extends State<CadastroPage> {
                   ),
                   const SizedBox(height: 24),
                   ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                        minimumSize: const Size.fromHeight(56)),
+                    style: ElevatedButton.styleFrom(minimumSize: const Size.fromHeight(56)),
                     onPressed: () {
                       // switch (formKey.currentState?.validate()) {
                       //   case null || false:

@@ -2,8 +2,8 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:get_it/get_it.dart';
-import 'package:la_barber/auth/model/user_model.dart';
-import 'package:la_barber/auth/repository/auth_repository.dart';
+import 'package:la_barber/features/common/auth/model/user_model.dart';
+import 'package:la_barber/features/common/auth/repository/auth_repository.dart';
 import 'package:la_barber/core/constants/local_storage_key.dart';
 import 'package:la_barber/core/exceptions/auth_exception.dart';
 import 'package:la_barber/core/restClient/either.dart';

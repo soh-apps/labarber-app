@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:la_barber/auth/presentation/pages/login_page.dart';
+import 'package:la_barber/features/common/auth/presentation/pages/login_page.dart';
 import 'package:la_barber/core/di/di.dart';
 import 'package:la_barber/core/ui/constants.dart';
 

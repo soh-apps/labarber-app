@@ -2,7 +2,7 @@
 import 'dart:developer';
 
 import 'package:dio/dio.dart';
-import 'package:la_barber/auth/model/user_model.dart';
+import 'package:la_barber/features/common/auth/model/user_model.dart';
 import 'package:la_barber/core/exceptions/auth_exception.dart';
 import 'package:la_barber/core/restClient/either.dart';
 import 'package:la_barber/core/restClient/rest_client.dart';
