@@ -46,3 +46,8 @@ flutter:
   uses-material-design: true
   assets:
     - assets/images/
+    
+  fonts:
+    - family: dw_barbershop_icons
+      fonts:
+        - asset: assets/fonts/dw_barbershop_icons.ttf

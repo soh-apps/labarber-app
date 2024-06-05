@@ -26,12 +26,12 @@ UserType getType(int codUserType) {
 }
 
 class UserModel {
-  String? token;
-  String? refreshToken;
+  String token;
+  String refreshToken;
   UserType? userType;
-  String? name;
+  String name;
 
-  UserModel({this.token, this.refreshToken, this.userType, this.name});
+  UserModel({required this.token, required this.refreshToken, this.userType, required this.name});
 
   Map<String, dynamic> toMap() {
     return {

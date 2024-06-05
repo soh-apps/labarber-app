@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:la_barber/features/common/auth/model/user_model.dart';
+import 'package:la_barber/features/admin/home/home_adm_page.dart';
 import 'package:la_barber/features/common/auth/presentation/pages/cadastro_page.dart';
 import 'package:la_barber/features/common/auth/presentation/pages/login_page.dart';
 import 'package:la_barber/core/di/di.dart';
@@ -29,11 +30,14 @@ class _MainAppState extends State<MainApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: BarbershopTheme.themeData,
-      initialRoute: '/login',
+      initialRoute: '/home/adm',
       navigatorKey: BarbershopNavGlobalKey.instance.navKey,
       routes: {
         '/cadastro': (context) => const CadastroPage(),
         '/login': (context) => LoginPage(authCubit: getIt()),
+
+        '/home/adm': (_) => const HomeAdmPage(),
+        //     '/home/employee': (_) => const HomeEmployeePage(),
       },
       home: const Scaffold(
         body: Center(
