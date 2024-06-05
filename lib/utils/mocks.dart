@@ -7,36 +7,42 @@ class Mocks {
       userType: UserType.barber,
       token: '123',
       refreshToken: '123',
+      credentialId: 1,
     ),
     UserModel(
       name: 'Mario',
       userType: UserType.barber,
       token: '123',
       refreshToken: '123',
+      credentialId: 1,
     ),
     UserModel(
       name: 'Que Mario?',
       userType: UserType.barber,
       token: '123',
       refreshToken: '123',
+      credentialId: 1,
     ),
     UserModel(
       name: 'Que Mario?',
       userType: UserType.barber,
       token: '123',
       refreshToken: '123',
+      credentialId: 1,
     ),
     UserModel(
       name: 'Que Mario?',
       userType: UserType.barber,
       token: '123',
       refreshToken: '123',
+      credentialId: 1,
     ),
     UserModel(
       name: 'Que Mario?',
       userType: UserType.barber,
       token: '123',
       refreshToken: '123',
+      credentialId: 1,
     ),
   ];
 }

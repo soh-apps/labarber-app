@@ -1,6 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:la_barber/core/ui/helpers/context_extension.dart';
 import 'package:la_barber/features/common/auth/presentation/cubits/auth_cubit.dart';
 import 'package:la_barber/core/ui/constants.dart';
 import 'package:la_barber/core/ui/helpers/form_helper.dart';
@@ -37,9 +38,15 @@ class _LoginPageState extends State<LoginPage> {
       listener: (context, state) {
         if (state is AuthStateError) {
           context.showError(state.errorMessage);
+
+          context.hideLoadingDialog(context); // Pop dialog
         } else if (state is AuthStateSuccess) {
+          // hideLoadingDialog(context); // Pop dialog
           context.showSuccess('Deu certo o Login');
+          Navigator.of(context).pushNamedAndRemoveUntil('/home/adm', (route) => false);
         } else if (state is AuthStateLoaging) {
+          context.showLoadingDialog(context, message: "Loading");
+
           //  BarbershopLoader();
         }
       },
@@ -75,7 +82,7 @@ class _LoginPageState extends State<LoginPage> {
                               onTapOutside: (_) => context.unfocus(),
                               validator: Validatorless.multiple([
                                 Validatorless.required('E-mail obrigatorio'),
-                                Validatorless.email('E-mail invalido')
+                                // Validatorless.email('E-mail invalido')
                               ]),
                               controller: emailEC, //..text = 'caneto@gmail.com',
                               decoration: const InputDecoration(

@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 enum UserType {
   master,
   admin,
@@ -28,17 +26,25 @@ UserType getType(int codUserType) {
 class UserModel {
   String token;
   String refreshToken;
-  UserType? userType;
   String name;
+  UserType? userType;
+  int credentialId;
 
-  UserModel({required this.token, required this.refreshToken, this.userType, required this.name});
+  UserModel({
+    required this.token,
+    required this.refreshToken,
+    required this.name,
+    this.userType,
+    required this.credentialId,
+  });
 
   Map<String, dynamic> toMap() {
     return {
       'token': token,
       'refreshToken': refreshToken,
-      'userType': userType,
       'name': name,
+      'userType': userType,
+      'credentialId': credentialId,
     };
   }
 
@@ -48,10 +54,7 @@ class UserModel {
       refreshToken: map['refreshToken'],
       userType: getType(map['userType']?.toInt()),
       name: map['name'],
+      credentialId: map['credentialId'].toInt(),
     );
   }
-
-  String toJson() => json.encode(toMap());
-
-  factory UserModel.fromJson(String source) => UserModel.fromMap(json.decode(source));
 }

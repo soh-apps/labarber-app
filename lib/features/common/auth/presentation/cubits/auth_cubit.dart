@@ -56,19 +56,22 @@ class AuthCubit extends Cubit<AuthState> {
   }
 
   Future<void> login(String email, String password) async {
+    emit(AuthStateLoaging());
     final loginResult = await authRepository.login(email, password);
 
     switch (loginResult) {
       case Success():
         final sp = await SharedPreferences.getInstance();
-        sp.setString(LocalStorageKey.accessToken, loginResult.value.token!);
-        sp.setString(LocalStorageKey.refreshToken, loginResult.value.refreshToken!);
+        sp.setString(LocalStorageKey.accessToken, loginResult.value.token);
+        sp.setString(LocalStorageKey.refreshToken, loginResult.value.refreshToken);
+        sp.setInt(LocalStorageKey.refreshToken, loginResult.value.credentialId);
 
         GetIt.instance.registerSingleton(UserModel(
-          name: loginResult.value.name!,
-          userType: loginResult.value.userType!,
-          token: loginResult.value.token!,
-          refreshToken: loginResult.value.refreshToken!,
+          name: loginResult.value.name,
+          userType: loginResult.value.userType,
+          token: loginResult.value.token,
+          refreshToken: loginResult.value.refreshToken,
+          credentialId: loginResult.value.credentialId,
         ));
         emit(AuthStateSuccess(userType: loginResult.value.userType!));
 

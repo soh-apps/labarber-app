@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:la_barber/core/ui/widgets/barbershop_loader.dart';
 
 extension MediaQueryExt on BuildContext {
   Size get mediaQuerySize => MediaQuery.of(this).size;
@@ -35,22 +36,16 @@ extension NavigatorExt on BuildContext {
   Future<T?> pushNamed<T>(String routeName, {Object? arguments}) =>
       Navigator.pushNamed<T?>(this, routeName, arguments: arguments);
   bool canPop() => Navigator.canPop(this);
-  void popUntil(RoutePredicate predicate) =>
-      Navigator.popUntil(this, predicate);
+  void popUntil(RoutePredicate predicate) => Navigator.popUntil(this, predicate);
   void pushReplacementNamed(String routeName, {Object? arguments}) =>
       Navigator.pushReplacementNamed(this, routeName, arguments: arguments);
-  void pushReplacement<T extends Object, TO extends Object>(Route<T> newRoute,
-          [TO? result]) =>
+  void pushReplacement<T extends Object, TO extends Object>(Route<T> newRoute, [TO? result]) =>
       Navigator.pushReplacement(this, newRoute, result: result);
-  void pushAndRemoveUntil<T extends Object, TO extends Object>(
-          Route<T> newRoute, RoutePredicate predicate) =>
+  void pushAndRemoveUntil<T extends Object, TO extends Object>(Route<T> newRoute, RoutePredicate predicate) =>
       Navigator.pushAndRemoveUntil(this, newRoute, predicate);
-  void pushNamedAndRemoveUntil<T extends Object>(
-          String newRouteName, RoutePredicate predicate, {Object? arguments}) =>
-      Navigator.pushNamedAndRemoveUntil<T>(this, newRouteName, predicate,
-          arguments: arguments);
-  void popAndPushNamed<T extends Object?, TO extends Object?>(String newRoute,
-          [TO? result]) =>
+  void pushNamedAndRemoveUntil<T extends Object>(String newRouteName, RoutePredicate predicate, {Object? arguments}) =>
+      Navigator.pushNamedAndRemoveUntil<T>(this, newRouteName, predicate, arguments: arguments);
+  void popAndPushNamed<T extends Object?, TO extends Object?>(String newRoute, [TO? result]) =>
       Navigator.popAndPushNamed(this, newRoute, result: result);
 }
 
@@ -98,8 +93,7 @@ extension ThemeExt on BuildContext {
 }
 
 extension ScaffoldExt on BuildContext {
-  ScaffoldFeatureController<SnackBar, SnackBarClosedReason> showSnackBar(
-          SnackBar snackbar) =>
+  ScaffoldFeatureController<SnackBar, SnackBarClosedReason> showSnackBar(SnackBar snackbar) =>
       ScaffoldMessenger.of(this).showSnackBar(snackbar);
   void removeCurrentSnackBar(SnackBarClosedReason reason) =>
       ScaffoldMessenger.of(this).removeCurrentSnackBar(reason: reason);
@@ -114,6 +108,22 @@ extension ScaffoldExt on BuildContext {
       closeEndDrawer();
     } else {
       closeDrawer();
+    }
+  }
+
+  void showLoadingDialog(BuildContext context, {String message = "Loading"}) {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return const BarbershopLoader();
+      },
+    );
+  }
+
+  void hideLoadingDialog(BuildContext context) {
+    if (Navigator.of(context, rootNavigator: true).canPop()) {
+      Navigator.of(context, rootNavigator: true).pop();
     }
   }
 

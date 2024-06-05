@@ -1,12 +1,32 @@
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:la_barber/core/ui/barbershop_icons.dart';
+import 'package:la_barber/core/ui/barbershop_nav_global_key.dart';
 import 'package:la_barber/core/ui/constants.dart';
+import 'package:la_barber/core/ui/widgets/dialog_utils.dart';
+import 'package:la_barber/features/common/auth/model/user_model.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class HomeHeader extends StatelessWidget {
   final bool showFilter;
 
   const HomeHeader({super.key}) : showFilter = true;
   const HomeHeader.withoutFilter({super.key}) : showFilter = false;
+
+  Future<void> logout(BuildContext context) async {
+    showLoadingDialog(context, message: "Loading");
+    final sp = await SharedPreferences.getInstance();
+    sp.clear();
+
+    if (GetIt.instance.isRegistered<UserModel>()) {
+      GetIt.instance.unregister<UserModel>();
+    }
+
+    hideLoadingDialog(context);
+
+    Navigator.of(BarbershopNavGlobalKey.instance.navKey.currentContext!)
+        .pushNamedAndRemoveUntil('/login', (route) => false);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -69,9 +89,7 @@ class HomeHeader extends StatelessWidget {
               const Spacer(),
               IconButton(
                 padding: EdgeInsets.zero,
-                onPressed: () {
-                  // ref.read(homeAdmVmProvider.notifier).logout();
-                },
+                onPressed: () => logout(context),
                 icon: const Icon(
                   BarbershopIcons.exit,
                   color: ColorConstants.colorBrown,

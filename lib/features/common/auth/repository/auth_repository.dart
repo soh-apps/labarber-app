@@ -21,7 +21,7 @@ class AuthRepository {
         },
       );
 
-      var user = UserModel.fromJson(response.data);
+      var user = UserModel.fromMap(response.data);
 
       // return Success(response.data['access_token']);
       return Success(user);
