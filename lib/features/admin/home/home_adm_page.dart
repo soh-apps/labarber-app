@@ -1,20 +1,36 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+
 import 'package:la_barber/core/ui/barbershop_icons.dart';
 import 'package:la_barber/core/ui/constants.dart';
 import 'package:la_barber/core/ui/helpers/context_extension.dart';
+import 'package:la_barber/features/admin/barbershop/presentation/cubit/barbershop_cubit.dart';
 import 'package:la_barber/features/admin/home/widgets/home_employee_tile.dart';
 import 'package:la_barber/features/admin/widgets/home_header.dart';
 import 'package:la_barber/utils/mocks.dart';
 
-class HomeAdmPage extends StatelessWidget {
-  const HomeAdmPage({super.key});
+class HomeAdmPage extends StatefulWidget {
+  final BarbershopCubit barbershopCubit;
+  const HomeAdmPage({
+    super.key,
+    required this.barbershopCubit,
+  });
+
+  @override
+  State<HomeAdmPage> createState() => _HomeAdmPageState();
+}
+
+class _HomeAdmPageState extends State<HomeAdmPage> {
+  @override
+  void initState() {
+    widget.barbershopCubit.getAllCompanies();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        body: Container(
+        body: SizedBox(
           child: Column(
             children: [
               const HomeHeader(),
@@ -32,8 +48,10 @@ class HomeAdmPage extends StatelessWidget {
         floatingActionButton: FloatingActionButton(
           shape: const CircleBorder(),
           backgroundColor: ColorConstants.colorBrown,
-          onPressed: () async {
-            await context.pushNamed('/employee/register');
+          onPressed: () {
+            context.pushNamed('/register/barbershop');
+
+            // await context.pushNamed('/employee/register');
             // ref.invalidate(getMeProvider);
             // ref.invalidate(homeAdmVmProvider);
           },

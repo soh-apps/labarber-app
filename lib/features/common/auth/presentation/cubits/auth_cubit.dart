@@ -89,4 +89,15 @@ class AuthCubit extends Cubit<AuthState> {
         }
     }
   }
+
+  Future<void> verifyIsLogged() async {
+    emit(AuthStateLoaging());
+    final sp = await SharedPreferences.getInstance();
+    final String? accessToken = sp.getString(LocalStorageKey.accessToken);
+    if (accessToken != null) {
+      emit(const AuthStateSuccess(userType: UserType.admin));
+    } else {
+      emit(AuthStateInitial());
+    }
+  }
 }

@@ -1,7 +1,5 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:la_barber/core/ui/helpers/context_extension.dart';
 import 'package:la_barber/features/common/auth/presentation/cubits/auth_cubit.dart';
 import 'package:la_barber/core/ui/constants.dart';
 import 'package:la_barber/core/ui/helpers/form_helper.dart';
@@ -33,139 +31,121 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<AuthCubit, AuthState>(
-      bloc: widget.authCubit,
-      listener: (context, state) {
-        if (state is AuthStateError) {
-          context.showError(state.errorMessage);
-
-          context.hideLoadingDialog(context); // Pop dialog
-        } else if (state is AuthStateSuccess) {
-          // hideLoadingDialog(context); // Pop dialog
-          context.showSuccess('Deu certo o Login');
-          Navigator.of(context).pushNamedAndRemoveUntil('/home/adm', (route) => false);
-        } else if (state is AuthStateLoaging) {
-          context.showLoadingDialog(context, message: "Loading");
-
-          //  BarbershopLoader();
-        }
-      },
-      child: Scaffold(
-        backgroundColor: Colors.black,
-        body: Form(
-          key: formKey,
-          child: DecoratedBox(
-            decoration: const BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage(ImageConstants.backgroundChair),
-                opacity: 0.2,
-                fit: BoxFit.cover,
-              ),
+    return Scaffold(
+      backgroundColor: Colors.black,
+      body: Form(
+        key: formKey,
+        child: DecoratedBox(
+          decoration: const BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage(ImageConstants.backgroundChair),
+              opacity: 0.2,
+              fit: BoxFit.cover,
             ),
-            child: Padding(
-              padding: const EdgeInsets.all(30.0),
-              child: CustomScrollView(
-                slivers: [
-                  SliverFillRemaining(
-                    hasScrollBody: false,
-                    child: Stack(
-                      alignment: Alignment.center,
-                      children: [
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Image.asset(ImageConstants.imageLogo),
-                            const SizedBox(
-                              height: 24,
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(30.0),
+            child: CustomScrollView(
+              slivers: [
+                SliverFillRemaining(
+                  hasScrollBody: false,
+                  child: Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Image.asset(ImageConstants.imageLogo),
+                          const SizedBox(
+                            height: 24,
+                          ),
+                          TextFormField(
+                            onTapOutside: (_) => context.unfocus(),
+                            validator: Validatorless.multiple([
+                              Validatorless.required('E-mail obrigatorio'),
+                              // Validatorless.email('E-mail invalido')
+                            ]),
+                            controller: emailEC, //..text = 'caneto@gmail.com',
+                            decoration: const InputDecoration(
+                              label: Text('E-mail'),
+                              hintText: 'E-mail',
+                              floatingLabelBehavior: FloatingLabelBehavior.never,
+                              labelStyle: TextStyle(color: Colors.black),
+                              hintStyle: TextStyle(color: Colors.black),
                             ),
-                            TextFormField(
-                              onTapOutside: (_) => context.unfocus(),
-                              validator: Validatorless.multiple([
-                                Validatorless.required('E-mail obrigatorio'),
-                                // Validatorless.email('E-mail invalido')
-                              ]),
-                              controller: emailEC, //..text = 'caneto@gmail.com',
-                              decoration: const InputDecoration(
-                                label: Text('E-mail'),
-                                hintText: 'E-mail',
-                                floatingLabelBehavior: FloatingLabelBehavior.never,
-                                labelStyle: TextStyle(color: Colors.black),
-                                hintStyle: TextStyle(color: Colors.black),
+                          ),
+                          const SizedBox(
+                            height: 24,
+                          ),
+                          TextFormField(
+                            onTapOutside: (_) => context.unfocus(),
+                            validator: Validatorless.multiple([
+                              Validatorless.required('Senha obrigatoria'),
+                              Validatorless.min(6, 'Senha deve conter pelo menos 6 caracteres'),
+                            ]),
+                            obscureText: true,
+                            controller: passwordEC, //..text = '123123',
+                            decoration: const InputDecoration(
+                              label: Text('Senha'),
+                              hintText: 'Senha',
+                              floatingLabelBehavior: FloatingLabelBehavior.never,
+                              labelStyle: TextStyle(color: Colors.black),
+                              hintStyle: TextStyle(color: Colors.black),
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 16,
+                          ),
+                          const Align(
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              'Esqueceu a senha?',
+                              style: TextStyle(
+                                fontSize: 12,
+                                color: ColorConstants.colorBrown,
                               ),
                             ),
-                            const SizedBox(
-                              height: 24,
+                          ),
+                          const SizedBox(
+                            height: 24,
+                          ),
+                          ElevatedButton(
+                            style: ElevatedButton.styleFrom(minimumSize: const Size.fromHeight(56)),
+                            onPressed: () {
+                              switch (formKey.currentState?.validate()) {
+                                case (false || null):
+                                  context.showError('Campos inválidos');
+                                case true:
+                                  widget.authCubit.login(emailEC.text, passwordEC.text);
+                              }
+                            },
+                            child: const Text(
+                              'ACESSAR',
                             ),
-                            TextFormField(
-                              onTapOutside: (_) => context.unfocus(),
-                              validator: Validatorless.multiple([
-                                Validatorless.required('Senha obrigatoria'),
-                                Validatorless.min(6, 'Senha deve conter pelo menos 6 caracteres'),
-                              ]),
-                              obscureText: true,
-                              controller: passwordEC, //..text = '123123',
-                              decoration: const InputDecoration(
-                                label: Text('Senha'),
-                                hintText: 'Senha',
-                                floatingLabelBehavior: FloatingLabelBehavior.never,
-                                labelStyle: TextStyle(color: Colors.black),
-                                hintStyle: TextStyle(color: Colors.black),
-                              ),
-                            ),
-                            const SizedBox(
-                              height: 16,
-                            ),
-                            const Align(
-                              alignment: Alignment.centerLeft,
-                              child: Text(
-                                'Esqueceu a senha?',
-                                style: TextStyle(
-                                  fontSize: 12,
-                                  color: ColorConstants.colorBrown,
-                                ),
-                              ),
-                            ),
-                            const SizedBox(
-                              height: 24,
-                            ),
-                            ElevatedButton(
-                              style: ElevatedButton.styleFrom(minimumSize: const Size.fromHeight(56)),
-                              onPressed: () {
-                                switch (formKey.currentState?.validate()) {
-                                  case (false || null):
-                                    context.showError('Campos inválidos');
-                                  case true:
-                                    widget.authCubit.login(emailEC.text, passwordEC.text);
-                                }
-                              },
-                              child: const Text(
-                                'ACESSAR',
-                              ),
-                            )
-                          ],
-                        ),
-                        // Align(
-                        //   alignment: Alignment.bottomCenter,
-                        //   child: InkWell(
-                        //     onTap: () {
-                        //       Navigator.of(context)
-                        //           .pushNamed('/auth/register/user');
-                        //     },
-                        //     child: const Text(
-                        //       'Criar conta',
-                        //       style: TextStyle(
-                        //         fontSize: 16,
-                        //         color: Colors.white,
-                        //         fontWeight: FontWeight.w500,
-                        //       ),
-                        //     ),
-                        //   ),
-                        // )
-                      ],
-                    ),
-                  )
-                ],
-              ),
+                          )
+                        ],
+                      ),
+                      // Align(
+                      //   alignment: Alignment.bottomCenter,
+                      //   child: InkWell(
+                      //     onTap: () {
+                      //       Navigator.of(context)
+                      //           .pushNamed('/auth/register/user');
+                      //     },
+                      //     child: const Text(
+                      //       'Criar conta',
+                      //       style: TextStyle(
+                      //         fontSize: 16,
+                      //         color: Colors.white,
+                      //         fontWeight: FontWeight.w500,
+                      //       ),
+                      //     ),
+                      //   ),
+                      // )
+                    ],
+                  ),
+                )
+              ],
             ),
           ),
         ),

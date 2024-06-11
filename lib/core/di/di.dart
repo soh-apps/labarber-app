@@ -2,6 +2,8 @@ import 'dart:developer';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get_it/get_it.dart';
+import 'package:la_barber/features/admin/barbershop/presentation/cubit/barbershop_cubit.dart';
+import 'package:la_barber/features/admin/barbershop/repository/barbershop_repository.dart';
 import 'package:la_barber/core/local_secure_storage/local_secure_storage.dart';
 import 'package:la_barber/features/common/auth/presentation/cubits/auth_cubit.dart';
 import 'package:la_barber/features/common/auth/repository/auth_repository.dart';
@@ -13,8 +15,10 @@ Future<void> configureInjection() async {
   getIt.registerLazySingleton<FirebaseAuth>(() => FirebaseAuth.instance);
   getIt.registerLazySingleton<LocalSecureStorage>(() => LocalSecureStorage());
 
-  // Auth
+  // RestCLient
   getIt.registerLazySingleton<RestClient>(() => RestClient());
+
+  // Repositories
   getIt.registerLazySingleton<AuthRepository>(() => AuthRepository(restClient: getIt<RestClient>()));
   getIt.registerLazySingleton<AuthCubit>(() => AuthCubit(getIt<AuthRepository>(), getIt<LocalSecureStorage>()));
 
