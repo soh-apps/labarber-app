@@ -48,10 +48,13 @@ class AuthCubit extends Cubit<AuthState> {
   }
 
   Future<void> verifyLocalUser() async {
+    emit(AuthStateLoaging());
     final user = await fetchLocalUser();
     if (user != null) {
       GetIt.instance.registerSingleton(user);
       emit(AuthStateSuccess(userType: user.userType!));
+    } else {
+      emit(AuthStateInitial());
     }
   }
 

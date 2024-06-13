@@ -28,7 +28,8 @@ class _MainAppState extends State<MainApp> {
   @override
   void initState() {
     super.initState();
-    authCubit.verifyIsLogged();
+    authCubit.verifyLocalUser();
+    // authCubit.verifyIsLogged();
   }
 
   @override
