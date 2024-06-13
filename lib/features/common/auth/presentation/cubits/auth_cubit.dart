@@ -1,21 +1,59 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'dart:convert';
+import 'dart:developer';
+
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:get_it/get_it.dart';
-import 'package:la_barber/features/common/auth/model/user_model.dart';
-import 'package:la_barber/features/common/auth/repository/auth_repository.dart';
+import 'package:la_barber/core/constants/local_secure_storage_key.dart';
+import 'package:la_barber/core/formatters.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
 import 'package:la_barber/core/constants/local_storage_key.dart';
 import 'package:la_barber/core/exceptions/auth_exception.dart';
+import 'package:la_barber/core/local_secure_storage/local_secure_storage.dart';
 import 'package:la_barber/core/restClient/either.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:la_barber/features/common/auth/model/user_model.dart';
+import 'package:la_barber/features/common/auth/repository/auth_repository.dart';
 
 part 'auth_state.dart';
 
 class AuthCubit extends Cubit<AuthState> {
   final AuthRepository authRepository;
+  final LocalSecureStorage localSecureStorage;
   AuthCubit(
     this.authRepository,
+    this.localSecureStorage,
   ) : super(AuthStateInitial());
+
+  Future<void> saveLocalUser(UserModel user) async {
+    try {
+      await localSecureStorage.write(key: LocalSecureStorageKey.user, value: user.toJson());
+    } catch (e) {
+      log(e.toString());
+    }
+  }
+
+  Future<UserModel?> fetchLocalUser() async {
+    try {
+      final user = await localSecureStorage.read(LocalSecureStorageKey.user);
+      if (user != null && user.isNotEmpty) {
+        UserModel userModel = UserModel.fromMap(json.decode(Formatters.parseString(user)) as Map<String, dynamic>);
+        return userModel;
+      }
+    } catch (e) {
+      log(e.toString());
+    }
+    return null;
+  }
+
+  Future<void> verifyLocalUser() async {
+    final user = await fetchLocalUser();
+    if (user != null) {
+      GetIt.instance.registerSingleton(user);
+      emit(AuthStateSuccess(userType: user.userType!));
+    }
+  }
 
   Future<void> login(String email, String password) async {
     final loginResult = await authRepository.login(email, password);

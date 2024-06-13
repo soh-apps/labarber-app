@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:la_barber/features/common/auth/model/user_model.dart';
 import 'package:la_barber/features/common/auth/presentation/pages/cadastro_page.dart';
 import 'package:la_barber/features/common/auth/presentation/pages/login_page.dart';
 import 'package:la_barber/core/di/di.dart';
@@ -10,8 +11,19 @@ Future<void> main() async {
   runApp(const MainApp());
 }
 
-class MainApp extends StatelessWidget {
+class MainApp extends StatefulWidget {
   const MainApp({super.key});
+
+  @override
+  State<MainApp> createState() => _MainAppState();
+}
+
+class _MainAppState extends State<MainApp> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -22,10 +34,6 @@ class MainApp extends StatelessWidget {
       routes: {
         '/cadastro': (context) => const CadastroPage(),
         '/login': (context) => LoginPage(authCubit: getIt()),
-
-        //  Pages futuras
-        //  '/home/adm': (_) => const HomeAdmPage(),
-        //     '/home/employee': (_) => const HomeEmployeePage(),
       },
       home: const Scaffold(
         body: Center(
