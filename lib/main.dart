@@ -5,7 +5,6 @@ import 'package:la_barber/core/ui/helpers/messages.dart';
 import 'package:la_barber/features/admin/barbershop/presentation/barbershop_register_page.dart';
 import 'package:la_barber/features/admin/home/home_adm_page.dart';
 import 'package:la_barber/features/common/auth/presentation/cubits/auth_cubit.dart';
-import 'package:la_barber/features/common/auth/presentation/pages/cadastro_page.dart';
 import 'package:la_barber/features/common/auth/presentation/pages/login_page.dart';
 import 'package:la_barber/core/di/di.dart';
 import 'package:la_barber/core/ui/barbershop_nav_global_key.dart';

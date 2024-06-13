@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 enum UserType {
   master,
   admin,
@@ -57,4 +59,8 @@ class UserModel {
       credentialId: map['credentialId'].toInt(),
     );
   }
+
+  String toJson() => jsonEncode(toMap());
+
+  factory UserModel.fromJson(String source) => UserModel.fromMap(jsonDecode(source));
 }
