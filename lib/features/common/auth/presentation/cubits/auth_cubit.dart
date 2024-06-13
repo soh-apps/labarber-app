@@ -29,8 +29,17 @@ class AuthCubit extends Cubit<AuthState> {
   Future<void> saveLocalUser(UserModel user) async {
     try {
       await localSecureStorage.write(key: LocalSecureStorageKey.user, value: user.toJson());
+
+      GetIt.instance.registerSingleton(UserModel(
+        name: user.name,
+        userType: user.userType,
+        token: user.token,
+        refreshToken: user.refreshToken,
+        credentialId: user.credentialId,
+      ));
     } catch (e) {
       log(e.toString());
+      localSecureStorage.clear();
     }
   }
 
@@ -64,18 +73,13 @@ class AuthCubit extends Cubit<AuthState> {
 
     switch (loginResult) {
       case Success():
-        final sp = await SharedPreferences.getInstance();
-        sp.setString(LocalStorageKey.accessToken, loginResult.value.token);
-        sp.setString(LocalStorageKey.refreshToken, loginResult.value.refreshToken);
-        sp.setInt(LocalStorageKey.refreshToken, loginResult.value.credentialId);
+        // final sp = await SharedPreferences.getInstance();
+        // sp.setString(LocalStorageKey.accessToken, loginResult.value.token);
+        // sp.setString(LocalStorageKey.refreshToken, loginResult.value.refreshToken);
+        // sp.setInt(LocalStorageKey.refreshToken, loginResult.value.credentialId);
 
-        GetIt.instance.registerSingleton(UserModel(
-          name: loginResult.value.name,
-          userType: loginResult.value.userType,
-          token: loginResult.value.token,
-          refreshToken: loginResult.value.refreshToken,
-          credentialId: loginResult.value.credentialId,
-        ));
+        saveLocalUser(loginResult.value);
+
         emit(AuthStateSuccess(userType: loginResult.value.userType!));
 
       // Status Sucesso

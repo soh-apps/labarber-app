@@ -25,6 +25,23 @@ UserType getType(int codUserType) {
   }
 }
 
+int getTypeCode(UserType userType) {
+  switch (userType) {
+    case UserType.master:
+      return 1;
+    case UserType.admin:
+      return 2;
+    case UserType.manager:
+      return 3;
+    case UserType.barber:
+      return 4;
+    case UserType.client:
+      return 5;
+    default:
+      return 5;
+  }
+}
+
 class UserModel {
   String token;
   String refreshToken;
@@ -45,7 +62,7 @@ class UserModel {
       'token': token,
       'refreshToken': refreshToken,
       'name': name,
-      'userType': userType,
+      'userType': userType != null ? getTypeCode(userType!) : null,
       'credentialId': credentialId,
     };
   }

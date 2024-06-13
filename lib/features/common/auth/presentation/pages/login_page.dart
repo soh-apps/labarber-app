@@ -1,5 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
+import 'package:la_barber/features/common/auth/model/user_model.dart';
 import 'package:la_barber/features/common/auth/presentation/cubits/auth_cubit.dart';
 import 'package:la_barber/core/ui/constants.dart';
 import 'package:la_barber/core/ui/helpers/form_helper.dart';
@@ -116,7 +117,13 @@ class _LoginPageState extends State<LoginPage> {
                                 case (false || null):
                                   context.showError('Campos inválidos');
                                 case true:
-                                  widget.authCubit.login(emailEC.text, passwordEC.text);
+                                  // widget.authCubit.login(emailEC.text, passwordEC.text);
+                                  widget.authCubit.saveLocalUser(UserModel(
+                                      token: '123',
+                                      refreshToken: '456',
+                                      name: emailEC.text,
+                                      credentialId: 1,
+                                      userType: UserType.admin));
                               }
                             },
                             child: const Text(
