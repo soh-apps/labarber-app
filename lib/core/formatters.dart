@@ -412,30 +412,30 @@ class Formatters {
     }
   }
 
-  static String getDayofWeek(String brFormatDate) {
+  static String getDayofWeek(int dayOfWeek) {
     try {
-      final dateParts = brFormatDate.split('/');
+      // final dateParts = brFormatDate.split('/');
 
-      final dateObject = DateTime(
-        parseInt(dateParts[2]),
-        parseInt(dateParts[1]),
-        parseInt(dateParts[0]),
-      );
-      final dayOfWeek = dateObject.weekday;
+      // final dateObject = DateTime(
+      //   parseInt(dateParts[2]),
+      //   parseInt(dateParts[1]),
+      //   parseInt(dateParts[0]),
+      // );
+      // final dayOfWeek = dateObject.weekday;
       switch (dayOfWeek) {
-        case 1:
-          return 'Segunda';
         case 2:
-          return 'Terça';
+          return 'Segunda';
         case 3:
-          return 'Quarta';
+          return 'Terça';
         case 4:
-          return 'Quinta';
+          return 'Quarta';
         case 5:
-          return 'Sexta';
+          return 'Quinta';
         case 6:
-          return 'Sábado';
+          return 'Sexta';
         case 7:
+          return 'Sábado';
+        case 1:
           return 'Domingo';
         default:
           return '';
@@ -444,6 +444,38 @@ class Formatters {
       return '';
     }
   }
+  // static String getDayofWeek(String brFormatDate) {
+  //   try {
+  //     final dateParts = brFormatDate.split('/');
+
+  //     final dateObject = DateTime(
+  //       parseInt(dateParts[2]),
+  //       parseInt(dateParts[1]),
+  //       parseInt(dateParts[0]),
+  //     );
+  //     final dayOfWeek = dateObject.weekday;
+  //     switch (dayOfWeek) {
+  //       case 1:
+  //         return 'Segunda';
+  //       case 2:
+  //         return 'Terça';
+  //       case 3:
+  //         return 'Quarta';
+  //       case 4:
+  //         return 'Quinta';
+  //       case 5:
+  //         return 'Sexta';
+  //       case 6:
+  //         return 'Sábado';
+  //       case 7:
+  //         return 'Domingo';
+  //       default:
+  //         return '';
+  //     }
+  //   } catch (error) {
+  //     return '';
+  //   }
+  // }
 
   static String formatSecondsToHHMMSS(Duration duration) {
     String twoDigits(int n) => n.toString().padLeft(2, "0");

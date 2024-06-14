@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:la_barber/core/formatters.dart';
 import 'package:la_barber/core/ui/constants.dart';
 
 class WeekdaysPanel extends StatelessWidget {
@@ -36,36 +37,43 @@ class WeekdaysPanel extends StatelessWidget {
                   label: 'Seg',
                   onDaySelected: onDayPressed,
                   enabledDays: enabledDays,
+                  index: 2,
                 ),
                 ButtonDay(
                   label: 'Ter',
                   onDaySelected: onDayPressed,
                   enabledDays: enabledDays,
+                  index: 3,
                 ),
                 ButtonDay(
                   label: 'Qua',
                   onDaySelected: onDayPressed,
                   enabledDays: enabledDays,
+                  index: 4,
                 ),
                 ButtonDay(
                   label: 'Qui',
                   onDaySelected: onDayPressed,
                   enabledDays: enabledDays,
+                  index: 5,
                 ),
                 ButtonDay(
                   label: 'Sex',
                   onDaySelected: onDayPressed,
                   enabledDays: enabledDays,
+                  index: 6,
                 ),
                 ButtonDay(
                   label: 'Sab',
                   onDaySelected: onDayPressed,
                   enabledDays: enabledDays,
+                  index: 7,
                 ),
                 ButtonDay(
                   label: 'Dom',
                   onDaySelected: onDayPressed,
                   enabledDays: enabledDays,
+                  index: 1,
                 ),
               ],
             ),
@@ -79,11 +87,13 @@ class WeekdaysPanel extends StatelessWidget {
 class ButtonDay extends StatefulWidget {
   final List<String>? enabledDays;
   final String label;
+  final int index;
   final ValueChanged<String> onDaySelected;
 
   const ButtonDay({
     super.key,
     required this.label,
+    required this.index,
     required this.onDaySelected,
     this.enabledDays,
   });
@@ -99,8 +109,7 @@ class _ButtonDayState extends State<ButtonDay> {
   Widget build(BuildContext context) {
     final textColor = selected ? Colors.white : ColorConstants.colorGrey;
     var buttonColor = selected ? ColorConstants.colorBrown : Colors.white;
-    final buttonBorderColor =
-        selected ? ColorConstants.colorBrown : ColorConstants.colorGrey;
+    final buttonBorderColor = selected ? ColorConstants.colorBrown : ColorConstants.colorGrey;
 
     final ButtonDay(:enabledDays, :label) = widget;
 
@@ -116,7 +125,7 @@ class _ButtonDayState extends State<ButtonDay> {
         onTap: disableDay
             ? null
             : () {
-                widget.onDaySelected(label);
+                widget.onDaySelected(Formatters.getDayofWeek(widget.index));
                 setState(() {
                   selected = !selected;
                 });
@@ -134,8 +143,7 @@ class _ButtonDayState extends State<ButtonDay> {
           child: Center(
               child: Text(
             label,
-            style: TextStyle(
-                fontSize: 12, color: textColor, fontWeight: FontWeight.w500),
+            style: TextStyle(fontSize: 12, color: textColor, fontWeight: FontWeight.w500),
           )),
         ),
       ),

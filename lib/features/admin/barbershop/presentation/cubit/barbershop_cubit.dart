@@ -14,9 +14,9 @@ class BarbershopCubit extends Cubit<BarbershopState> {
 
   Future<void> getAllCompanies() async {
     emit(BarbershopLoading());
-    final loginResult = await barbershopRepository.getAllCompanies();
+    final result = await barbershopRepository.getAllCompanies();
 
-    switch (loginResult) {
+    switch (result) {
       case Success():
 
         // GetIt.instance.registerSingleton(UserModel(

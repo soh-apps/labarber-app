@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:la_barber/core/ui/helpers/context_extension.dart';
 import 'package:la_barber/core/ui/helpers/messages.dart';
-import 'package:la_barber/features/admin/barbershop/presentation/barbershop_register_page.dart';
+import 'package:la_barber/features/admin/barbershop/presentation/pages/barbershop_list_page.dart';
+import 'package:la_barber/features/admin/barbershop/presentation/pages/barbershop_register_page.dart';
 import 'package:la_barber/features/admin/home/home_adm_page.dart';
 import 'package:la_barber/features/common/auth/presentation/cubits/auth_cubit.dart';
 import 'package:la_barber/features/common/auth/presentation/pages/login_page.dart';
@@ -40,9 +41,8 @@ class _MainAppState extends State<MainApp> {
         navigatorKey: BarbershopNavGlobalKey.instance.navKey,
         routes: {
           '/login': (context) => LoginPage(authCubit: authCubit),
-          '/home/adm': (_) => HomeAdmPage(
-                barbershopCubit: getIt(),
-              ),
+          '/home/adm': (_) => HomeAdmPage(barbershopCubit: getIt()),
+          '/home/barbershop': (_) => BarbershopListPage(barbershopCubit: getIt()),
           '/register/barbershop': (_) => BarbershopRegisterPage(
                 barbershopCubit: getIt(),
               ),
@@ -57,7 +57,7 @@ class _MainAppState extends State<MainApp> {
             } else if (state is AuthStateSuccess) {
               // hideLoadingDialog(context); // Pop dialog
               context.showSuccess('Deu certo o Login');
-              Navigator.of(context).pushNamedAndRemoveUntil('/home/adm', (route) => false);
+              Navigator.of(context).pushNamedAndRemoveUntil('/home/barbershop', (route) => false);
             } else if (state is AuthStateLoaging) {
               context.showLoadingDialog(context, message: "Loading");
 
