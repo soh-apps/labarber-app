@@ -32,7 +32,6 @@ class _BarbershopRegisterPageState extends State<BarbershopRegisterPage> {
   final telefoneEC = TextEditingController();
   final cepEC = TextEditingController();
   final numeroEC = TextEditingController();
-  String diaSemanaString = '';
 
   @override
   void dispose() {
@@ -43,8 +42,9 @@ class _BarbershopRegisterPageState extends State<BarbershopRegisterPage> {
     super.dispose();
   }
 
-  bool isHorarioAlmoco = true;
-  bool visibleHorarioAbertura = true;
+  String diaSemanaString = '';
+  bool isHorarioAlmoco = false;
+  bool visibleHorarioAbertura = false;
   List<WorkDays> openingDays = [];
 
   TimeOfDay _horaAbertura = const TimeOfDay(hour: 8, minute: 00);
@@ -141,8 +141,6 @@ class _BarbershopRegisterPageState extends State<BarbershopRegisterPage> {
             startTime: '08:00',
             endTime: '20:00',
             isAlmoco: false,
-            breakStartTime: isHorarioAlmoco ? '12:00' : null,
-            breakEndTime: isHorarioAlmoco ? '13:00' : null,
           ));
           diaSemanaString = weekDay;
         });
@@ -192,23 +190,18 @@ class _BarbershopRegisterPageState extends State<BarbershopRegisterPage> {
   }
 
   void checkBoxAlmoco(bool value) {
-    if (value) {
-      openingDays = openingDays.map((day) {
-        if (day.numberDay == Formatters.getNumberDayofWeek(diaSemanaString)) {
+    openingDays = openingDays.map((day) {
+      if (day.numberDay == Formatters.getNumberDayofWeek(diaSemanaString)) {
+        if (value) {
           day.isAlmoco = true;
-          day.breakStartTime = isHorarioAlmoco ? '12:00' : null;
-          day.breakEndTime = isHorarioAlmoco ? '13:00' : null;
-        }
-        setState(() {
-          isHorarioAlmoco = value;
-          _horaInicioAlmoco = TimeUtils.getTimeOfDayFromString(day.breakStartTime ?? '12:00');
-          _horaFimAlmoco = TimeUtils.getTimeOfDayFromString(day.breakStartTime ?? '13:00');
-        });
-        return day;
-      }).toList();
-    } else {
-      openingDays = openingDays.map((day) {
-        if (day.numberDay == Formatters.getNumberDayofWeek(diaSemanaString)) {
+          day.breakStartTime = '12:00';
+          day.breakEndTime = '13:00';
+          setState(() {
+            isHorarioAlmoco = value;
+            _horaInicioAlmoco = TimeUtils.getTimeOfDayFromString(day.breakStartTime!);
+            _horaFimAlmoco = TimeUtils.getTimeOfDayFromString(day.breakEndTime!);
+          });
+        } else {
           day.isAlmoco = false;
           day.breakStartTime = null;
           day.breakEndTime = null;
@@ -216,9 +209,10 @@ class _BarbershopRegisterPageState extends State<BarbershopRegisterPage> {
         setState(() {
           isHorarioAlmoco = value;
         });
-        return day;
-      }).toList();
-    }
+      }
+
+      return day;
+    }).toList();
   }
 
   @override
