@@ -3,7 +3,9 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:la_barber/core/formatters.dart';
-import 'package:la_barber/core/ui/app_color.dart';
+import 'package:la_barber/core/time_utils.dart';
+import 'package:la_barber/core/ui/widgets/custom_check_box.dart';
+import 'package:la_barber/features/admin/barbershop/presentation/widgets/time_display.dart';
 import 'package:la_barber/features/admin/barbershop/repository/entities/work_days.dart';
 import 'package:validatorless/validatorless.dart';
 
@@ -41,7 +43,7 @@ class _BarbershopRegisterPageState extends State<BarbershopRegisterPage> {
     super.dispose();
   }
 
-  bool horarioAlmoco = true;
+  bool isHorarioAlmoco = true;
   bool visibleHorarioAbertura = true;
   List<WorkDays> openingDays = [];
 
@@ -69,15 +71,11 @@ class _BarbershopRegisterPageState extends State<BarbershopRegisterPage> {
 
     if (type == 'start') {
       initialTime = selectedDay.startTime != null
-          ? TimeOfDay(
-              hour: int.parse(selectedDay.startTime!.split(":")[0]),
-              minute: int.parse(selectedDay.startTime!.split(":")[1]))
+          ? TimeUtils.getTimeOfDayFromString(selectedDay.startTime!)
           : const TimeOfDay(hour: 8, minute: 00);
     } else {
       initialTime = selectedDay.endTime != null
-          ? TimeOfDay(
-              hour: int.parse(selectedDay.endTime!.split(":")[0]),
-              minute: int.parse(selectedDay.endTime!.split(":")[1]))
+          ? TimeUtils.getTimeOfDayFromString(selectedDay.startTime!)
           : const TimeOfDay(hour: 20, minute: 00);
     }
 
@@ -97,27 +95,80 @@ class _BarbershopRegisterPageState extends State<BarbershopRegisterPage> {
     });
   }
 
+  void _selectBreakTime(BuildContext context, int weekDayNumber, String type) async {
+    WorkDays? selectedDay = openingDays.firstWhere((day) => day.numberDay == weekDayNumber,
+        orElse: () => WorkDays(numberDay: weekDayNumber));
+    TimeOfDay? initialTime;
+
+    if (type == 'breakStart') {
+      initialTime = selectedDay.breakStartTime != null
+          ? TimeUtils.getTimeOfDayFromString(selectedDay.startTime!)
+          : const TimeOfDay(hour: 12, minute: 00);
+    } else {
+      initialTime = selectedDay.breakEndTime != null
+          ? TimeUtils.getTimeOfDayFromString(selectedDay.startTime!)
+          : const TimeOfDay(hour: 13, minute: 00);
+    }
+
+    await _selectTime(context, initialTime, (time) {
+      if (time != null) {
+        setState(() {
+          String formattedTime = '${time.hour.toString().padLeft(2, '0')}:${time.minute.toString().padLeft(2, '0')}';
+          if (type == 'breakStart') {
+            selectedDay.breakStartTime = formattedTime;
+            _horaInicioAlmoco = time;
+          } else {
+            selectedDay.breakEndTime = formattedTime;
+            _horaFimAlmoco = time;
+          }
+          openingDays = openingDays.where((day) => day.numberDay != weekDayNumber).toList();
+          openingDays.add(selectedDay);
+        });
+      }
+    });
+  }
+
   void addOpenDay(String weekDay) {
     int weekDayNumber = Formatters.getNumberDayofWeek(weekDay);
     if (weekDayNumber != 0) {
       bool alreadyExists = openingDays.any((day) => day.numberDay == weekDayNumber);
       if (!alreadyExists) {
         setState(() {
-          openingDays.add(WorkDays(numberDay: weekDayNumber, isWork: true, startTime: '08:00', endTime: '20:00'));
+          isHorarioAlmoco = false;
+          openingDays.add(WorkDays(
+            numberDay: weekDayNumber,
+            isWork: true,
+            startTime: '08:00',
+            endTime: '20:00',
+            isAlmoco: false,
+            breakStartTime: isHorarioAlmoco ? '12:00' : null,
+            breakEndTime: isHorarioAlmoco ? '13:00' : null,
+          ));
           diaSemanaString = weekDay;
         });
         log(openingDays.map((e) => e.numberDay).toList().toString());
       } else {
         setState(() {
-          // Find the existing WorkDays for the selected day
           WorkDays selectedDay = openingDays.firstWhere((day) => day.numberDay == weekDayNumber);
-          // Update _horaAbertura and _horaFechamento with the values from selectedDay
           _horaAbertura = TimeOfDay(
-              hour: int.parse(selectedDay.startTime!.split(":")[0]),
-              minute: int.parse(selectedDay.startTime!.split(":")[1]));
+              hour: TimeUtils.getHourFromTimeString(selectedDay.startTime!),
+              minute: TimeUtils.getMinuteFromTimeString(selectedDay.startTime!));
           _horaFechamento = TimeOfDay(
-              hour: int.parse(selectedDay.endTime!.split(":")[0]),
-              minute: int.parse(selectedDay.endTime!.split(":")[1]));
+              hour: TimeUtils.getHourFromTimeString(selectedDay.endTime!),
+              minute: TimeUtils.getMinuteFromTimeString(selectedDay.endTime!));
+          if (selectedDay.isAlmoco) {
+            isHorarioAlmoco = true;
+            _horaInicioAlmoco = TimeOfDay(
+                hour: TimeUtils.getHourFromTimeString(selectedDay.breakStartTime!),
+                minute: TimeUtils.getMinuteFromTimeString(selectedDay.breakStartTime!));
+            _horaFimAlmoco = TimeOfDay(
+                hour: TimeUtils.getHourFromTimeString(selectedDay.breakEndTime!),
+                minute: TimeUtils.getMinuteFromTimeString(selectedDay.breakEndTime!));
+          } else {
+            _horaInicioAlmoco = null;
+            _horaFimAlmoco = null;
+          }
+          isHorarioAlmoco = selectedDay.isAlmoco;
           diaSemanaString = weekDay;
         });
         log('Dia da semana já selecionado');
@@ -137,6 +188,36 @@ class _BarbershopRegisterPageState extends State<BarbershopRegisterPage> {
       log(openingDays.map((e) => e.numberDay).toList().toString());
     } else {
       log('Erro ao selecionar dia da semana');
+    }
+  }
+
+  void checkBoxAlmoco(bool value) {
+    if (value) {
+      openingDays = openingDays.map((day) {
+        if (day.numberDay == Formatters.getNumberDayofWeek(diaSemanaString)) {
+          day.isAlmoco = true;
+          day.breakStartTime = isHorarioAlmoco ? '12:00' : null;
+          day.breakEndTime = isHorarioAlmoco ? '13:00' : null;
+        }
+        setState(() {
+          isHorarioAlmoco = value;
+          _horaInicioAlmoco = TimeUtils.getTimeOfDayFromString(day.breakStartTime ?? '12:00');
+          _horaFimAlmoco = TimeUtils.getTimeOfDayFromString(day.breakStartTime ?? '13:00');
+        });
+        return day;
+      }).toList();
+    } else {
+      openingDays = openingDays.map((day) {
+        if (day.numberDay == Formatters.getNumberDayofWeek(diaSemanaString)) {
+          day.isAlmoco = false;
+          day.breakStartTime = null;
+          day.breakEndTime = null;
+        }
+        setState(() {
+          isHorarioAlmoco = value;
+        });
+        return day;
+      }).toList();
     }
   }
 
@@ -277,12 +358,13 @@ class _BarbershopRegisterPageState extends State<BarbershopRegisterPage> {
                       ),
                       const SizedBox(height: 24),
                       CustomCheckbox(
-                        value: horarioAlmoco,
+                        value: isHorarioAlmoco,
                         label: 'Adicionar horário de almoço',
                         onChanged: (value) {
-                          setState(() {
-                            horarioAlmoco = value ?? false;
-                          });
+                          checkBoxAlmoco(value ?? false);
+                          // setState(() {
+                          //   isHorarioAlmoco = value ?? false;
+                          // });
                         },
                       ),
                     ],
@@ -290,19 +372,21 @@ class _BarbershopRegisterPageState extends State<BarbershopRegisterPage> {
                 ),
                 const SizedBox(height: 4),
                 Visibility(
-                  visible: horarioAlmoco,
+                  visible: isHorarioAlmoco,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       TimeDisplay(
                         label: 'Início',
                         time: _horaInicioAlmoco,
-                        onSelectTime: () => _selectTime(context, _horaInicioAlmoco, (time) => _horaInicioAlmoco = time),
+                        onSelectTime: () =>
+                            _selectBreakTime(context, Formatters.getNumberDayofWeek(diaSemanaString), 'breakStart'),
                       ),
                       TimeDisplay(
                         label: 'Fim',
                         time: _horaFimAlmoco,
-                        onSelectTime: () => _selectTime(context, _horaFimAlmoco, (time) => _horaFimAlmoco = time),
+                        onSelectTime: () =>
+                            _selectBreakTime(context, Formatters.getNumberDayofWeek(diaSemanaString), 'breakEnd'),
                       ),
                     ],
                   ),
@@ -315,7 +399,7 @@ class _BarbershopRegisterPageState extends State<BarbershopRegisterPage> {
                     onPressed: () {
                       removeOpenDay(diaSemanaString);
                       diaSemanaString = '';
-                      horarioAlmoco = false;
+                      isHorarioAlmoco = false;
                       visibleHorarioAbertura = false;
                     },
                     child: const Text('REMOVER DIA'),
@@ -345,85 +429,6 @@ class _BarbershopRegisterPageState extends State<BarbershopRegisterPage> {
           ),
         ),
       ),
-    );
-  }
-}
-
-class TimeDisplay extends StatelessWidget {
-  final String label;
-  final TimeOfDay? time;
-  final VoidCallback onSelectTime;
-
-  const TimeDisplay({
-    super.key,
-    this.label = '',
-    required this.time,
-    required this.onSelectTime,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Visibility(visible: label.isNotEmpty, child: Text(label)),
-        GestureDetector(
-          onTap: onSelectTime,
-          child: Container(
-            width: 64,
-            height: 36,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(8),
-              color: Colors.white,
-              border: Border.all(
-                color: AppColor.corSecundaria,
-              ),
-            ),
-            child: Center(
-              child: Text(
-                time == null ? '---' : ' ${time!.format(context)}',
-                style: TextStyle(
-                  fontSize: 12,
-                  color: AppColor.corSecundaria,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-}
-
-class CustomCheckbox extends StatelessWidget {
-  final bool value;
-  final ValueChanged<bool?> onChanged;
-  final String label;
-
-  const CustomCheckbox({
-    super.key,
-    required this.value,
-    required this.onChanged,
-    this.label = '',
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Checkbox(
-          value: value,
-          onChanged: onChanged,
-        ),
-        Expanded(
-          child: Text(
-            label,
-            style: const TextStyle(
-              fontSize: 14,
-            ),
-          ),
-        ),
-      ],
     );
   }
 }
