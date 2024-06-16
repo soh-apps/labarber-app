@@ -22,7 +22,7 @@ class BarbershopListPage extends StatefulWidget {
 class _BarbershopListPageState extends State<BarbershopListPage> {
   @override
   void initState() {
-    widget.barbershopCubit.getAllCompanies();
+    // widget.barbershopCubit.getAllCompanies();
     super.initState();
   }
 

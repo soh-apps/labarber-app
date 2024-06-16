@@ -45,8 +45,8 @@ class _BarbershopRegisterPageState extends State<BarbershopRegisterPage> {
   bool visibleHorarioAbertura = true;
   List<WorkDays> openingDays = [];
 
-  final TimeOfDay _horaAbertura = const TimeOfDay(hour: 8, minute: 00);
-  final TimeOfDay _horaFechamento = const TimeOfDay(hour: 20, minute: 00);
+  TimeOfDay _horaAbertura = const TimeOfDay(hour: 8, minute: 00);
+  TimeOfDay _horaFechamento = const TimeOfDay(hour: 20, minute: 00);
   TimeOfDay? _horaInicioAlmoco = const TimeOfDay(hour: 12, minute: 00);
   TimeOfDay? _horaFimAlmoco = const TimeOfDay(hour: 13, minute: 00);
 
@@ -103,11 +103,23 @@ class _BarbershopRegisterPageState extends State<BarbershopRegisterPage> {
       bool alreadyExists = openingDays.any((day) => day.numberDay == weekDayNumber);
       if (!alreadyExists) {
         setState(() {
-          openingDays.add(WorkDays(numberDay: weekDayNumber));
+          openingDays.add(WorkDays(numberDay: weekDayNumber, isWork: true, startTime: '08:00', endTime: '20:00'));
           diaSemanaString = weekDay;
         });
         log(openingDays.map((e) => e.numberDay).toList().toString());
       } else {
+        setState(() {
+          // Find the existing WorkDays for the selected day
+          WorkDays selectedDay = openingDays.firstWhere((day) => day.numberDay == weekDayNumber);
+          // Update _horaAbertura and _horaFechamento with the values from selectedDay
+          _horaAbertura = TimeOfDay(
+              hour: int.parse(selectedDay.startTime!.split(":")[0]),
+              minute: int.parse(selectedDay.startTime!.split(":")[1]));
+          _horaFechamento = TimeOfDay(
+              hour: int.parse(selectedDay.endTime!.split(":")[0]),
+              minute: int.parse(selectedDay.endTime!.split(":")[1]));
+          diaSemanaString = weekDay;
+        });
         log('Dia da semana já selecionado');
       }
     } else {
