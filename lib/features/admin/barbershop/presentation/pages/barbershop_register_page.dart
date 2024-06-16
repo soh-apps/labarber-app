@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:la_barber/core/formatters.dart';
 import 'package:la_barber/core/ui/app_color.dart';
+import 'package:la_barber/features/admin/barbershop/repository/entities/work_days.dart';
 import 'package:validatorless/validatorless.dart';
 
 import 'package:la_barber/core/ui/helpers/form_helper.dart';
@@ -13,6 +14,7 @@ import 'package:la_barber/features/admin/barbershop/presentation/cubit/barbersho
 
 class BarbershopRegisterPage extends StatefulWidget {
   final BarbershopCubit barbershopCubit;
+
   const BarbershopRegisterPage({
     super.key,
     required this.barbershopCubit,
@@ -41,10 +43,10 @@ class _BarbershopRegisterPageState extends State<BarbershopRegisterPage> {
 
   bool horarioAlmoco = true;
   bool visibleHorarioAbertura = true;
-  List<int> openingDays = [];
+  List<WorkDays> openingDays = [];
 
-  TimeOfDay? _horaAbertura = const TimeOfDay(hour: 8, minute: 00);
-  TimeOfDay? _horaFechamento = const TimeOfDay(hour: 20, minute: 00);
+  final TimeOfDay _horaAbertura = const TimeOfDay(hour: 8, minute: 00);
+  final TimeOfDay _horaFechamento = const TimeOfDay(hour: 20, minute: 00);
   TimeOfDay? _horaInicioAlmoco = const TimeOfDay(hour: 12, minute: 00);
   TimeOfDay? _horaFimAlmoco = const TimeOfDay(hour: 13, minute: 00);
 
@@ -60,14 +62,54 @@ class _BarbershopRegisterPageState extends State<BarbershopRegisterPage> {
     }
   }
 
+  void _selectOpeningTime(BuildContext context, int weekDayNumber, String type) async {
+    WorkDays? selectedDay = openingDays.firstWhere((day) => day.numberDay == weekDayNumber,
+        orElse: () => WorkDays(numberDay: weekDayNumber));
+    TimeOfDay? initialTime;
+
+    if (type == 'start') {
+      initialTime = selectedDay.startTime != null
+          ? TimeOfDay(
+              hour: int.parse(selectedDay.startTime!.split(":")[0]),
+              minute: int.parse(selectedDay.startTime!.split(":")[1]))
+          : const TimeOfDay(hour: 8, minute: 00);
+    } else {
+      initialTime = selectedDay.endTime != null
+          ? TimeOfDay(
+              hour: int.parse(selectedDay.endTime!.split(":")[0]),
+              minute: int.parse(selectedDay.endTime!.split(":")[1]))
+          : const TimeOfDay(hour: 20, minute: 00);
+    }
+
+    await _selectTime(context, initialTime, (time) {
+      if (time != null) {
+        setState(() {
+          String formattedTime = '${time.hour.toString().padLeft(2, '0')}:${time.minute.toString().padLeft(2, '0')}';
+          if (type == 'start') {
+            selectedDay.startTime = formattedTime;
+          } else {
+            selectedDay.endTime = formattedTime;
+          }
+          openingDays = openingDays.where((day) => day.numberDay != weekDayNumber).toList();
+          openingDays.add(selectedDay);
+        });
+      }
+    });
+  }
+
   void addOpenDay(String weekDay) {
     int weekDayNumber = Formatters.getNumberDayofWeek(weekDay);
     if (weekDayNumber != 0) {
-      openingDays.add(weekDayNumber);
-      setState(() {
-        diaSemanaString = weekDay;
-      });
-      log(openingDays.toString());
+      bool alreadyExists = openingDays.any((day) => day.numberDay == weekDayNumber);
+      if (!alreadyExists) {
+        setState(() {
+          openingDays.add(WorkDays(numberDay: weekDayNumber));
+          diaSemanaString = weekDay;
+        });
+        log(openingDays.map((e) => e.numberDay).toList().toString());
+      } else {
+        log('Dia da semana já selecionado');
+      }
     } else {
       log('Erro ao selecionar dia da semana');
     }
@@ -76,11 +118,11 @@ class _BarbershopRegisterPageState extends State<BarbershopRegisterPage> {
   void removeOpenDay(String weekDay) {
     int weekDayNumber = Formatters.getNumberDayofWeek(weekDay);
     if (weekDayNumber != 0) {
-      openingDays.remove(weekDayNumber);
       setState(() {
+        openingDays.removeWhere((day) => day.numberDay == weekDayNumber);
         diaSemanaString = weekDay;
       });
-      log(openingDays.toString());
+      log(openingDays.map((e) => e.numberDay).toList().toString());
     } else {
       log('Erro ao selecionar dia da semana');
     }
@@ -160,10 +202,8 @@ class _BarbershopRegisterPageState extends State<BarbershopRegisterPage> {
                     setState(() {
                       visibleHorarioAbertura = true;
                     });
-
-                    // barbershopRegisterVM.addOrRemoveOpenDay(value);
                   },
-                  openingDays: openingDays,
+                  openingDays: openingDays.map((e) => e.numberDay).toList(),
                 ),
                 const SizedBox(height: 24),
                 Visibility(
@@ -177,13 +217,49 @@ class _BarbershopRegisterPageState extends State<BarbershopRegisterPage> {
                         children: [
                           TimeDisplay(
                             label: 'Abertura',
-                            time: _horaAbertura,
-                            onSelectTime: () => _selectTime(context, _horaAbertura, (time) => _horaAbertura = time),
+                            time: openingDays
+                                        .firstWhere(
+                                            (day) => day.numberDay == Formatters.getNumberDayofWeek(diaSemanaString),
+                                            orElse: () => WorkDays(numberDay: 0))
+                                        .startTime !=
+                                    null
+                                ? TimeOfDay(
+                                    hour: int.parse(openingDays
+                                        .firstWhere(
+                                            (day) => day.numberDay == Formatters.getNumberDayofWeek(diaSemanaString))
+                                        .startTime!
+                                        .split(":")[0]),
+                                    minute: int.parse(openingDays
+                                        .firstWhere(
+                                            (day) => day.numberDay == Formatters.getNumberDayofWeek(diaSemanaString))
+                                        .startTime!
+                                        .split(":")[1]))
+                                : _horaAbertura,
+                            onSelectTime: () =>
+                                _selectOpeningTime(context, Formatters.getNumberDayofWeek(diaSemanaString), 'start'),
                           ),
                           TimeDisplay(
                             label: 'Fechamento',
-                            time: _horaFechamento,
-                            onSelectTime: () => _selectTime(context, _horaFechamento, (time) => _horaFechamento = time),
+                            time: openingDays
+                                        .firstWhere(
+                                            (day) => day.numberDay == Formatters.getNumberDayofWeek(diaSemanaString),
+                                            orElse: () => WorkDays(numberDay: 0))
+                                        .endTime !=
+                                    null
+                                ? TimeOfDay(
+                                    hour: int.parse(openingDays
+                                        .firstWhere(
+                                            (day) => day.numberDay == Formatters.getNumberDayofWeek(diaSemanaString))
+                                        .endTime!
+                                        .split(":")[0]),
+                                    minute: int.parse(openingDays
+                                        .firstWhere(
+                                            (day) => day.numberDay == Formatters.getNumberDayofWeek(diaSemanaString))
+                                        .endTime!
+                                        .split(":")[1]))
+                                : _horaFechamento,
+                            onSelectTime: () =>
+                                _selectOpeningTime(context, Formatters.getNumberDayofWeek(diaSemanaString), 'end'),
                           ),
                         ],
                       ),
