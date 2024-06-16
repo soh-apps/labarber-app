@@ -12,6 +12,57 @@ class BarbershopCubit extends Cubit<BarbershopState> {
     this.barbershopRepository,
   ) : super(BarbershopInitial());
 
+  // late BarbershopModel barbershopModel;
+
+  // void addOrRemoveOpenDay(int weekDay) {
+  //   if (barbershopModel.workingDays == null) {
+  //     barbershopModel.workingDays = [];
+  //   }
+  //   barbershopModel.workingDays = [weekDay];
+  //   barbershopModel.workingDays.add(weekDay);
+  //   if (barbershopModel.workingDays.contains(weekDay)) {
+  //     openingDays.remove(weekDay);
+  //   } else {
+  //     openingDays.add(weekDay);
+  //   }
+
+  //   state = state.copyWith(openingDays: openingDays);
+  // }
+
+  // void addOrRemoveOpenHour(int hour) {
+  //   final openingHours = state.openingHours;
+  //   if(openingHours.contains(hour)) {
+  //     openingHours.remove(hour);
+  //   } else {
+  //     openingHours.add(hour);
+  //   }
+
+  //   state = state.copyWith(openingHours: openingHours);
+  // }
+
+//  Future<void> register({required String name, required String email}) async {
+//     final repository = ref.watch(barbershopRepositoryProvider);
+
+//     final BarbershopRegisterState(:openingDays, :openingHours) = state;
+
+//     final dto = (
+//       name: name,
+//       email: email,
+//       openingDays: openingDays,
+//       openingHours: openingHours
+//     );
+
+//     final registerResult = await repository.save(dto);
+
+//     switch(registerResult) {
+//       case Success():
+//         ref.invalidate(getMyBarbershopProvider);
+//         state = state.copyWith(status: BarbershopRegisterStateStatus.success);
+//       case Failure():
+//         state = state.copyWith(status: BarbershopRegisterStateStatus.error);
+//     }
+//   }
+
   Future<void> getAllCompanies() async {
     emit(BarbershopLoading());
     final result = await barbershopRepository.getAllCompanies();

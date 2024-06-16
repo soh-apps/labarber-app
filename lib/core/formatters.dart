@@ -1,3 +1,5 @@
+// ignore_for_file: depend_on_referenced_packages
+
 import 'package:intl/intl.dart';
 
 class Formatters {
@@ -414,14 +416,6 @@ class Formatters {
 
   static String getDayofWeek(int dayOfWeek) {
     try {
-      // final dateParts = brFormatDate.split('/');
-
-      // final dateObject = DateTime(
-      //   parseInt(dateParts[2]),
-      //   parseInt(dateParts[1]),
-      //   parseInt(dateParts[0]),
-      // );
-      // final dayOfWeek = dateObject.weekday;
       switch (dayOfWeek) {
         case 2:
           return 'Segunda';
@@ -444,6 +438,32 @@ class Formatters {
       return '';
     }
   }
+
+  static int getNumberDayofWeek(String dayOfWeek) {
+    try {
+      switch (dayOfWeek) {
+        case 'Domingo':
+          return 1;
+        case 'Segunda':
+          return 2;
+        case 'Terça':
+          return 3;
+        case 'Quarta':
+          return 4;
+        case 'Quinta':
+          return 5;
+        case 'Sexta':
+          return 6;
+        case 'Sábado':
+          return 7;
+        default:
+          return 0;
+      }
+    } catch (error) {
+      return 0;
+    }
+  }
+
   // static String getDayofWeek(String brFormatDate) {
   //   try {
   //     final dateParts = brFormatDate.split('/');

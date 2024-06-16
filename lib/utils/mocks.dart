@@ -2,8 +2,8 @@ import 'package:la_barber/features/admin/barbershop/repository/models/company_mo
 import 'package:la_barber/features/common/auth/model/user_model.dart';
 
 class Mocks {
-  static final List<CompanyModel> companies = [
-    CompanyModel(
+  static final List<BarbershopModel> companies = [
+    BarbershopModel(
       id: '1',
       name: 'Penha',
       address: 'Rua do João, 123',
@@ -13,7 +13,7 @@ class Mocks {
       website: '',
       description: '',
     ),
-    CompanyModel(
+    BarbershopModel(
       id: '2',
       name: 'Centro',
       address: 'Rua do João, 123',
@@ -23,7 +23,7 @@ class Mocks {
       website: '',
       description: '',
     ),
-    CompanyModel(
+    BarbershopModel(
       id: '3',
       name: 'Perifa',
       address: 'Rua do João, 123',

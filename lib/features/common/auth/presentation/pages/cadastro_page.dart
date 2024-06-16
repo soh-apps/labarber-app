@@ -68,6 +68,7 @@ class _CadastroPageState extends State<CadastroPage> {
                     onDayPressed: (String value) {
                       // barbershopRegisterVM.addOrRemoveOpenDay(value);
                     },
+                    openingDays: const [],
                   ),
                   const SizedBox(height: 24),
                   HoursPanel(

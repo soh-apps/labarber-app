@@ -1,6 +1,4 @@
-import 'dart:convert';
-
-class CompanyModel {
+class BarbershopModel {
   final String id;
   final String name;
   final String address;
@@ -9,8 +7,9 @@ class CompanyModel {
   final String logo;
   final String website;
   final String description;
+  List<int>? workingDays;
 
-  CompanyModel({
+  BarbershopModel({
     required this.id,
     required this.name,
     required this.address,
@@ -19,6 +18,7 @@ class CompanyModel {
     required this.logo,
     required this.website,
     required this.description,
+    this.workingDays,
   });
 
   Map<String, dynamic> toMap() {
@@ -31,11 +31,12 @@ class CompanyModel {
       'logo': logo,
       'website': website,
       'description': description,
+      'workingdays': workingDays,
     };
   }
 
-  factory CompanyModel.fromMap(Map<String, dynamic> map) {
-    return CompanyModel(
+  factory BarbershopModel.fromMap(Map<String, dynamic> map) {
+    return BarbershopModel(
       id: map['id'] ?? '',
       name: map['name'] ?? '',
       address: map['address'] ?? '',
@@ -44,10 +45,7 @@ class CompanyModel {
       logo: map['logo'] ?? '',
       website: map['website'] ?? '',
       description: map['description'] ?? '',
+      workingDays: map['workingDays'] != null ? List<int>.from(map['workingDays']) : null,
     );
   }
-
-  String toJson() => json.encode(toMap());
-
-  factory CompanyModel.fromJson(String source) => CompanyModel.fromMap(json.decode(source));
 }

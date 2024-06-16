@@ -5,7 +5,7 @@ import 'package:la_barber/core/ui/helpers/context_extension.dart';
 import 'package:la_barber/features/admin/barbershop/repository/models/company_model.dart';
 
 class BarbershopHomeTile extends StatelessWidget {
-  final CompanyModel company;
+  final BarbershopModel company;
 
   const BarbershopHomeTile({
     super.key,

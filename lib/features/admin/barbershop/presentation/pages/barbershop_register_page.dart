@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:la_barber/core/formatters.dart';
 import 'package:la_barber/core/ui/app_color.dart';
 import 'package:validatorless/validatorless.dart';
 
@@ -39,6 +40,8 @@ class _BarbershopRegisterPageState extends State<BarbershopRegisterPage> {
   }
 
   bool horarioAlmoco = true;
+  bool visibleHorarioAbertura = true;
+  List<int> openingDays = [];
 
   TimeOfDay? _horaAbertura = const TimeOfDay(hour: 8, minute: 00);
   TimeOfDay? _horaFechamento = const TimeOfDay(hour: 20, minute: 00);
@@ -54,6 +57,32 @@ class _BarbershopRegisterPageState extends State<BarbershopRegisterPage> {
       setState(() {
         onTimeChanged(picked);
       });
+    }
+  }
+
+  void addOpenDay(String weekDay) {
+    int weekDayNumber = Formatters.getNumberDayofWeek(weekDay);
+    if (weekDayNumber != 0) {
+      openingDays.add(weekDayNumber);
+      setState(() {
+        diaSemanaString = weekDay;
+      });
+      log(openingDays.toString());
+    } else {
+      log('Erro ao selecionar dia da semana');
+    }
+  }
+
+  void removeOpenDay(String weekDay) {
+    int weekDayNumber = Formatters.getNumberDayofWeek(weekDay);
+    if (weekDayNumber != 0) {
+      openingDays.remove(weekDayNumber);
+      setState(() {
+        diaSemanaString = weekDay;
+      });
+      log(openingDays.toString());
+    } else {
+      log('Erro ao selecionar dia da semana');
     }
   }
 
@@ -127,40 +156,49 @@ class _BarbershopRegisterPageState extends State<BarbershopRegisterPage> {
                 const SizedBox(height: 24),
                 WeekdaysPanel(
                   onDayPressed: (String value) {
+                    addOpenDay(value);
                     setState(() {
-                      diaSemanaString = value;
+                      visibleHorarioAbertura = true;
                     });
-                    log(value);
+
                     // barbershopRegisterVM.addOrRemoveOpenDay(value);
                   },
+                  openingDays: openingDays,
                 ),
                 const SizedBox(height: 24),
-                Text('Horários de atendimento para o dia selecionado $diaSemanaString'),
-                const SizedBox(height: 12),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    TimeDisplay(
-                      label: 'Abertura',
-                      time: _horaAbertura,
-                      onSelectTime: () => _selectTime(context, _horaAbertura, (time) => _horaAbertura = time),
-                    ),
-                    TimeDisplay(
-                      label: 'Fechamento',
-                      time: _horaFechamento,
-                      onSelectTime: () => _selectTime(context, _horaFechamento, (time) => _horaFechamento = time),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 24),
-                CustomCheckbox(
-                  value: horarioAlmoco,
-                  label: 'Adicionar horário de almoço',
-                  onChanged: (value) {
-                    setState(() {
-                      horarioAlmoco = value ?? false;
-                    });
-                  },
+                Visibility(
+                  visible: visibleHorarioAbertura,
+                  child: Column(
+                    children: [
+                      Text('Horários de atendimento para o dia selecionado $diaSemanaString'),
+                      const SizedBox(height: 12),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          TimeDisplay(
+                            label: 'Abertura',
+                            time: _horaAbertura,
+                            onSelectTime: () => _selectTime(context, _horaAbertura, (time) => _horaAbertura = time),
+                          ),
+                          TimeDisplay(
+                            label: 'Fechamento',
+                            time: _horaFechamento,
+                            onSelectTime: () => _selectTime(context, _horaFechamento, (time) => _horaFechamento = time),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 24),
+                      CustomCheckbox(
+                        value: horarioAlmoco,
+                        label: 'Adicionar horário de almoço',
+                        onChanged: (value) {
+                          setState(() {
+                            horarioAlmoco = value ?? false;
+                          });
+                        },
+                      ),
+                    ],
+                  ),
                 ),
                 const SizedBox(height: 4),
                 Visibility(
@@ -187,9 +225,10 @@ class _BarbershopRegisterPageState extends State<BarbershopRegisterPage> {
                   child: OutlinedButton(
                     style: ElevatedButton.styleFrom(minimumSize: const Size.fromHeight(56)),
                     onPressed: () {
-                      setState(() {
-                        diaSemanaString = '';
-                      });
+                      removeOpenDay(diaSemanaString);
+                      diaSemanaString = '';
+                      horarioAlmoco = false;
+                      visibleHorarioAbertura = false;
                     },
                     child: const Text('REMOVER DIA'),
                   ),
