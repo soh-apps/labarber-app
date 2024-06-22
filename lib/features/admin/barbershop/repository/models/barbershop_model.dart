@@ -48,4 +48,8 @@ class BarbershopModel {
       workingDays: map['workingDays'] != null ? List<int>.from(map['workingDays']) : null,
     );
   }
+
+  static List<BarbershopModel> fromList(List<dynamic> list) {
+    return list.map((item) => BarbershopModel.fromMap(item)).toList();
+  }
 }

@@ -6,7 +6,6 @@ import 'package:la_barber/core/ui/helpers/context_extension.dart';
 import 'package:la_barber/features/admin/barbershop/presentation/cubit/barbershop_cubit.dart';
 import 'package:la_barber/features/admin/barbershop/presentation/widgets/barbershop_header_widget.dart';
 import 'package:la_barber/features/admin/barbershop/presentation/widgets/barbershop_tile.dart';
-import 'package:la_barber/utils/mocks.dart';
 
 class BarbershopListPage extends StatefulWidget {
   final BarbershopCubit barbershopCubit;
@@ -61,10 +60,6 @@ class _BarbershopListPageState extends State<BarbershopListPage> {
           backgroundColor: ColorConstants.colorBrown,
           onPressed: () {
             context.pushNamed('/register/barbershop');
-
-            // await context.pushNamed('/employee/register');
-            // ref.invalidate(getMeProvider);
-            // ref.invalidate(homeAdmVmProvider);
           },
           child: const CircleAvatar(
             backgroundColor: Colors.white,
