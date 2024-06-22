@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:la_barber/core/ui/barbershop_icons.dart';
 import 'package:la_barber/core/ui/constants.dart';
 import 'package:la_barber/core/ui/helpers/context_extension.dart';
-import 'package:la_barber/features/admin/barbershop/repository/models/company_model.dart';
+import 'package:la_barber/features/admin/barbershop/repository/models/barbershop_model.dart';
 
 class BarbershopHomeTile extends StatelessWidget {
   final BarbershopModel company;

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:la_barber/core/ui/barbershop_icons.dart';
 import 'package:la_barber/core/ui/constants.dart';
 import 'package:la_barber/core/ui/helpers/context_extension.dart';
@@ -22,7 +22,7 @@ class BarbershopListPage extends StatefulWidget {
 class _BarbershopListPageState extends State<BarbershopListPage> {
   @override
   void initState() {
-    // widget.barbershopCubit.getAllCompanies();
+    widget.barbershopCubit.getAllCompanies();
     super.initState();
   }
 
@@ -33,14 +33,25 @@ class _BarbershopListPageState extends State<BarbershopListPage> {
         body: SizedBox(
           child: Column(
             children: [
-              const BarbershopHeaderWidget.withoutFilter(),
-              Expanded(
-                child: ListView.builder(
-                  itemCount: Mocks.companies.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return BarbershopHomeTile(company: Mocks.companies[index]);
-                  },
-                ),
+              const BarbershopHeaderWidget(),
+              BlocBuilder<BarbershopCubit, BarbershopState>(
+                bloc: widget.barbershopCubit,
+                builder: (context, state) {
+                  if (state is BarbershopLoading) {
+                    return const Center(child: CircularProgressIndicator());
+                  } else if (state is BarbershopSuccess) {
+                    return Expanded(
+                      child: ListView.builder(
+                        itemCount: widget.barbershopCubit.barberUnits.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          return BarbershopHomeTile(company: widget.barbershopCubit.barberUnits[index]);
+                        },
+                      ),
+                    );
+                  } else {
+                    return const Center(child: Text('Error'));
+                  }
+                },
               )
             ],
           ),

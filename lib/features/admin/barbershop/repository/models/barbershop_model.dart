@@ -1,5 +1,5 @@
 class BarbershopModel {
-  final String id;
+  final int id;
   final String name;
   final String address;
   final String phone;
@@ -37,7 +37,7 @@ class BarbershopModel {
 
   factory BarbershopModel.fromMap(Map<String, dynamic> map) {
     return BarbershopModel(
-      id: map['id'] ?? '',
+      id: map['id'] ?? 0,
       name: map['name'] ?? '',
       address: map['address'] ?? '',
       phone: map['phone'] ?? '',

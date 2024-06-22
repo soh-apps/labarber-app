@@ -22,7 +22,7 @@ class HomeAdmPage extends StatefulWidget {
 class _HomeAdmPageState extends State<HomeAdmPage> {
   @override
   void initState() {
-    // widget.barbershopCubit.getAllCompanies();
+    widget.barbershopCubit.getAllCompanies();
     super.initState();
   }
 

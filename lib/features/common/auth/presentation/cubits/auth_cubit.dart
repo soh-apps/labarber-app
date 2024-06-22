@@ -6,15 +6,14 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:get_it/get_it.dart';
 import 'package:la_barber/core/constants/local_secure_storage_key.dart';
-import 'package:la_barber/core/formatters.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-
 import 'package:la_barber/core/constants/local_storage_key.dart';
 import 'package:la_barber/core/exceptions/auth_exception.dart';
+import 'package:la_barber/core/formatters.dart';
 import 'package:la_barber/core/local_secure_storage/local_secure_storage.dart';
 import 'package:la_barber/core/restClient/either.dart';
 import 'package:la_barber/features/common/auth/model/user_model.dart';
 import 'package:la_barber/features/common/auth/repository/auth_repository.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 part 'auth_state.dart';
 
@@ -28,7 +27,12 @@ class AuthCubit extends Cubit<AuthState> {
 
   Future<void> saveLocalUser(UserModel user) async {
     try {
-      await localSecureStorage.write(key: LocalSecureStorageKey.user, value: user.toJson());
+      await localSecureStorage.write(
+          key: LocalSecureStorageKey.user, value: user.toJson());
+
+      if (GetIt.instance.isRegistered<UserModel>()) {
+        GetIt.instance.unregister<UserModel>();
+      }
 
       GetIt.instance.registerSingleton(UserModel(
         name: user.name,
@@ -47,7 +51,8 @@ class AuthCubit extends Cubit<AuthState> {
     try {
       final user = await localSecureStorage.read(LocalSecureStorageKey.user);
       if (user != null && user.isNotEmpty) {
-        UserModel userModel = UserModel.fromMap(json.decode(Formatters.parseString(user)) as Map<String, dynamic>);
+        UserModel userModel = UserModel.fromMap(
+            json.decode(Formatters.parseString(user)) as Map<String, dynamic>);
         return userModel;
       }
     } catch (e) {
@@ -104,6 +109,24 @@ class AuthCubit extends Cubit<AuthState> {
     if (accessToken != null) {
       emit(const AuthStateSuccess(userType: UserType.admin));
     } else {
+      emit(AuthStateInitial());
+    }
+  }
+
+  Future<void> logout() async {
+    emit(AuthStateLoaging());
+    await Future.delayed(const Duration(seconds: 4));
+    try {
+      final sp = await SharedPreferences.getInstance();
+      sp.clear();
+
+      if (GetIt.instance.isRegistered<UserModel>()) {
+        GetIt.instance.unregister<UserModel>();
+      }
+      emit(AuthStateInitial());
+    } on Exception catch (e) {
+      // Implementar Error
+      log('Erro ao deslogar: $e');
       emit(AuthStateInitial());
     }
   }

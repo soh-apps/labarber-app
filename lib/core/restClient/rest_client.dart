@@ -13,10 +13,19 @@ final class RestClient extends DioForNative {
     interceptors.addAll([
       LogInterceptor(
         requestBody: true,
+        requestHeader: true,
+        responseHeader: true,
         responseBody: true,
       ),
       AuthInterceptor(),
-      PrettyDioLogger(),
+      PrettyDioLogger(
+        request: true,
+        requestBody: true,
+        requestHeader: true,
+        responseBody: true,
+        responseHeader: true,
+        error: true,
+      ),
     ]);
   }
 

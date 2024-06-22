@@ -27,7 +27,7 @@ class HomeHeader extends StatelessWidget {
     hideLoadingDialog(context);
 
     Navigator.of(BarbershopNavGlobalKey.instance.navKey.currentContext!)
-        .pushNamedAndRemoveUntil('/login', (route) => false);
+        .pushNamedAndRemoveUntil('/auth/login', (route) => false);
   }
 
   @override

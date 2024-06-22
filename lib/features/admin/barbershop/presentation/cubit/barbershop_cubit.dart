@@ -3,6 +3,7 @@ import 'package:equatable/equatable.dart';
 import 'package:la_barber/core/restClient/either.dart';
 
 import 'package:la_barber/features/admin/barbershop/repository/barbershop_repository.dart';
+import 'package:la_barber/features/admin/barbershop/repository/models/barbershop_model.dart';
 
 part 'barbershop_state.dart';
 
@@ -11,6 +12,8 @@ class BarbershopCubit extends Cubit<BarbershopState> {
   BarbershopCubit(
     this.barbershopRepository,
   ) : super(BarbershopInitial());
+
+  List<BarbershopModel> barberUnits = [];
 
   // late BarbershopModel barbershopModel;
 
@@ -69,6 +72,7 @@ class BarbershopCubit extends Cubit<BarbershopState> {
 
     switch (result) {
       case Success():
+        barberUnits = result.value;
 
         // GetIt.instance.registerSingleton(UserModel(
         //   name: loginResult.value.name,
