@@ -1,25 +1,32 @@
-// ignore_for_file: use_build_context_synchronously
-
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:la_barber/core/constants/routes.dart';
+import 'package:la_barber/core/di/di.dart';
+import 'package:la_barber/core/local_secure_storage/local_secure_storage.dart';
 import 'package:la_barber/core/ui/barbershop_icons.dart';
 import 'package:la_barber/core/ui/barbershop_nav_global_key.dart';
 import 'package:la_barber/core/ui/constants.dart';
 import 'package:la_barber/core/ui/widgets/dialog_utils.dart';
 import 'package:la_barber/features/common/auth/model/user_model.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+// import 'package:la_barber/core/ui/barbershop_nav_global_key.dart';
+// import 'package:la_barber/core/ui/widgets/dialog_utils.dart';
+// import 'package:la_barber/features/common/auth/model/user_model.dart';
+// import 'package:shared_preferences/shared_preferences.dart';
 
-class HomeHeader extends StatelessWidget {
+class BarbershopHeaderWidget extends StatelessWidget {
   final bool showFilter;
 
-  const HomeHeader({super.key}) : showFilter = true;
-  const HomeHeader.withoutFilter({super.key}) : showFilter = false;
+  const BarbershopHeaderWidget({
+    super.key,
+    this.showFilter = false,
+  });
+  // const BarbershopHeaderWidget.withoutFilter({super.key}) : showFilter = false;
 
   Future<void> logout(BuildContext context) async {
     showLoadingDialog(context, message: "Loading");
-    final sp = await SharedPreferences.getInstance();
-    sp.clear();
+    final LocalSecureStorage secureStorage = getIt();
+    secureStorage.clear();
 
     if (GetIt.instance.isRegistered<UserModel>()) {
       GetIt.instance.unregister<UserModel>();
@@ -115,12 +122,14 @@ class HomeHeader extends StatelessWidget {
           const SizedBox(
             height: 24,
           ),
-          const Text(
-            'Agenda um Cliente',
-            style: TextStyle(
-              color: Colors.white,
-              fontWeight: FontWeight.w600,
-              fontSize: 32,
+          const Center(
+            child: Text(
+              'Unidades',
+              style: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.w600,
+                fontSize: 32,
+              ),
             ),
           ),
           Offstage(
@@ -133,7 +142,7 @@ class HomeHeader extends StatelessWidget {
             offstage: !showFilter,
             child: TextFormField(
               decoration: const InputDecoration(
-                label: Text('Buscar Colaborador'),
+                label: Text('Buscar Unidade'),
                 suffixIcon: Padding(
                   padding: EdgeInsets.only(right: 24.0),
                   child: Icon(

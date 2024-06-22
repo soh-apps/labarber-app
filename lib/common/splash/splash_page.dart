@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:la_barber/core/constants/routes.dart';
 import 'package:la_barber/features/common/auth/presentation/pages/login_page.dart';
 import 'package:la_barber/core/di/di.dart';
 import 'package:la_barber/core/ui/constants.dart';
@@ -52,7 +53,7 @@ class _SplashPageState extends State<SplashPage> {
               onEnd: () {
                 Navigator.of(context).pushAndRemoveUntil(
                   PageRouteBuilder(
-                    settings: const RouteSettings(name: '/auth/login'),
+                    settings: const RouteSettings(name: Routes.login),
                     pageBuilder: (
                       context,
                       animation,

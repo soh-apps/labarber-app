@@ -227,7 +227,7 @@ class _BarbershopRegisterPageState extends State<BarbershopRegisterPage> {
         // } else if (state is AuthStateSuccess) {
         //   // hideLoadingDialog(context); // Pop dialog
         //   context.showSuccess('Deu certo o Login');
-        //   Navigator.of(context).pushNamedAndRemoveUntil('/home/adm', (route) => false);
+        //   Navigator.of(context).pushNamedAndRemoveUntil(Routes.homeAdmin, (route) => false);
         // } else if (state is AuthStateLoaging) {
         //   context.showLoadingDialog(context, message: "Loading");
 

@@ -23,11 +23,10 @@ final class AuthStateSuccess extends AuthState {
 }
 
 final class AuthStateError extends AuthState {
+  final String errorMessage;
   const AuthStateError({
     required this.errorMessage,
   });
-
-  final String errorMessage;
 
   @override
   List<Object> get props => [errorMessage];

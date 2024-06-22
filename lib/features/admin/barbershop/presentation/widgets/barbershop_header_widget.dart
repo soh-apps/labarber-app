@@ -1,6 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:la_barber/core/constants/routes.dart';
 import 'package:la_barber/core/di/di.dart';
 import 'package:la_barber/core/local_secure_storage/local_secure_storage.dart';
 import 'package:la_barber/core/ui/barbershop_icons.dart';
@@ -34,7 +35,7 @@ class BarbershopHeaderWidget extends StatelessWidget {
     hideLoadingDialog(context);
 
     Navigator.of(BarbershopNavGlobalKey.instance.navKey.currentContext!)
-        .pushNamedAndRemoveUntil('/auth/login', (route) => false);
+        .pushNamedAndRemoveUntil(Routes.login, (route) => false);
   }
 
   @override
@@ -111,16 +112,14 @@ class BarbershopHeaderWidget extends StatelessWidget {
             height: 24,
           ),
           const Text(
-            'Bem Vinsdo',
+            'Bem Vindo',
             style: TextStyle(
               color: Colors.white,
               fontWeight: FontWeight.w500,
               fontSize: 18,
             ),
           ),
-          const SizedBox(
-            height: 24,
-          ),
+          const SizedBox(height: 24),
           const Center(
             child: Text(
               'Unidades',

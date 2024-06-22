@@ -38,7 +38,7 @@ class _BarbershopListPageState extends State<BarbershopListPage> {
                 bloc: widget.barbershopCubit,
                 builder: (context, state) {
                   if (state is BarbershopLoading) {
-                    return const Expanded(child: Center(child: CircularProgressIndicator()));
+                    return const Center(child: CircularProgressIndicator());
                   } else if (state is BarbershopSuccess) {
                     return Expanded(
                       child: ListView.builder(
@@ -49,20 +49,7 @@ class _BarbershopListPageState extends State<BarbershopListPage> {
                       ),
                     );
                   } else {
-                    return RefreshIndicator(
-                      onRefresh: widget.barbershopCubit.getAllCompanies,
-                      child: SingleChildScrollView(
-                        physics:
-                            const AlwaysScrollableScrollPhysics(), // Isso garante que o RefreshIndicator funcione mesmo que não haja scroll.
-                        child: SizedBox(
-                          height:
-                              MediaQuery.sizeOf(context).height / 2, // Isso garante que o Container ocupe a tela toda.
-                          child: const Center(
-                            child: Text('Error'),
-                          ),
-                        ),
-                      ),
-                    );
+                    return const Center(child: Text('Error'));
                   }
                 },
               )
@@ -73,8 +60,7 @@ class _BarbershopListPageState extends State<BarbershopListPage> {
           shape: const CircleBorder(),
           backgroundColor: ColorConstants.colorBrown,
           onPressed: () {
-            context.pushNamed(Routes.adminRegisterBarber);
-            // context.pushNamed(Routes.adminRegisterBarbershop);
+            context.pushNamed(Routes.adminRegisterBarbershop);
           },
           child: const CircleAvatar(
             backgroundColor: Colors.white,

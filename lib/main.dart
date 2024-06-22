@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:la_barber/core/constants/routes.dart';
 import 'package:la_barber/core/di/di.dart';
 import 'package:la_barber/core/ui/barbershop_nav_global_key.dart';
 import 'package:la_barber/core/ui/barbershop_theme.dart';
+import 'package:la_barber/features/admin/barber/presentation/pages/barber_register_page.dart';
 import 'package:la_barber/features/admin/barbershop/presentation/pages/barbershop_list_page.dart';
 import 'package:la_barber/features/admin/barbershop/presentation/pages/barbershop_register_page.dart';
-import 'package:la_barber/features/admin/home/home_adm_page.dart';
 import 'package:la_barber/features/common/auth/presentation/cubits/auth_cubit.dart';
 import 'package:la_barber/features/common/auth/presentation/pages/login_page.dart';
 
@@ -34,13 +35,14 @@ class _MainAppState extends State<MainApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: BarbershopTheme.themeData,
-      initialRoute: '/auth/login',
+      initialRoute: Routes.login,
       navigatorKey: BarbershopNavGlobalKey.instance.navKey,
       routes: {
-        '/auth/login': (context) => LoginPage(authCubit: authCubit),
-        '/home/adm': (_) => HomeAdmPage(barbershopCubit: getIt()),
-        '/home/barbershop': (_) => BarbershopListPage(barbershopCubit: getIt()),
-        '/register/barbershop': (_) => BarbershopRegisterPage(
+        Routes.login: (context) => LoginPage(authCubit: authCubit),
+        // Routes.homeAdmin: (_) => HomeAdmPage(barbershopCubit: getIt()),
+        Routes.adminHomeBarberShop: (_) => BarbershopListPage(barbershopCubit: getIt()),
+        Routes.adminRegisterBarber: (_) => BarberRegisterPage(barberCubit: getIt()),
+        Routes.adminRegisterBarbershop: (_) => BarbershopRegisterPage(
               barbershopCubit: getIt(),
             ),
       },
