@@ -42,7 +42,7 @@ class _ImagePickerWidgetState extends State<ImagePickerWidget> {
                 ? FileImage(_image!)
                 : (widget.imageUrl != null
                     ? CachedNetworkImageProvider(widget.imageUrl!)
-                    : const AssetImage('assets/images/default_avatar.png')) as ImageProvider,
+                    : const AssetImage('assets/images/avatar.png')) as ImageProvider,
             child: _image == null && widget.imageUrl == null
                 ? Icon(Icons.camera_alt, size: 40, color: Colors.grey[800])
                 : null,

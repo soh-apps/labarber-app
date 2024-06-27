@@ -11,6 +11,7 @@ import 'package:la_barber/core/ui/widgets/custom_check_box.dart';
 import 'package:la_barber/core/ui/widgets/image_picker.dart';
 import 'package:la_barber/features/admin/barber/presentation/cubit/barber_cubit.dart';
 import 'package:la_barber/features/admin/barber/repository/models/barber_model.dart';
+import 'package:la_barber/features/admin/barbershop/repository/models/barbershop_model.dart';
 
 import 'package:validatorless/validatorless.dart';
 
@@ -48,14 +49,14 @@ class _BarberRegisterPageState extends State<BarberRegisterPage> {
   final numeroEC = TextEditingController();
 
   File? _selectedImage;
-  int barberUnitId = 0;
+  late BarbershopModel barberUnitId;
   bool isComoissioned = true;
   bool isManager = true;
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    barberUnitId = ModalRoute.of(context)!.settings.arguments as int;
+    barberUnitId = ModalRoute.of(context)!.settings.arguments as BarbershopModel;
   }
 
   @override
@@ -100,7 +101,7 @@ class _BarberRegisterPageState extends State<BarberRegisterPage> {
       },
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('Cradastrar Colaborador'),
+          title: const Text('Cadastrar Colaborador '),
         ),
         body: Padding(
           padding: const EdgeInsets.all(20.0),
@@ -108,6 +109,15 @@ class _BarberRegisterPageState extends State<BarberRegisterPage> {
             child: Form(
               key: formKey,
               child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                Center(
+                  child: Text(
+                    'UNIDADE - ${barberUnitId.name}',
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
+                    ),
+                  ),
+                ),
                 const SizedBox(height: 22),
                 // Picker de imagem aqui
                 Center(
@@ -126,6 +136,7 @@ class _BarberRegisterPageState extends State<BarberRegisterPage> {
                     ),
                   ),
                 ),
+
                 const SizedBox(height: 22),
                 TextFormField(
                   onTapOutside: (_) => context.unfocus(),
@@ -152,6 +163,20 @@ class _BarberRegisterPageState extends State<BarberRegisterPage> {
                   validator: Validatorless.required('Senha do usuário obrigatório'),
                   decoration: const InputDecoration(
                     label: Text('Senha do usuário'),
+                  ),
+                ),
+                const SizedBox(height: 22),
+                TextFormField(
+                  onTapOutside: (_) => context.unfocus(),
+                  controller: emailEC,
+                  validator: Validatorless.multiple(
+                    [
+                      Validatorless.required('E-mail obrigatorio'),
+                      Validatorless.email('E-mail invalido'),
+                    ],
+                  ),
+                  decoration: const InputDecoration(
+                    label: Text('E-mail'),
                   ),
                 ),
                 const SizedBox(height: 22),
@@ -183,20 +208,7 @@ class _BarberRegisterPageState extends State<BarberRegisterPage> {
                     ),
                   ),
                 ),
-                const SizedBox(height: 22),
-                TextFormField(
-                  onTapOutside: (_) => context.unfocus(),
-                  controller: emailEC,
-                  validator: Validatorless.multiple(
-                    [
-                      Validatorless.required('E-mail obrigatorio'),
-                      Validatorless.email('E-mail invalido'),
-                    ],
-                  ),
-                  decoration: const InputDecoration(
-                    label: Text('E-mail'),
-                  ),
-                ),
+
                 const SizedBox(height: 22),
                 TextFormField(
                   onTapOutside: (_) => context.unfocus(),
@@ -208,6 +220,7 @@ class _BarberRegisterPageState extends State<BarberRegisterPage> {
                     FilteringTextInputFormatter.digitsOnly,
                     TelefoneInputFormatter(),
                   ],
+                  keyboardType: TextInputType.number,
                 ),
                 const SizedBox(height: 22),
                 TextFormField(
@@ -220,6 +233,7 @@ class _BarberRegisterPageState extends State<BarberRegisterPage> {
                     FilteringTextInputFormatter.digitsOnly,
                     CepInputFormatter(),
                   ],
+                  keyboardType: TextInputType.number,
                 ),
                 const SizedBox(height: 22),
                 TextFormField(
@@ -246,6 +260,10 @@ class _BarberRegisterPageState extends State<BarberRegisterPage> {
                   decoration: const InputDecoration(
                     label: Text('Número'),
                   ),
+                  inputFormatters: [
+                    FilteringTextInputFormatter.digitsOnly,
+                  ],
+                  keyboardType: TextInputType.number,
                 ),
                 const SizedBox(height: 22),
                 const SizedBox(height: 48),
@@ -272,7 +290,7 @@ class _BarberRegisterPageState extends State<BarberRegisterPage> {
                             username: usernameEC.text,
                             password: passwordEC.text,
                             commissioned: isComoissioned,
-                            barberUnitId: barberUnitId,
+                            barberUnitId: barberUnitId.id,
                             isManager: isManager,
                             // image: _selectedImage,
                           );
