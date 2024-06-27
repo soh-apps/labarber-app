@@ -1,10 +1,13 @@
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:la_barber/core/formatters.dart';
 import 'package:la_barber/core/time_utils.dart';
+import 'package:la_barber/core/ui/helpers/context_extension.dart';
 import 'package:la_barber/core/ui/widgets/custom_check_box.dart';
+import 'package:la_barber/core/ui/widgets/image_picker.dart';
 import 'package:la_barber/features/admin/barbershop/presentation/widgets/time_display.dart';
 import 'package:la_barber/features/admin/barbershop/repository/entities/work_days.dart';
 import 'package:validatorless/validatorless.dart';
@@ -46,11 +49,18 @@ class _BarbershopRegisterPageState extends State<BarbershopRegisterPage> {
   bool isHorarioAlmoco = false;
   bool visibleHorarioAbertura = false;
   List<WorkDays> openingDays = [];
+  File? _selectedImage;
 
   TimeOfDay _horaAbertura = const TimeOfDay(hour: 8, minute: 00);
   TimeOfDay _horaFechamento = const TimeOfDay(hour: 20, minute: 00);
   TimeOfDay? _horaInicioAlmoco = const TimeOfDay(hour: 12, minute: 00);
   TimeOfDay? _horaFimAlmoco = const TimeOfDay(hour: 13, minute: 00);
+
+  void _onImageSelected(File? image) {
+    setState(() {
+      _selectedImage = image;
+    });
+  }
 
   Future<void> _selectTime(BuildContext context, TimeOfDay? initialTime, ValueChanged<TimeOfDay?> onTimeChanged) async {
     final TimeOfDay? picked = await showTimePicker(
@@ -220,19 +230,16 @@ class _BarbershopRegisterPageState extends State<BarbershopRegisterPage> {
     return BlocListener<BarbershopCubit, BarbershopState>(
       bloc: widget.barbershopCubit,
       listener: (context, state) {
-        // if (state is AuthStateError) {
-        //   context.showError(state.errorMessage);
-
-        //   context.hideLoadingDialog(context); // Pop dialog
-        // } else if (state is AuthStateSuccess) {
-        //   // hideLoadingDialog(context); // Pop dialog
-        //   context.showSuccess('Deu certo o Login');
-        //   Navigator.of(context).pushNamedAndRemoveUntil(Routes.homeAdmin, (route) => false);
-        // } else if (state is AuthStateLoaging) {
-        //   context.showLoadingDialog(context, message: "Loading");
-
-        //   //  BarbershopLoader();
-        // }
+        if (state is BarbershopSuccess) {
+          context.hideLoadingDialog(context);
+          context.showSuccess('Unidade Cadastrada com Sucesso!');
+          context.pop();
+        } else if (state is BarbershopLoading) {
+          context.showLoadingDialog(context);
+        } else if (state is BarbershopFailure) {
+          context.hideLoadingDialog(context);
+          context.showError(state.errorMessage);
+        }
       },
       child: Scaffold(
         appBar: AppBar(
@@ -244,9 +251,15 @@ class _BarbershopRegisterPageState extends State<BarbershopRegisterPage> {
             child: Form(
               key: formKey,
               child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                const SizedBox(
-                  height: 5,
+                const SizedBox(height: 5),
+                const SizedBox(height: 20),
+                Center(
+                  child: ImagePickerWidget(
+                    imageUrl: null,
+                    onImageSelected: _onImageSelected,
+                  ),
                 ),
+                const SizedBox(height: 20),
                 TextFormField(
                   onTapOutside: (_) => context.unfocus(),
                   controller: nomeEC,
@@ -351,57 +364,54 @@ class _BarbershopRegisterPageState extends State<BarbershopRegisterPage> {
                         ],
                       ),
                       const SizedBox(height: 24),
+                      const SizedBox(height: 4),
+                      Visibility(
+                        visible: isHorarioAlmoco,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            TimeDisplay(
+                              label: 'Início',
+                              time: _horaInicioAlmoco,
+                              onSelectTime: () => _selectBreakTime(
+                                  context, Formatters.getNumberDayofWeek(diaSemanaString), 'breakStart'),
+                            ),
+                            TimeDisplay(
+                              label: 'Fim',
+                              time: _horaFimAlmoco,
+                              onSelectTime: () =>
+                                  _selectBreakTime(context, Formatters.getNumberDayofWeek(diaSemanaString), 'breakEnd'),
+                            ),
+                          ],
+                        ),
+                      ),
                       CustomCheckbox(
                         value: isHorarioAlmoco,
                         label: 'Adicionar horário de almoço',
                         onChanged: (value) {
                           checkBoxAlmoco(value ?? false);
-                          // setState(() {
-                          //   isHorarioAlmoco = value ?? false;
-                          // });
                         },
                       ),
+                      const SizedBox(height: 48),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 34),
+                        child: OutlinedButton(
+                          style: ElevatedButton.styleFrom(minimumSize: const Size.fromHeight(56)),
+                          onPressed: () {
+                            removeOpenDay(diaSemanaString);
+                            diaSemanaString = '';
+                            isHorarioAlmoco = false;
+                            visibleHorarioAbertura = false;
+                          },
+                          child: const Text('REMOVER DIA'),
+                        ),
+                      ),
+                      const SizedBox(height: 24),
                     ],
                   ),
                 ),
-                const SizedBox(height: 4),
-                Visibility(
-                  visible: isHorarioAlmoco,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      TimeDisplay(
-                        label: 'Início',
-                        time: _horaInicioAlmoco,
-                        onSelectTime: () =>
-                            _selectBreakTime(context, Formatters.getNumberDayofWeek(diaSemanaString), 'breakStart'),
-                      ),
-                      TimeDisplay(
-                        label: 'Fim',
-                        time: _horaFimAlmoco,
-                        onSelectTime: () =>
-                            _selectBreakTime(context, Formatters.getNumberDayofWeek(diaSemanaString), 'breakEnd'),
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(height: 48),
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 34),
-                  child: OutlinedButton(
-                    style: ElevatedButton.styleFrom(minimumSize: const Size.fromHeight(56)),
-                    onPressed: () {
-                      removeOpenDay(diaSemanaString);
-                      diaSemanaString = '';
-                      isHorarioAlmoco = false;
-                      visibleHorarioAbertura = false;
-                    },
-                    child: const Text('REMOVER DIA'),
-                  ),
-                ),
-                const SizedBox(height: 24),
-                Padding(
-                  padding: const EdgeInsets.only(right: 12, left: 12),
+                  padding: const EdgeInsets.only(right: 12, left: 12, top: 12),
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(minimumSize: const Size.fromHeight(56)),
                     onPressed: () {
@@ -409,6 +419,7 @@ class _BarbershopRegisterPageState extends State<BarbershopRegisterPage> {
                         case null || false:
                           context.showError('Formulário invalido');
                         case true:
+                          log(_selectedImage.toString());
                         // barbershopRegisterVM.register(
                         //     name: nameEC.text,
                         //     email: emailEC.text,

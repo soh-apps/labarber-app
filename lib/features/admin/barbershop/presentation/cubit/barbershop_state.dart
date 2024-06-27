@@ -13,4 +13,12 @@ final class BarbershopLoading extends BarbershopState {}
 
 final class BarbershopSuccess extends BarbershopState {}
 
-final class BarbershopFailure extends BarbershopState {}
+final class BarbershopFailure extends BarbershopState {
+  final String errorMessage;
+  const BarbershopFailure({
+    required this.errorMessage,
+  });
+
+  @override
+  List<Object> get props => [errorMessage];
+}

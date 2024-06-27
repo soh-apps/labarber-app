@@ -13,6 +13,27 @@ class BarbershopCubit extends Cubit<BarbershopState> {
   ) : super(BarbershopInitial());
 
   List<BarbershopModel> barberUnits = [];
+  String mensagem = '';
+
+  Future<void> registerBarberShop(BarbershopModel barberShop) async {
+    final result = await barbershopRepository.cadastrarBarbearia(barberShop);
+
+    // final dto = (
+    //   name: name,
+    //   email: email,
+    //   openingDays: openingDays,
+    //   openingHours: openingHours
+    // );
+
+    switch (result) {
+      case Success():
+        mensagem = result.value;
+        emit(BarbershopSuccess());
+      case Failure():
+        mensagem = result.exception.message;
+        emit(BarbershopFailure(errorMessage: mensagem));
+    }
+  }
 
   Future<void> getAllCompanies() async {
     emit(BarbershopLoading());
@@ -23,7 +44,7 @@ class BarbershopCubit extends Cubit<BarbershopState> {
         barberUnits = result.value;
         emit(BarbershopSuccess());
       case Failure():
-        emit(BarbershopFailure());
+        emit(BarbershopFailure(errorMessage: mensagem));
     }
   }
 }

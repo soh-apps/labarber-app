@@ -5,7 +5,6 @@ import 'package:brasil_fields/brasil_fields.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:la_barber/core/constants/routes.dart';
 import 'package:la_barber/core/ui/helpers/context_extension.dart';
 import 'package:la_barber/core/ui/widgets/custom_check_box.dart';
 import 'package:la_barber/core/ui/widgets/image_picker.dart';
@@ -91,7 +90,8 @@ class _BarberRegisterPageState extends State<BarberRegisterPage> {
         if (state is BarberSuccess) {
           context.hideLoadingDialog(context);
           context.showSuccess('Colaborador Criado com Sucesso!');
-          Navigator.of(context).pushNamedAndRemoveUntil(Routes.homeAdmin, (route) => false);
+          context.pop();
+          // Navigator.of(context).pushNamedAndRemoveUntil(Routes.homeAdmin, (route) => false);
         } else if (state is BarberLoading) {
           context.showLoadingDialog(context, message: "Loading");
         } else if (state is BarberFailure) {
@@ -119,7 +119,6 @@ class _BarberRegisterPageState extends State<BarberRegisterPage> {
                   ),
                 ),
                 const SizedBox(height: 22),
-                // Picker de imagem aqui
                 Center(
                   child: ImagePickerWidget(
                     imageUrl: null,
@@ -136,7 +135,6 @@ class _BarberRegisterPageState extends State<BarberRegisterPage> {
                     ),
                   ),
                 ),
-
                 const SizedBox(height: 22),
                 TextFormField(
                   onTapOutside: (_) => context.unfocus(),
@@ -208,7 +206,6 @@ class _BarberRegisterPageState extends State<BarberRegisterPage> {
                     ),
                   ),
                 ),
-
                 const SizedBox(height: 22),
                 TextFormField(
                   onTapOutside: (_) => context.unfocus(),
