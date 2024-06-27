@@ -4,4 +4,5 @@ class Routes {
   static const String adminHomeBarberShop = '/home/barbershop';
   static const String adminRegisterBarbershop = 'admin/barbershop/register';
   static const String adminRegisterBarber = 'admin/barber/register';
+  static const String barberListPage = '/barber/list';
 }

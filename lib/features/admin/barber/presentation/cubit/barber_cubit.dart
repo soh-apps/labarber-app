@@ -1,9 +1,9 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:la_barber/core/restClient/either.dart';
+import 'package:la_barber/features/admin/barber/repository/models/barber_model.dart';
 
 import 'package:la_barber/features/admin/barbershop/repository/barber_repository.dart';
-import 'package:la_barber/features/admin/barbershop/repository/models/barbershop_model.dart';
 
 part 'barber_state.dart';
 
@@ -13,10 +13,10 @@ class BarberCubit extends Cubit<BarberState> {
     this.barberRepository,
   ) : super(BarberInitial());
 
-  List<BarbershopModel> barberUnits = [];
+  List<BarberModel> barbers = [];
 
-  Future<void> register({required String name, required String email}) async {
-    final result = await barberRepository.getAllCompanies();
+  Future<void> registerBarber(BarberModel barber) async {
+    // final result = await barberRepository.createBarber();
 
     // final dto = (
     //   name: name,
@@ -25,21 +25,21 @@ class BarberCubit extends Cubit<BarberState> {
     //   openingHours: openingHours
     // );
 
-    switch (result) {
-      case Success():
-        barberUnits = result.value;
-        emit(BarberSuccess());
-      case Failure():
-    }
+    // switch (result) {
+    //   case Success():
+    //     barberUnits = result.value;
+    //     emit(BarberSuccess());
+    //   case Failure():
+    // }
   }
 
-  Future<void> getAllCompanies() async {
+  Future<void> getAllBarbers(int companyId) async {
     emit(BarberLoading());
-    final result = await barberRepository.getAllCompanies();
+    final result = await barberRepository.getAllBarbers(companyId);
 
     switch (result) {
       case Success():
-        barberUnits = result.value;
+        barbers = result.value;
         emit(BarberSuccess());
       case Failure():
     }

@@ -7,6 +7,7 @@ import 'package:la_barber/core/ui/helpers/context_extension.dart';
 import 'package:la_barber/features/admin/barbershop/presentation/cubit/barbershop_cubit.dart';
 import 'package:la_barber/features/admin/barbershop/presentation/widgets/barbershop_header_widget.dart';
 import 'package:la_barber/features/admin/barbershop/presentation/widgets/barbershop_tile.dart';
+import 'package:la_barber/utils/mocks.dart';
 
 class BarbershopListPage extends StatefulWidget {
   final BarbershopCubit barbershopCubit;
@@ -44,25 +45,33 @@ class _BarbershopListPageState extends State<BarbershopListPage> {
                       child: ListView.builder(
                         itemCount: widget.barbershopCubit.barberUnits.length,
                         itemBuilder: (BuildContext context, int index) {
-                          return BarbershopHomeTile(company: widget.barbershopCubit.barberUnits[index]);
+                          return BarbershopHomeTile(barberShop: widget.barbershopCubit.barberUnits[index]);
                         },
                       ),
                     );
                   } else {
-                    return RefreshIndicator(
-                      onRefresh: widget.barbershopCubit.getAllCompanies,
-                      child: SingleChildScrollView(
-                        physics:
-                            const AlwaysScrollableScrollPhysics(), // Isso garante que o RefreshIndicator funcione mesmo que não haja scroll.
-                        child: SizedBox(
-                          height:
-                              MediaQuery.sizeOf(context).height / 2, // Isso garante que o Container ocupe a tela toda.
-                          child: const Center(
-                            child: Text('Error'),
-                          ),
-                        ),
+                    return Expanded(
+                      child: ListView.builder(
+                        itemCount: Mocks.companies.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          return BarbershopHomeTile(barberShop: Mocks.companies[index]);
+                        },
                       ),
                     );
+                    // return RefreshIndicator(
+                    //   onRefresh: widget.barbershopCubit.getAllCompanies,
+                    //   child: SingleChildScrollView(
+                    //     physics:
+                    //         const AlwaysScrollableScrollPhysics(), // Isso garante que o RefreshIndicator funcione mesmo que não haja scroll.
+                    //     child: SizedBox(
+                    //       height:
+                    //           MediaQuery.sizeOf(context).height / 2, // Isso garante que o Container ocupe a tela toda.
+                    //       child: const Center(
+                    //         child: Text('Error'),
+                    //       ),
+                    //     ),
+                    //   ),
+                    // );
                   }
                 },
               )

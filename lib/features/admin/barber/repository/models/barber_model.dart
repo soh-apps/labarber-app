@@ -7,6 +7,7 @@ class BarberModel {
   final String? state;
   final String? street;
   final String? number;
+  final String? telefone;
   final String? complement;
   final String? zipCode;
   final bool commissioned;
@@ -21,6 +22,7 @@ class BarberModel {
     this.state,
     this.street,
     this.number,
+    this.telefone,
     this.complement,
     this.zipCode,
     required this.commissioned,
@@ -38,6 +40,7 @@ class BarberModel {
       'state': state,
       'street': street,
       'number': number,
+      'telefone': telefone,
       'complement': complement,
       'zipCode': zipCode,
       'commissioned': commissioned,
@@ -56,11 +59,16 @@ class BarberModel {
       state: map['state'],
       street: map['street'],
       number: map['number'],
+      telefone: map['telefone'],
       complement: map['complement'],
       zipCode: map['zipCode'],
       commissioned: map['commissioned'],
       barberUnitId: map['barberUnitId']?.toInt() ?? 0,
       isManager: map['isManager'],
     );
+  }
+
+  static List<BarberModel> fromList(List<dynamic> list) {
+    return list.map((item) => BarberModel.fromMap(item)).toList();
   }
 }

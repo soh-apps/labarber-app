@@ -23,6 +23,7 @@ class BarbershopCubit extends Cubit<BarbershopState> {
         barberUnits = result.value;
         emit(BarbershopSuccess());
       case Failure():
+        emit(BarbershopFailure());
     }
   }
 }
