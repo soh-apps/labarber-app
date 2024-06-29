@@ -27,8 +27,7 @@ class AuthCubit extends Cubit<AuthState> {
 
   Future<void> saveLocalUser(UserModel user) async {
     try {
-      await localSecureStorage.write(
-          key: LocalSecureStorageKey.user, value: user.toJson());
+      await localSecureStorage.write(key: LocalSecureStorageKey.user, value: user.toJson());
 
       if (GetIt.instance.isRegistered<UserModel>()) {
         GetIt.instance.unregister<UserModel>();
@@ -51,8 +50,7 @@ class AuthCubit extends Cubit<AuthState> {
     try {
       final user = await localSecureStorage.read(LocalSecureStorageKey.user);
       if (user != null && user.isNotEmpty) {
-        UserModel userModel = UserModel.fromMap(
-            json.decode(Formatters.parseString(user)) as Map<String, dynamic>);
+        UserModel userModel = UserModel.fromMap(json.decode(Formatters.parseString(user)) as Map<String, dynamic>);
         return userModel;
       }
     } catch (e) {
@@ -78,11 +76,6 @@ class AuthCubit extends Cubit<AuthState> {
 
     switch (loginResult) {
       case Success():
-        // final sp = await SharedPreferences.getInstance();
-        // sp.setString(LocalStorageKey.accessToken, loginResult.value.token);
-        // sp.setString(LocalStorageKey.refreshToken, loginResult.value.refreshToken);
-        // sp.setInt(LocalStorageKey.refreshToken, loginResult.value.credentialId);
-
         saveLocalUser(loginResult.value);
 
         emit(AuthStateSuccess(userType: loginResult.value.userType!));
@@ -91,11 +84,9 @@ class AuthCubit extends Cubit<AuthState> {
       case Failure():
         final exception = loginResult.exception;
         if (exception is AuthUnauthorizedException) {
-          // Failure(ServiceException(message: 'Login ou Senha Inválidos'));
           emit(const AuthStateError(errorMessage: 'Login ou Senha Inválidos'));
         } else {
           () {
-            // Failure(ServiceException(message: 'Erro ao realizar login'));
             emit(const AuthStateError(errorMessage: 'Erro ao realizar login'));
           };
         }

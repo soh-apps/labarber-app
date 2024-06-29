@@ -13,7 +13,7 @@ class BarbershopRepository {
   Future<Either<AuthException, List<BarbershopModel>>> getAllCompanies() async {
     try {
       final Response response = await _restClient.auth.get(
-        '/api/BarberUnit/GetBarberUnitsByCompany/1',
+        '/api/BarberUnit/GetBarberUnitsByCompany',
       );
       var user = BarbershopModel.fromList(response.data);
       return Success(user);

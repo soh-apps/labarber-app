@@ -7,11 +7,9 @@ import 'package:la_barber/core/ui/barbershop_icons.dart';
 import 'package:la_barber/core/ui/constants.dart';
 import 'package:la_barber/core/ui/helpers/context_extension.dart';
 import 'package:la_barber/features/admin/barber/presentation/cubit/barber_cubit.dart';
+import 'package:la_barber/features/admin/barber/presentation/widgets/barber_header_widget.dart';
 import 'package:la_barber/features/admin/barber/presentation/widgets/barber_tile.dart';
-import 'package:la_barber/features/admin/barbershop/presentation/cubit/barbershop_cubit.dart';
-import 'package:la_barber/features/admin/barbershop/presentation/widgets/barbershop_header_widget.dart';
 import 'package:la_barber/features/admin/barbershop/repository/models/barbershop_model.dart';
-import 'package:la_barber/utils/mocks.dart';
 
 class BarberListPage extends StatefulWidget {
   final BarberCubit barberCubit;
@@ -42,13 +40,29 @@ class _BarberListPageState extends State<BarberListPage> {
         body: SizedBox(
           child: Column(
             children: [
-              const BarbershopHeaderWidget(),
+              BarberHeaderWidget(title: barberShop.name),
               BlocBuilder<BarberCubit, BarberState>(
                 bloc: widget.barberCubit,
                 builder: (context, state) {
-                  if (state is BarbershopLoading) {
+                  if (state is BarberLoading) {
                     return const Center(child: CircularProgressIndicator());
-                  } else if (state is BarbershopSuccess) {
+                  } else if (state is BarberSuccess) {
+                    if (widget.barberCubit.barbers.isEmpty) {
+                      return RefreshIndicator(
+                        onRefresh: () async {
+                          widget.barberCubit.getAllBarbers(barberShop.id);
+                        },
+                        child: SingleChildScrollView(
+                          physics: const AlwaysScrollableScrollPhysics(),
+                          child: SizedBox(
+                            height: MediaQuery.sizeOf(context).height / 2,
+                            child: const Center(
+                              child: Text('Nenhum barbeiro cadastrado'),
+                            ),
+                          ),
+                        ),
+                      );
+                    } else {}
                     return Expanded(
                       child: ListView.builder(
                         itemCount: widget.barberCubit.barbers.length,
@@ -58,15 +72,22 @@ class _BarberListPageState extends State<BarberListPage> {
                       ),
                     );
                   } else {
-                    return Expanded(
-                      child: ListView.builder(
-                        itemCount: Mocks.barberList.length,
-                        itemBuilder: (BuildContext context, int index) {
-                          return BarberTile(barber: Mocks.barberList[index]);
-                        },
+                    return RefreshIndicator(
+                      onRefresh: () async {
+                        widget.barberCubit.getAllBarbers(barberShop.id);
+                      },
+                      child: SingleChildScrollView(
+                        physics:
+                            const AlwaysScrollableScrollPhysics(), // Isso garante que o RefreshIndicator funcione mesmo que não haja scroll.
+                        child: SizedBox(
+                          height:
+                              MediaQuery.sizeOf(context).height / 2, // Isso garante que o Container ocupe a tela toda.
+                          child: const Center(
+                            child: Text('Error'),
+                          ),
+                        ),
                       ),
                     );
-                    // return const Center(child: Text('Error'));
                   }
                 },
               )

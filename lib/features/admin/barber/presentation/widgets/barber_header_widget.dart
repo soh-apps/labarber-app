@@ -1,6 +1,6 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+
 import 'package:la_barber/core/constants/routes.dart';
 import 'package:la_barber/core/di/di.dart';
 import 'package:la_barber/core/local_secure_storage/local_secure_storage.dart';
@@ -9,19 +9,16 @@ import 'package:la_barber/core/ui/barbershop_nav_global_key.dart';
 import 'package:la_barber/core/ui/constants.dart';
 import 'package:la_barber/core/ui/widgets/dialog_utils.dart';
 import 'package:la_barber/features/common/auth/model/user_model.dart';
-// import 'package:la_barber/core/ui/barbershop_nav_global_key.dart';
-// import 'package:la_barber/core/ui/widgets/dialog_utils.dart';
-// import 'package:la_barber/features/common/auth/model/user_model.dart';
-// import 'package:shared_preferences/shared_preferences.dart';
 
-class BarbershopHeaderWidget extends StatelessWidget {
+class BarberHeaderWidget extends StatelessWidget {
   final bool showFilter;
+  final String title;
 
-  const BarbershopHeaderWidget({
+  const BarberHeaderWidget({
     super.key,
     this.showFilter = false,
+    required this.title,
   });
-  // const BarbershopHeaderWidget.withoutFilter({super.key}) : showFilter = false;
 
   Future<void> logout(BuildContext context) async {
     showLoadingDialog(context, message: "Loading");
@@ -74,7 +71,6 @@ class BarbershopHeaderWidget extends StatelessWidget {
               const Flexible(
                 child: Text(
                   'Geraldo',
-                  // barbershopData.name,
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(
                     color: Colors.white,
@@ -111,21 +107,10 @@ class BarbershopHeaderWidget extends StatelessWidget {
           const SizedBox(
             height: 24,
           ),
-          const Text(
-            'Bem Vindo',
-            style: TextStyle(
-              color: Colors.white,
-              fontWeight: FontWeight.w500,
-              fontSize: 18,
-            ),
-          ),
-          const SizedBox(
-            height: 24,
-          ),
-          const Center(
+          Center(
             child: Text(
-              'Unidades',
-              style: TextStyle(
+              title,
+              style: const TextStyle(
                 color: Colors.white,
                 fontWeight: FontWeight.w600,
                 fontSize: 32,

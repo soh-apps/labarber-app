@@ -13,7 +13,7 @@ class BarberRepository {
   Future<Either<AuthException, List<BarberModel>>> getAllBarbers(int companyId) async {
     try {
       final Response response = await _restClient.auth.get(
-        '/api/BarberUnit/GetBarberUnitsByCompany/$companyId',
+        '/api/Barber/GetAllBarbers?barberUnitId=$companyId',
       );
       var user = BarberModel.fromList(response.data);
       return Success(user);
@@ -21,19 +21,19 @@ class BarberRepository {
       if (e.response != null) {
         final Response response = e.response!;
         if (response.statusCode == 400) {
-          log('Erro ao buscar Unidades', error: e, stackTrace: s);
+          log('Erro ao buscar Barbeiros', error: e, stackTrace: s);
           return Failure(AuthUnauthorizedException());
         }
       }
-      log('Erro ao buscar Unidades', error: e, stackTrace: s);
-      return Failure(AuthError(message: 'Erro ao realizar login'));
+      log('Erro ao buscar Barbeiros', error: e, stackTrace: s);
+      return Failure(AuthError(message: 'Erro ao buscar Barbeiros'));
     }
   }
 
   Future<Either<AuthException, String>> cadastrarColaborador(BarberModel barber) async {
     try {
       final Response response = await _restClient.auth.post(
-        '/api/Barber/CreateBarber',
+        '/api/Barber/Create',
         data: barber.toMap(),
       );
       if (response.statusCode == 200) {

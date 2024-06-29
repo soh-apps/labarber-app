@@ -37,6 +37,7 @@ class BarbershopCubit extends Cubit<BarbershopState> {
 
   Future<void> getAllCompanies() async {
     emit(BarbershopLoading());
+
     final result = await barbershopRepository.getAllCompanies();
 
     switch (result) {

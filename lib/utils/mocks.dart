@@ -81,7 +81,7 @@ class Mocks {
     ),
   ];
 
-  static List<BarberModel> barberList = [
+  static List<BarberModel> barberList  = [
     BarberModel(
       username: 'john_barber',
       email: 'john.barber@example.com',
