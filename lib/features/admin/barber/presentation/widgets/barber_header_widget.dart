@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 
@@ -13,11 +15,13 @@ import 'package:la_barber/features/common/auth/model/user_model.dart';
 class BarberHeaderWidget extends StatelessWidget {
   final bool showFilter;
   final String title;
+  final GlobalKey<ScaffoldState> scaffoldKey;
 
   const BarberHeaderWidget({
     super.key,
     this.showFilter = false,
     required this.title,
+    required this.scaffoldKey,
   });
 
   Future<void> logout(BuildContext context) async {
@@ -61,18 +65,24 @@ class BarberHeaderWidget extends StatelessWidget {
           Row(
             mainAxisSize: MainAxisSize.max,
             children: [
-              const CircleAvatar(
-                backgroundColor: Color(0xffbdbdbd),
-                child: SizedBox.shrink(),
+              GestureDetector(
+                onTap: () {
+                  log('CLicado');
+                  scaffoldKey.currentState?.openDrawer();
+                },
+                child: const CircleAvatar(
+                  backgroundColor: Color(0xffbdbdbd),
+                  child: SizedBox.shrink(),
+                ),
               ),
               const SizedBox(
                 width: 16,
               ),
-              const Flexible(
+              Flexible(
                 child: Text(
-                  'Geraldo',
+                  getIt<UserModel>().name,
                   overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
+                  style: const TextStyle(
                     color: Colors.white,
                     fontSize: 14,
                     fontWeight: FontWeight.bold,

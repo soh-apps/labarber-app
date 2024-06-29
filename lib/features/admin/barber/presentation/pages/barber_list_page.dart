@@ -10,6 +10,7 @@ import 'package:la_barber/features/admin/barber/presentation/cubit/barber_cubit.
 import 'package:la_barber/features/admin/barber/presentation/widgets/barber_header_widget.dart';
 import 'package:la_barber/features/admin/barber/presentation/widgets/barber_tile.dart';
 import 'package:la_barber/features/admin/barbershop/repository/models/barbershop_model.dart';
+import 'package:la_barber/features/admin/widgets/drawer_admin_widget.dart';
 
 class BarberListPage extends StatefulWidget {
   final BarberCubit barberCubit;
@@ -24,6 +25,7 @@ class BarberListPage extends StatefulWidget {
 
 class _BarberListPageState extends State<BarberListPage> {
   late BarbershopModel barberShop;
+  final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   void didChangeDependencies() {
@@ -37,10 +39,15 @@ class _BarberListPageState extends State<BarberListPage> {
     log(barberShop.name);
     return SafeArea(
       child: Scaffold(
+        key: scaffoldKey,
+        drawer: const DrawerAdminWidget(),
         body: SizedBox(
           child: Column(
             children: [
-              BarberHeaderWidget(title: barberShop.name),
+              BarberHeaderWidget(
+                title: barberShop.name,
+                scaffoldKey: scaffoldKey,
+              ),
               BlocBuilder<BarberCubit, BarberState>(
                 bloc: widget.barberCubit,
                 builder: (context, state) {

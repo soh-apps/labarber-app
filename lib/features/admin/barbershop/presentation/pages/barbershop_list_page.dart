@@ -7,9 +7,11 @@ import 'package:la_barber/core/ui/helpers/context_extension.dart';
 import 'package:la_barber/features/admin/barbershop/presentation/cubit/barbershop_cubit.dart';
 import 'package:la_barber/features/admin/barbershop/presentation/widgets/barbershop_header_widget.dart';
 import 'package:la_barber/features/admin/barbershop/presentation/widgets/barbershop_tile.dart';
+import 'package:la_barber/features/admin/widgets/drawer_admin_widget.dart';
 
 class BarbershopListPage extends StatefulWidget {
   final BarbershopCubit barbershopCubit;
+
   const BarbershopListPage({
     super.key,
     required this.barbershopCubit,
@@ -20,6 +22,8 @@ class BarbershopListPage extends StatefulWidget {
 }
 
 class _BarbershopListPageState extends State<BarbershopListPage> {
+  final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+
   @override
   void initState() {
     widget.barbershopCubit.getAllCompanies();
@@ -30,10 +34,12 @@ class _BarbershopListPageState extends State<BarbershopListPage> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        key: scaffoldKey,
+        drawer: const DrawerAdminWidget(),
         body: SizedBox(
           child: Column(
             children: [
-              const BarbershopHeaderWidget(),
+              BarbershopHeaderWidget(scaffoldKey: scaffoldKey),
               BlocBuilder<BarbershopCubit, BarbershopState>(
                 bloc: widget.barbershopCubit,
                 builder: (context, state) {
@@ -49,14 +55,6 @@ class _BarbershopListPageState extends State<BarbershopListPage> {
                       ),
                     );
                   } else {
-                    // return Expanded(
-                    //   child: ListView.builder(
-                    //     itemCount: Mocks.companies.length,
-                    //     itemBuilder: (BuildContext context, int index) {
-                    //       return BarbershopHomeTile(barberShop: Mocks.companies[index]);
-                    //     },
-                    //   ),
-                    // );
                     return RefreshIndicator(
                       onRefresh: widget.barbershopCubit.getAllCompanies,
                       child: SingleChildScrollView(

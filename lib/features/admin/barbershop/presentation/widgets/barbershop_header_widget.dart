@@ -1,4 +1,3 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:la_barber/core/constants/routes.dart';
@@ -9,19 +8,16 @@ import 'package:la_barber/core/ui/barbershop_nav_global_key.dart';
 import 'package:la_barber/core/ui/constants.dart';
 import 'package:la_barber/core/ui/widgets/dialog_utils.dart';
 import 'package:la_barber/features/common/auth/model/user_model.dart';
-// import 'package:la_barber/core/ui/barbershop_nav_global_key.dart';
-// import 'package:la_barber/core/ui/widgets/dialog_utils.dart';
-// import 'package:la_barber/features/common/auth/model/user_model.dart';
-// import 'package:shared_preferences/shared_preferences.dart';
 
 class BarbershopHeaderWidget extends StatelessWidget {
   final bool showFilter;
+  final GlobalKey<ScaffoldState> scaffoldKey;
 
   const BarbershopHeaderWidget({
     super.key,
+    required this.scaffoldKey,
     this.showFilter = false,
   });
-  // const BarbershopHeaderWidget.withoutFilter({super.key}) : showFilter = false;
 
   Future<void> logout(BuildContext context) async {
     showLoadingDialog(context, message: "Loading");
@@ -64,19 +60,23 @@ class BarbershopHeaderWidget extends StatelessWidget {
           Row(
             mainAxisSize: MainAxisSize.max,
             children: [
-              const CircleAvatar(
-                backgroundColor: Color(0xffbdbdbd),
-                child: SizedBox.shrink(),
+              GestureDetector(
+                onTap: () {
+                  scaffoldKey.currentState?.openDrawer();
+                },
+                child: const CircleAvatar(
+                  backgroundColor: Color(0xffbdbdbd),
+                  child: SizedBox.shrink(),
+                ),
               ),
               const SizedBox(
                 width: 16,
               ),
-              const Flexible(
+              Flexible(
                 child: Text(
-                  'Geraldo',
-                  // barbershopData.name,
+                  getIt<UserModel>().name,
                   overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
+                  style: const TextStyle(
                     color: Colors.white,
                     fontSize: 14,
                     fontWeight: FontWeight.bold,
