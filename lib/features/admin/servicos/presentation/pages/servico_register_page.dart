@@ -137,6 +137,7 @@ class _ServicoRegisterPageState extends State<ServicoRegisterPage> {
                     FilteringTextInputFormatter.digitsOnly,
                     CentavosInputFormatter(),
                   ],
+                  keyboardType: TextInputType.number,
                 ),
                 const SizedBox(height: 22),
                 TextFormField(
