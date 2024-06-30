@@ -7,6 +7,8 @@ import 'package:la_barber/features/admin/barber/presentation/pages/barber_list_p
 import 'package:la_barber/features/admin/barber/presentation/pages/barber_register_page.dart';
 import 'package:la_barber/features/admin/barbershop/presentation/pages/barbershop_list_page.dart';
 import 'package:la_barber/features/admin/barbershop/presentation/pages/barbershop_register_page.dart';
+import 'package:la_barber/features/admin/servicos/presentation/pages/servico_register_page.dart';
+import 'package:la_barber/features/admin/servicos/presentation/pages/servicos_list_page.dart';
 import 'package:la_barber/features/common/auth/presentation/cubits/auth_cubit.dart';
 import 'package:la_barber/features/common/auth/presentation/pages/login_page.dart';
 
@@ -29,22 +31,23 @@ class _MainAppState extends State<MainApp> {
   void initState() {
     super.initState();
     authCubit.verifyLocalUser();
-    // authCubit.verifyIsLogged();
   }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: BarbershopTheme.themeData,
-      initialRoute: Routes.login,
+      // initialRoute: Routes.login,
+      initialRoute: Routes.servicoListPage,
       navigatorKey: BarbershopNavGlobalKey.instance.navKey,
       routes: {
         Routes.login: (context) => LoginPage(authCubit: authCubit),
-        // Routes.homeAdmin: (_) => HomeAdmPage(barbershopCubit: getIt()),
         Routes.adminHomeBarberShop: (_) => BarbershopListPage(barbershopCubit: getIt()),
         Routes.adminRegisterBarber: (_) => BarberRegisterPage(barberCubit: getIt()),
         Routes.adminRegisterBarbershop: (_) => BarbershopRegisterPage(barbershopCubit: getIt()),
         Routes.barberListPage: (_) => BarberListPage(barberCubit: getIt()),
+        Routes.servicoListPage: (_) => ServicosListPage(servicoCubit: getIt()),
+        Routes.servicoRegisterPage: (_) => ServicoRegisterPage(servicoCubit: getIt()),
       },
       home: const Scaffold(
         body: Center(

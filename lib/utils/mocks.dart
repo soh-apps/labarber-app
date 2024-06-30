@@ -1,5 +1,6 @@
 import 'package:la_barber/features/admin/barber/repository/models/barber_model.dart';
 import 'package:la_barber/features/admin/barbershop/repository/models/barbershop_model.dart';
+import 'package:la_barber/features/admin/servicos/repository/models/servico_model.dart';
 import 'package:la_barber/features/common/auth/model/user_model.dart';
 
 class Mocks {
@@ -81,7 +82,7 @@ class Mocks {
     ),
   ];
 
-  static List<BarberModel> barberList  = [
+  static List<BarberModel> barberList = [
     BarberModel(
       username: 'john_barber',
       email: 'john.barber@example.com',
@@ -156,6 +157,47 @@ class Mocks {
       commissioned: false,
       barberUnitId: 5,
       isManager: false,
+    ),
+  ];
+
+  static List<ServicoModel> servicosList = [
+    ServicoModel(
+      idServico: '1',
+      nome: 'Corte de Cabelo',
+      urlImagem: 'assets/images/corte_cabelo.png',
+      valor: 30.0,
+      comissao: 10.0,
+      descricao: 'Super Corte de Cabelo',
+    ),
+    ServicoModel(
+      idServico: '2',
+      nome: 'Barba',
+      urlImagem: 'assets/images/barba.png',
+      valor: 20.0,
+      comissao: 5.0,
+      descricao: 'Super Corte de Barba',
+    ),
+    ServicoModel(
+      idServico: '3',
+      nome: 'Manicure',
+      urlImagem: 'assets/images/manicure.png',
+      valor: 25.0,
+      comissao: 8.0,
+      descricao: 'Super Corte de Unha',
+    ),
+    ServicoModel(
+      idServico: '4',
+      nome: 'Pedicure',
+      urlImagem: 'assets/images/pedicure.png',
+      valor: 28.0,
+      comissao: 9.0,
+    ),
+    ServicoModel(
+      idServico: '5',
+      nome: 'Coloração',
+      urlImagem: 'assets/images/coloracao.png',
+      valor: 45.0,
+      comissao: 15.0,
     ),
   ];
 }
