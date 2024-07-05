@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:la_barber/core/ui/app_color.dart';
+import 'package:la_barber/core/ui/styles/app_color.dart';
 
 class InputStyle extends InputDecoration {
   InputStyle({
@@ -25,8 +25,7 @@ class InputStyle extends InputDecoration {
             borderRadius: BorderRadius.circular(24),
           ),
           border: OutlineInputBorder(
-            borderSide:
-                BorderSide(color: focusedBorderColor ?? AppColor.corSecundaria),
+            borderSide: BorderSide(color: focusedBorderColor ?? AppColor.corSecundaria),
             borderRadius: BorderRadius.circular(24),
           ),
         );

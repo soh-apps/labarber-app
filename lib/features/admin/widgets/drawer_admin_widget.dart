@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:la_barber/core/di/di.dart';
-import 'package:la_barber/core/ui/app_color.dart';
+import 'package:la_barber/core/ui/styles/app_color.dart';
 import 'package:la_barber/core/ui/constants.dart';
 import 'package:la_barber/features/common/auth/model/user_model.dart';
 

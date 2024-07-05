@@ -29,10 +29,12 @@ class ServicoRegisterPage extends StatefulWidget {
 class _ServicoRegisterPageState extends State<ServicoRegisterPage> {
   final formKey = GlobalKey<FormState>();
   final nomeEC = TextEditingController();
+  final tempoServicoEC = TextEditingController();
   final valorEC = TextEditingController();
   final comissaoEC = TextEditingController();
   final descricaoServicoEc = TextEditingController();
-  final TextInputFormatter formatter = RealInputFormatter(moeda: true);
+  String _formattedTime = '';
+  String porcentagem = '';
 
   late BarbershopModel barberShop;
 
@@ -46,6 +48,7 @@ class _ServicoRegisterPageState extends State<ServicoRegisterPage> {
   void dispose() {
     nomeEC.dispose();
     valorEC.dispose();
+    tempoServicoEC.dispose();
     comissaoEC.dispose();
     descricaoServicoEc.dispose();
     super.dispose();
@@ -59,15 +62,42 @@ class _ServicoRegisterPageState extends State<ServicoRegisterPage> {
     });
   }
 
-  String? validatePercentage(String? value) {
-    if (value == null || value.isEmpty) {
-      return 'Por favor, informe a porcentagem';
+  void _calculatePercentage(String value) {
+    if (value.isNotEmpty && valorEC.text.isNotEmpty) {
+      double comissao;
+      double totalValue;
+
+      try {
+        comissao = double.parse(value.replaceAll('.', '').replaceAll(',', '.').trim());
+      } catch (e) {
+        comissao = 0.0;
+      }
+      try {
+        totalValue = double.parse(valorEC.text.replaceAll('.', '').replaceAll(',', '.').trim());
+      } catch (e) {
+        totalValue = 1.0; // Evitar divisão por zero
+      }
+      double porcentagemLocal = (comissao * 100) / totalValue;
+      setState(() {
+        porcentagem = '${porcentagemLocal.toStringAsFixed(0)} %';
+      });
     }
-    int? parsedValue = int.tryParse(value);
-    if (parsedValue == null || parsedValue < 0 || parsedValue > 100) {
-      return 'Porcentagem deve estar entre 0 e 100';
+  }
+
+  void _formatTime(String value) {
+    if (value.isNotEmpty) {
+      int minutes = int.parse(value);
+      int hours = minutes ~/ 60;
+      int remainingMinutes = minutes % 60;
+
+      setState(() {
+        _formattedTime = '$hours horas e ${remainingMinutes}minutos';
+      });
+    } else {
+      setState(() {
+        _formattedTime = '';
+      });
     }
-    return null;
   }
 
   @override
@@ -114,6 +144,26 @@ class _ServicoRegisterPageState extends State<ServicoRegisterPage> {
                 const SizedBox(height: 22),
                 TextFormField(
                   onTapOutside: (_) => context.unfocus(),
+                  controller: tempoServicoEC,
+                  validator: Validatorless.required('Tempo de serviço obrigatório!'),
+                  decoration: const InputDecoration(
+                    label: Text('Tempo de Serviço (em minutos)'),
+                  ),
+                  keyboardType: TextInputType.number,
+                  inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                  maxLength: 3,
+                  onChanged: _formatTime,
+                ),
+                Visibility(
+                  visible: _formattedTime.isNotEmpty,
+                  child: Text(
+                    '  Tempo: $_formattedTime',
+                    style: const TextStyle(fontSize: 16),
+                  ),
+                ),
+                const SizedBox(height: 22),
+                TextFormField(
+                  onTapOutside: (_) => context.unfocus(),
                   controller: valorEC,
                   validator: Validatorless.required('Valor do serviço obrigatório!'),
                   decoration: const InputDecoration(
@@ -123,8 +173,10 @@ class _ServicoRegisterPageState extends State<ServicoRegisterPage> {
                   inputFormatters: [
                     FilteringTextInputFormatter.digitsOnly,
                     CentavosInputFormatter(),
-                    // CurrencyTextInputFormatter.currency(locale: 'pt_BR', symbol: 'R\$', decimalDigits: 2)
                   ],
+                  onChanged: (value) {
+                    _calculatePercentage(comissaoEC.text);
+                  },
                 ),
                 const SizedBox(height: 22),
                 TextFormField(
@@ -133,12 +185,22 @@ class _ServicoRegisterPageState extends State<ServicoRegisterPage> {
                   decoration: const InputDecoration(
                     label: Text('Valor da Comissão'),
                   ),
+                  validator: Validatorless.required('Valor da Comissão obrigatória!'),
                   inputFormatters: [
                     FilteringTextInputFormatter.digitsOnly,
                     CentavosInputFormatter(),
                   ],
                   keyboardType: TextInputType.number,
+                  onChanged: (value) {
+                    _calculatePercentage(value);
+                  },
                 ),
+                Visibility(
+                    visible: porcentagem.isNotEmpty,
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 12),
+                      child: Text(' Porcentagem da comissao $porcentagem'),
+                    )),
                 const SizedBox(height: 22),
                 TextFormField(
                   onTapOutside: (_) => context.unfocus(),
@@ -168,7 +230,9 @@ class _ServicoRegisterPageState extends State<ServicoRegisterPage> {
                             comissao: double.parse(comissaoEC.text),
                             descricao: descricaoServicoEc.text,
                             urlImagem: _selectedImagePath ?? 'assets/images/default_image.png',
-                            unitId: barberShop.id,
+                            barberUnitId: barberShop.id,
+                            porcentagemComissao: int.parse(porcentagem.replaceAll(' %', '')),
+                            tempoServico: tempoServicoEC.toString(),
                           );
                           widget.servicoCubit.registerServico(servico);
                       }

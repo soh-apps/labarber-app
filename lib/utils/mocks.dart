@@ -168,6 +168,8 @@ class Mocks {
       valor: 30.0,
       comissao: 10.0,
       descricao: 'Super Corte de Cabelo',
+      tempoServico: '30',
+      porcentagemComissao: 10,
     ),
     ServicoModel(
       idServico: '2',
@@ -176,6 +178,8 @@ class Mocks {
       valor: 20.0,
       comissao: 5.0,
       descricao: 'Super Corte de Barba',
+      tempoServico: '30',
+      porcentagemComissao: 10,
     ),
     ServicoModel(
       idServico: '3',
@@ -184,6 +188,8 @@ class Mocks {
       valor: 25.0,
       comissao: 8.0,
       descricao: 'Super Corte de Unha',
+      tempoServico: '30',
+      porcentagemComissao: 10,
     ),
     ServicoModel(
       idServico: '4',
@@ -191,6 +197,8 @@ class Mocks {
       urlImagem: 'assets/images/pedicure.png',
       valor: 28.0,
       comissao: 9.0,
+      tempoServico: '30',
+      porcentagemComissao: 10,
     ),
     ServicoModel(
       idServico: '5',
@@ -198,6 +206,8 @@ class Mocks {
       urlImagem: 'assets/images/coloracao.png',
       valor: 45.0,
       comissao: 15.0,
+      tempoServico: '30',
+      porcentagemComissao: 10,
     ),
   ];
 }

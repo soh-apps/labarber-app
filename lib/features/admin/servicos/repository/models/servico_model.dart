@@ -1,43 +1,52 @@
 class ServicoModel {
   final String? idServico;
   final String nome;
-  final String? urlImagem;
+  final String urlImagem;
+  final String? descricao;
+  final String tempoServico;
   final double valor;
   final double comissao;
-  final String? descricao;
-  final int? unitId;
+
+  final int? barberUnitId;
+  final int porcentagemComissao;
 
   ServicoModel({
     required this.nome,
     required this.valor,
     required this.comissao,
+    required this.tempoServico,
+    required this.porcentagemComissao,
     this.descricao,
     this.idServico,
-    this.urlImagem,
-    this.unitId,
+    this.urlImagem = '',
+    this.barberUnitId,
   });
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
-      'idServico': idServico,
-      'nome': nome,
-      'urlImagem': urlImagem,
-      'valor': valor,
-      'comissao': comissao,
-      'descricao': descricao,
-      'unitId': unitId,
+      'id': idServico,
+      'name': nome,
+      'urlImage': urlImagem,
+      'value': valor,
+      'valueComission': comissao,
+      'description': descricao,
+      'timeToComplete': tempoServico,
+      'barberUnitId': barberUnitId,
+      'porcentagemComissao': porcentagemComissao,
     };
   }
 
   factory ServicoModel.fromMap(Map<String, dynamic> map) {
     return ServicoModel(
-      idServico: map['idServico'] as String,
-      nome: map['nome'] as String,
-      urlImagem: map['urlImagem'] != null ? map['urlImagem'] as String : null,
-      valor: (map['valor'] as num).toDouble(),
-      comissao: (map['comissao'] as num).toDouble(),
-      descricao: map['descricao'] != null ? (map['descricao'] as num).toString() : null,
-      unitId: map['unitId'] != null ? (map['unitId'] as num).toInt() : null,
+      idServico: map['id'] as String,
+      nome: map['name'] as String,
+      urlImagem: map['urlImage'] != null ? map['urlImage'] as String : '',
+      tempoServico: map['timeToComplete'] != null ? map['timeToComplete'] as String : '',
+      valor: (map['value'] as num).toDouble(),
+      comissao: (map['valueComission'] as num).toDouble(),
+      descricao: map['description'] != null ? (map['descricao'] as num).toString() : null,
+      barberUnitId: map['barberUnitId'] != null ? (map['barberUnitId'] as num).toInt() : null,
+      porcentagemComissao: map['barberUnitId'] != null ? (map['barberUnitId'] as num).toInt() : 0,
     );
   }
 
