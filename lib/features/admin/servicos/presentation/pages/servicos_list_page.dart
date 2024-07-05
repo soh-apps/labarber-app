@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:la_barber/core/constants/routes.dart';
+import 'package:la_barber/core/di/di.dart';
 import 'package:la_barber/core/ui/barbershop_icons.dart';
 import 'package:la_barber/core/ui/constants.dart';
 import 'package:la_barber/core/ui/helpers/context_extension.dart';
@@ -41,6 +42,10 @@ class _ServicosListPageState extends State<ServicosListPage> {
       website: '',
       description: '',
     );
+
+    // Registrando barberShop como singleton no get_it
+    getIt.registerSingleton<BarbershopModel>(barberShop);
+
     widget.servicoCubit.getAllServicos(barberShop.id);
   }
 
@@ -112,7 +117,7 @@ class _ServicosListPageState extends State<ServicosListPage> {
           shape: const CircleBorder(),
           backgroundColor: ColorConstants.colorBrown,
           onPressed: () {
-            context.pushNamed(Routes.servicoRegisterPage, arguments: barberShop);
+            context.pushNamed(Routes.servicoRegisterPage);
           },
           child: const CircleAvatar(
             backgroundColor: Colors.white,

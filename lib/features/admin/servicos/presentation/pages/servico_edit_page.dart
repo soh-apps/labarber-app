@@ -4,7 +4,6 @@ import 'package:brasil_fields/brasil_fields.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get_it/get_it.dart';
 import 'package:la_barber/core/ui/helpers/context_extension.dart';
 import 'package:la_barber/features/admin/barbershop/repository/models/barbershop_model.dart';
 import 'package:la_barber/features/admin/servicos/presentation/cubit/servico_cubit.dart';
@@ -15,19 +14,19 @@ import 'package:validatorless/validatorless.dart';
 import 'package:la_barber/core/ui/helpers/form_helper.dart';
 import 'package:la_barber/core/ui/helpers/messages.dart';
 
-class ServicoRegisterPage extends StatefulWidget {
+class ServicoEditPage extends StatefulWidget {
   final ServicoCubit servicoCubit;
 
-  const ServicoRegisterPage({
+  const ServicoEditPage({
     super.key,
     required this.servicoCubit,
   });
 
   @override
-  State<ServicoRegisterPage> createState() => _ServicoRegisterPageState();
+  State<ServicoEditPage> createState() => _ServicoEditPageState();
 }
 
-class _ServicoRegisterPageState extends State<ServicoRegisterPage> {
+class _ServicoEditPageState extends State<ServicoEditPage> {
   final formKey = GlobalKey<FormState>();
   final nomeEC = TextEditingController();
   final tempoServicoEC = TextEditingController();
@@ -37,7 +36,23 @@ class _ServicoRegisterPageState extends State<ServicoRegisterPage> {
   String _formattedTime = '';
   String porcentagem = '';
 
-  final BarbershopModel barberShop = GetIt.I<BarbershopModel>();
+  late BarbershopModel barberShop;
+  late ServicoModel servicoModel;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    servicoModel = ModalRoute.of(context)!.settings.arguments as ServicoModel;
+    setState(() {
+      nomeEC.text = servicoModel.nome;
+      tempoServicoEC.text = servicoModel.tempoServico;
+      valorEC.text = servicoModel.valor.toString();
+      comissaoEC.text = servicoModel.comissao.toString();
+      descricaoServicoEc.text = servicoModel.descricao ?? '';
+      porcentagem = '${servicoModel.porcentagemComissao} %';
+    });
+  }
 
   @override
   void dispose() {
@@ -113,7 +128,7 @@ class _ServicoRegisterPageState extends State<ServicoRegisterPage> {
       },
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('Cradastrar Serviço'),
+          title: Text(servicoModel.nome.toUpperCase()),
         ),
         body: Padding(
           padding: const EdgeInsets.all(20.0),
@@ -229,10 +244,10 @@ class _ServicoRegisterPageState extends State<ServicoRegisterPage> {
                             porcentagemComissao: int.parse(porcentagem.replaceAll(' %', '')),
                             tempoServico: tempoServicoEC.toString(),
                           );
-                          widget.servicoCubit.registerServico(servico);
+                          widget.servicoCubit.editarServico(servico);
                       }
                     },
-                    child: const Text('CADASTRAR SERVIÇO'),
+                    child: const Text('EDITAR SERVIÇO'),
                   ),
                 ),
               ]),

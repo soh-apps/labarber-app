@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:la_barber/core/constants/routes.dart';
 import 'package:la_barber/core/ui/styles/app_color.dart';
 import 'package:la_barber/core/ui/widgets/custom_button.dart';
 import 'package:la_barber/features/admin/servicos/presentation/widgets/services_detail_tile.dart';
@@ -22,8 +23,7 @@ class ServicoDetalhesPage extends StatelessWidget {
           IconButton(
             icon: const Icon(Icons.edit),
             onPressed: () {
-              // Navegar para a página de edição
-              Navigator.pushNamed(context, '/editar_servico', arguments: servico);
+              Navigator.pushNamed(context, Routes.servicoEditPage, arguments: servico);
             },
           ),
         ],
@@ -41,12 +41,6 @@ class ServicoDetalhesPage extends StatelessWidget {
                   errorWidget: (context, url, error) => Image.asset('assets/images/logo.png'),
                 ),
               ),
-              // Center(
-              //   child: servico.urlImagem.isNotEmpty
-              // ? Image.network(servico.urlImagem)
-              // ? CachedNetworkImage(imageUrl: servico.urlImagem)
-              // : Image.asset('assets/images/logo.png'),
-              // ),
               const SizedBox(height: 20),
               ServicesDetailTile(title: 'Nome', content: servico.nome),
               ServicesDetailTile(title: 'Tempo de Serviço', content: '${servico.tempoServico} minutos'),
@@ -69,8 +63,7 @@ class ServicoDetalhesPage extends StatelessWidget {
             paddingHorizontal: 12,
             text: 'Editar',
             onPressed: () {
-              // Navegar para a página de edição
-              Navigator.pushNamed(context, '/editar_servico', arguments: servico);
+              Navigator.pushNamed(context, Routes.servicoEditPage, arguments: servico);
             },
           ),
         ),

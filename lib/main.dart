@@ -8,6 +8,7 @@ import 'package:la_barber/features/admin/barber/presentation/pages/barber_regist
 import 'package:la_barber/features/admin/barbershop/presentation/pages/barbershop_list_page.dart';
 import 'package:la_barber/features/admin/barbershop/presentation/pages/barbershop_register_page.dart';
 import 'package:la_barber/features/admin/servicos/presentation/pages/servico_detalhes_page.dart';
+import 'package:la_barber/features/admin/servicos/presentation/pages/servico_edit_page.dart';
 import 'package:la_barber/features/admin/servicos/presentation/pages/servico_register_page.dart';
 import 'package:la_barber/features/admin/servicos/presentation/pages/servicos_list_page.dart';
 import 'package:la_barber/features/common/auth/presentation/cubits/auth_cubit.dart';
@@ -50,6 +51,7 @@ class _MainAppState extends State<MainApp> {
         Routes.servicoListPage: (_) => ServicosListPage(servicoCubit: getIt()),
         Routes.servicoRegisterPage: (_) => ServicoRegisterPage(servicoCubit: getIt()),
         Routes.servicoDetailPage: (_) => const ServicoDetalhesPage(),
+        Routes.servicoEditPage: (_) => ServicoEditPage(servicoCubit: getIt()),
       },
       home: const Scaffold(
         body: Center(

@@ -30,6 +30,19 @@ class ServicoCubit extends Cubit<ServicoState> {
     }
   }
 
+  Future<void> editarServico(ServicoModel servicos) async {
+    final result = await servicosRepository.editarServico(servicos);
+
+    switch (result) {
+      case Success():
+        mensagem = result.value;
+        emit(ServicoSuccess());
+      case Failure():
+        mensagem = result.exception.message;
+        emit(ServicoFailure(errorMessage: mensagem));
+    }
+  }
+
   Future<void> getAllServicos(int companyId) async {
     emit(ServicoLoading());
     //   final result = await servicosRepository.getAllServicos(companyId);

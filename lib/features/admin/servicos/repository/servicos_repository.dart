@@ -13,7 +13,7 @@ class ServicosRepository {
   Future<Either<AuthException, List<ServicoModel>>> getAllServicos(int companyId) async {
     try {
       final Response response = await _restClient.auth.get(
-        '/api/Servicos/GetAllServices?barberUnitId=$companyId',
+        '/api/Service/GetAllServices?barberUnitId=$companyId',
       );
       var user = ServicoModel.fromList(response.data);
       return Success(user);
@@ -33,7 +33,7 @@ class ServicosRepository {
   Future<Either<AuthException, String>> cadastrarServico(ServicoModel barber) async {
     try {
       final Response response = await _restClient.auth.post(
-        '/api/Servicos/Create',
+        '/api/Service/Create',
         data: barber.toMap(),
       );
       if (response.statusCode == 200) {
@@ -49,8 +49,32 @@ class ServicosRepository {
           return Failure(AuthUnauthorizedException());
         }
       }
-      log('Erro ao Cadastrar colaborador', error: e, stackTrace: s);
+      log('Erro ao Cadastrar Servico', error: e, stackTrace: s);
       return Failure(AuthError(message: 'Erro ao Cadastrar Servico - ${e.message}'));
+    }
+  }
+
+  Future<Either<AuthException, String>> editarServico(ServicoModel barber) async {
+    try {
+      final Response response = await _restClient.auth.put(
+        '/api/Service/Edit',
+        data: barber.toMap(),
+      );
+      if (response.statusCode == 200) {
+        return Success(response.data);
+      } else {
+        return Failure(AuthError(message: 'Erro ao Editar Servico'));
+      }
+    } on DioException catch (e, s) {
+      if (e.response != null) {
+        final Response response = e.response!;
+        if (response.statusCode == 400) {
+          log('Erro ao Editar Servico - ${e.message}', error: e, stackTrace: s);
+          return Failure(AuthUnauthorizedException());
+        }
+      }
+      log('Erro ao Editar Servico', error: e, stackTrace: s);
+      return Failure(AuthError(message: 'Erro ao Editar Servico - ${e.message}'));
     }
   }
 }

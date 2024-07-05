@@ -7,5 +7,6 @@ class Routes {
   static const String barberListPage = '/barber/list';
   static const String servicoListPage = '/servico/list';
   static const String servicoRegisterPage = '/servico/register';
-  static const String servicoDetailPage = '/servico/register';
+  static const String servicoEditPage = '/servico/edit';
+  static const String servicoDetailPage = '/servico/detail';
 }
