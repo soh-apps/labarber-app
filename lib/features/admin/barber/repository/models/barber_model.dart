@@ -1,4 +1,5 @@
 class BarberModel {
+  final String? id;
   final String? username;
   final String? email;
   final String? password;
@@ -14,6 +15,7 @@ class BarberModel {
   final int barberUnitId;
   final bool isManager;
   BarberModel({
+    this.id,
     this.username,
     this.email,
     this.password,
@@ -32,6 +34,7 @@ class BarberModel {
 
   Map<String, dynamic> toMap() {
     return {
+      'id': id,
       'username': username,
       'email': email,
       'password': password,
@@ -51,6 +54,7 @@ class BarberModel {
 
   factory BarberModel.fromMap(Map<String, dynamic> map) {
     return BarberModel(
+      id: map['id'] ?? '',
       username: map['username'] ?? '',
       email: map['email'] ?? '',
       password: map['password'],

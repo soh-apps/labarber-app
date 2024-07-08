@@ -6,9 +6,9 @@ class ServicoModel {
   final String tempoServico;
   final double valor;
   final double comissao;
-
   final int? barberUnitId;
   final int porcentagemComissao;
+  bool isAtivo;
 
   ServicoModel({
     required this.nome,
@@ -20,6 +20,7 @@ class ServicoModel {
     this.idServico,
     this.urlImagem = '',
     this.barberUnitId,
+    this.isAtivo = false,
   });
 
   Map<String, dynamic> toMap() {

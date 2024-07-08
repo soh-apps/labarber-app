@@ -9,4 +9,5 @@ class Routes {
   static const String servicoRegisterPage = '/servico/register';
   static const String servicoEditPage = '/servico/edit';
   static const String servicoDetailPage = '/servico/detail';
+  static const String agendamentoRapidoPage = '/agendamento/agendamento-rapido';
 }

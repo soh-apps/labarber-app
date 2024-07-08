@@ -117,7 +117,8 @@ class _ServicosListPageState extends State<ServicosListPage> {
           shape: const CircleBorder(),
           backgroundColor: ColorConstants.colorBrown,
           onPressed: () {
-            context.pushNamed(Routes.servicoRegisterPage);
+            context.pushNamed(Routes.agendamentoRapidoPage);
+            // context.pushNamed(Routes.servicoRegisterPage);
           },
           child: const CircleAvatar(
             backgroundColor: Colors.white,

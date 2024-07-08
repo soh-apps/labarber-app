@@ -3,6 +3,8 @@ import 'dart:developer';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get_it/get_it.dart';
 import 'package:la_barber/core/local_secure_storage/local_secure_storage.dart';
+import 'package:la_barber/features/admin/agendamento/presentation/cubits/agendamento_cubit.dart';
+import 'package:la_barber/features/admin/agendamento/repository/agendamento_repository.dart';
 import 'package:la_barber/features/admin/barber/presentation/cubit/barber_cubit.dart';
 import 'package:la_barber/features/admin/barber/repository/barber_repository.dart';
 import 'package:la_barber/features/admin/barbershop/presentation/cubit/barbershop_cubit.dart';
@@ -30,10 +32,16 @@ Future<void> configureInjection() async {
   getIt.registerLazySingleton<BarbershopRepository>(() => BarbershopRepository(restClient: getIt<RestClient>()));
   getIt.registerLazySingleton<BarberRepository>(() => BarberRepository(restClient: getIt<RestClient>()));
   getIt.registerLazySingleton<ServicosRepository>(() => ServicosRepository(restClient: getIt<RestClient>()));
+  getIt.registerLazySingleton<AgendamentoRepository>(() => AgendamentoRepository(restClient: getIt<RestClient>()));
 
   // Cubits
   getIt.registerLazySingleton<AuthCubit>(() => AuthCubit(getIt<AuthRepository>(), getIt<LocalSecureStorage>()));
   getIt.registerLazySingleton<ServicoCubit>(() => ServicoCubit(getIt<ServicosRepository>()));
+  getIt.registerFactory<AgendamentoCubit>(() => AgendamentoCubit(
+        getIt<AgendamentoRepository>(),
+        getIt<BarberRepository>(),
+        getIt<ServicosRepository>(),
+      ));
   getIt.registerFactory<BarbershopCubit>(() => BarbershopCubit(getIt<BarbershopRepository>()));
   getIt.registerFactory<BarberCubit>(() => BarberCubit(getIt<BarberRepository>()));
 

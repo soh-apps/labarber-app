@@ -28,6 +28,7 @@ dependencies:
   dropdown_button2: ^2.1.4
   top_snackbar_flutter: ^3.1.0
   table_calendar: ^3.1.0
+  intl: ^0.19.0
   loading_animation_widget: 
     git:
       url: https://github.com/caneto/loading_animation_widget.git

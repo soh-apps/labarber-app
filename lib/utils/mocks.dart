@@ -1,3 +1,4 @@
+import 'package:la_barber/features/admin/agendamento/repository/model/agendamento_model.dart';
 import 'package:la_barber/features/admin/barber/repository/models/barber_model.dart';
 import 'package:la_barber/features/admin/barbershop/repository/models/barbershop_model.dart';
 import 'package:la_barber/features/admin/servicos/repository/models/servico_model.dart';
@@ -84,6 +85,7 @@ class Mocks {
 
   static List<BarberModel> barberList = [
     BarberModel(
+      id: '1',
       username: 'john_barber',
       email: 'john.barber@example.com',
       password: 'password123',
@@ -99,6 +101,7 @@ class Mocks {
       isManager: true,
     ),
     BarberModel(
+      id: '2',
       username: 'jane_doe',
       email: 'jane.doe@example.com',
       password: 'securePass456',
@@ -114,6 +117,7 @@ class Mocks {
       isManager: false,
     ),
     BarberModel(
+      id: '3',
       username: 'alex_hair',
       email: 'alex.hair@example.com',
       password: 'haircut789',
@@ -129,6 +133,7 @@ class Mocks {
       isManager: false,
     ),
     BarberModel(
+      id: '4',
       username: 'chris_style',
       email: 'chris.style@example.com',
       password: 'stylePass321',
@@ -144,6 +149,7 @@ class Mocks {
       isManager: true,
     ),
     BarberModel(
+      id: '5',
       username: 'samuel_cuts',
       email: 'samuel.cuts@example.com',
       password: 'cuts1234',
@@ -170,6 +176,7 @@ class Mocks {
       descricao: 'Super Corte de Cabelo',
       tempoServico: '30',
       porcentagemComissao: 10,
+      isAtivo: false,
     ),
     ServicoModel(
       idServico: '2',
@@ -180,6 +187,7 @@ class Mocks {
       descricao: 'Super Corte de Barba',
       tempoServico: '30',
       porcentagemComissao: 10,
+      isAtivo: false,
     ),
     ServicoModel(
       idServico: '3',
@@ -190,6 +198,7 @@ class Mocks {
       descricao: 'Super Corte de Unha',
       tempoServico: '30',
       porcentagemComissao: 10,
+      isAtivo: false,
     ),
     ServicoModel(
       idServico: '4',
@@ -199,6 +208,7 @@ class Mocks {
       comissao: 9.0,
       tempoServico: '30',
       porcentagemComissao: 10,
+      isAtivo: false,
     ),
     ServicoModel(
       idServico: '5',
@@ -208,6 +218,21 @@ class Mocks {
       comissao: 15.0,
       tempoServico: '30',
       porcentagemComissao: 10,
+      isAtivo: false,
     ),
+  ];
+
+  static List<AgendamentoModel> agendamentosList = [
+    AgendamentoModel()
+    // ServicoModel(
+    //   idServico: '1',
+    //   nome: 'Corte de Cabelo',
+    //   urlImagem: 'assets/images/corte_cabelo.png',
+    //   valor: 30.0,
+    //   comissao: 10.0,
+    //   descricao: 'Super Corte de Cabelo',
+    //   tempoServico: '30',
+    //   porcentagemComissao: 10,
+    // ),
   ];
 }
