@@ -32,16 +32,16 @@ class _ServicosListPageState extends State<ServicosListPage> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     // barberShop = ModalRoute.of(context)!.settings.arguments as BarbershopModel;
-    barberShop = BarbershopModel(
-      id: 2,
-      name: 'Barbearia do Zé',
-      address: 'Rua do Zé, 123',
-      phone: '123456789',
-      email: '',
-      logo: '',
-      website: '',
-      description: '',
-    );
+    // barberShop = BarbershopModel(
+    //   id: 2,
+    //   name: 'Barbearia do Zé',
+    //   address: 'Rua do Zé, 123',
+    //   phone: '123456789',
+    //   email: '',
+    //   logo: '',
+    //   website: '',
+    //   description: '',
+    // );
 
     // Registrando barberShop como singleton no get_it
     getIt.registerSingleton<BarbershopModel>(barberShop);

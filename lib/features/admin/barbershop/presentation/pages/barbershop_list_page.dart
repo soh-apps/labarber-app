@@ -46,6 +46,9 @@ class _BarbershopListPageState extends State<BarbershopListPage> {
                   if (state is BarbershopLoading) {
                     return const Expanded(child: Center(child: CircularProgressIndicator()));
                   } else if (state is BarbershopSuccess) {
+                    if (widget.barbershopCubit.barberUnits.isEmpty) {
+                      return const Expanded(child: Center(child: Text('Sem Unidades Cadastradas')));
+                    }
                     return Expanded(
                       child: ListView.builder(
                         itemCount: widget.barbershopCubit.barberUnits.length,

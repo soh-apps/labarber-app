@@ -42,8 +42,8 @@ class _MainAppState extends State<MainApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: BarbershopTheme.themeData,
-      // initialRoute: Routes.login,
-      initialRoute: Routes.servicoListPage,
+      initialRoute: Routes.login,
+      // initialRoute: Routes.servicoListPage,
       navigatorKey: BarbershopNavGlobalKey.instance.navKey,
 
       routes: {

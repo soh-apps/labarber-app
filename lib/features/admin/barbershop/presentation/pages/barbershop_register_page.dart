@@ -1,15 +1,19 @@
 import 'dart:developer';
 import 'dart:io';
 
+import 'package:brasil_fields/brasil_fields.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:la_barber/core/formatters.dart';
 import 'package:la_barber/core/time_utils.dart';
 import 'package:la_barber/core/ui/helpers/context_extension.dart';
 import 'package:la_barber/core/ui/widgets/custom_check_box.dart';
 import 'package:la_barber/core/ui/widgets/image_picker.dart';
+import 'package:la_barber/features/admin/barber/repository/models/barber_model.dart';
 import 'package:la_barber/features/admin/barbershop/presentation/widgets/time_display.dart';
 import 'package:la_barber/features/admin/barbershop/repository/entities/work_days.dart';
+import 'package:la_barber/features/admin/barbershop/repository/models/barbershop_model.dart';
 import 'package:validatorless/validatorless.dart';
 
 import 'package:la_barber/core/ui/helpers/form_helper.dart';
@@ -34,6 +38,9 @@ class _BarbershopRegisterPageState extends State<BarbershopRegisterPage> {
   final nomeEC = TextEditingController();
   final telefoneEC = TextEditingController();
   final cepEC = TextEditingController();
+  final cidadeEC = TextEditingController();
+  final estadoEC = TextEditingController();
+  final ruaEC = TextEditingController();
   final numeroEC = TextEditingController();
 
   @override
@@ -41,6 +48,9 @@ class _BarbershopRegisterPageState extends State<BarbershopRegisterPage> {
     nomeEC.dispose();
     telefoneEC.dispose();
     cepEC.dispose();
+    estadoEC.dispose();
+    cidadeEC.dispose();
+    ruaEC.dispose();
     numeroEC.dispose();
     super.dispose();
   }
@@ -237,8 +247,15 @@ class _BarbershopRegisterPageState extends State<BarbershopRegisterPage> {
         } else if (state is BarbershopLoading) {
           context.showLoadingDialog(context);
         } else if (state is BarbershopFailure) {
-          context.hideLoadingDialog(context);
+          // context.hideLoadingDialog(context);
           context.showError(state.errorMessage);
+        } else if (state is BarbershopCepSuccess) {
+          context.hideLoadingDialog(context);
+          setState(() {
+            cidadeEC.text = widget.barbershopCubit.cepModel?.localidade ?? cidadeEC.text;
+            ruaEC.text = widget.barbershopCubit.cepModel?.logradouro ?? ruaEC.text;
+            estadoEC.text = widget.barbershopCubit.cepModel?.uf ?? estadoEC.text;
+          });
         }
       },
       child: Scaffold(
@@ -276,6 +293,12 @@ class _BarbershopRegisterPageState extends State<BarbershopRegisterPage> {
                   decoration: const InputDecoration(
                     label: Text('Telefone'),
                   ),
+                  keyboardType: TextInputType.number,
+                  inputFormatters: [
+                    // obrigatório
+                    FilteringTextInputFormatter.digitsOnly,
+                    TelefoneInputFormatter(),
+                  ],
                 ),
                 const SizedBox(height: 22),
                 TextFormField(
@@ -285,12 +308,44 @@ class _BarbershopRegisterPageState extends State<BarbershopRegisterPage> {
                   decoration: const InputDecoration(
                     label: Text('CEP'),
                   ),
+                  onChanged: (value) {
+                    if (value.length == 8) {
+                      widget.barbershopCubit.getByCEP(value);
+                    }
+                  },
+                ),
+                const SizedBox(height: 22),
+                TextFormField(
+                  onTapOutside: (_) => context.unfocus(),
+                  controller: estadoEC,
+                  decoration: const InputDecoration(
+                    label: Text('Estado'),
+                  ),
+                  validator: Validatorless.required('Estado obrigatório'),
+                  maxLength: 2,
+                ),
+                const SizedBox(height: 22),
+                TextFormField(
+                  onTapOutside: (_) => context.unfocus(),
+                  controller: cidadeEC,
+                  decoration: const InputDecoration(
+                    label: Text('Cidade'),
+                  ),
+                  validator: Validatorless.required('Cidade obrigatório'),
+                ),
+                const SizedBox(height: 22),
+                TextFormField(
+                  onTapOutside: (_) => context.unfocus(),
+                  controller: ruaEC,
+                  decoration: const InputDecoration(
+                    label: Text('Rua'),
+                  ),
+                  validator: Validatorless.required('Rua obrigatório'),
                 ),
                 const SizedBox(height: 22),
                 TextFormField(
                   onTapOutside: (_) => context.unfocus(),
                   controller: numeroEC,
-                  validator: Validatorless.required('Número obrigatório'),
                   decoration: const InputDecoration(
                     label: Text('Número'),
                   ),
@@ -363,8 +418,7 @@ class _BarbershopRegisterPageState extends State<BarbershopRegisterPage> {
                           ),
                         ],
                       ),
-                      const SizedBox(height: 24),
-                      const SizedBox(height: 4),
+                      const SizedBox(height: 28),
                       Visibility(
                         visible: isHorarioAlmoco,
                         child: Row(
@@ -420,9 +474,25 @@ class _BarbershopRegisterPageState extends State<BarbershopRegisterPage> {
                           context.showError('Formulário invalido');
                         case true:
                           log(_selectedImage.toString());
-                        // barbershopRegisterVM.register(
-                        //     name: nameEC.text,
-                        //     email: emailEC.text,
+                          BarbershopModel barbershop = BarbershopModel(
+                            id: 0,
+                            name: nomeEC.text,
+                            phone: telefoneEC.text,
+                            number: numeroEC.text,
+                            city: cidadeEC.text,
+                            street: ruaEC.text,
+                            state: estadoEC.text,
+                            zipCode: cepEC.text,
+                            workingHours: WorkDays.convertWorkDaysToWorkingHours(openingDays),
+                            // workingDays: openingDays.map((e) => e.numberDay).toList(),
+                            email: '',
+                            logo: '',
+                            website: '',
+                            description: '',
+                          );
+
+                          widget.barbershopCubit.registerBarberShop(barbershop);
+
                         // );
                       }
                     },

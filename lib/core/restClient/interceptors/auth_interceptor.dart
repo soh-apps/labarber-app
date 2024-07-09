@@ -10,16 +10,12 @@ class AuthInterceptor extends Interceptor {
   final authHeaderKey = 'Authorization';
   Future<String> _refreshToken() async {
     try {
-      final token = getIt<UserModel>().token;
       final response = await Dio().post(
-        'http://192.168.0.99:5270/Login/RefreshToken',
+        'http://localhost:5270/Login/RefreshToken',
         data: {
           'credentialId': getIt<UserModel>().credentialId,
           'refreshToken': getIt<UserModel>().refreshToken,
         },
-        options: Options(
-          headers: {authHeaderKey: 'Bearer $token'},
-        ),
       );
       final newToken = response.data['token'];
       return newToken;

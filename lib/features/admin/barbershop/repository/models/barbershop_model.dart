@@ -1,37 +1,68 @@
+import 'package:la_barber/features/admin/barbershop/repository/models/working_hour.dart';
+
 class BarbershopModel {
   final int id;
   final String name;
-  final String address;
   final String phone;
   final String email;
   final String logo;
   final String website;
   final String description;
-  List<int>? workingDays;
+  final String city;
+  final String state;
+  final String street;
+  final String? number;
+  final String? complement;
+  final String zipCode;
+  List<WorkingHour>? workingHours;
 
   BarbershopModel({
     required this.id,
     required this.name,
-    required this.address,
     required this.phone,
     required this.email,
     required this.logo,
     required this.website,
     required this.description,
-    this.workingDays,
+    required this.city,
+    required this.state,
+    required this.street,
+    this.number,
+    this.complement = '',
+    required this.zipCode,
+    this.workingHours,
   });
+
+  Map<String, dynamic> toMapv0() {
+    return {
+      'name': name,
+      'city': city,
+      'state': state,
+      'street': street,
+      'number': number,
+      'phone': phone,
+      'zipCode': zipCode,
+      'complement': complement,
+      'workingHours': workingHours?.map((wh) => wh.toMap()).toList(),
+    };
+  }
 
   Map<String, dynamic> toMap() {
     return {
       'id': id,
       'name': name,
-      'address': address,
       'phone': phone,
       'email': email,
       'logo': logo,
       'website': website,
       'description': description,
-      'workingdays': workingDays,
+      'city': city,
+      'state': state,
+      'street': street,
+      'number': number,
+      'complement': complement,
+      'zipCode': zipCode,
+      'workingHours': workingHours,
     };
   }
 
@@ -39,13 +70,20 @@ class BarbershopModel {
     return BarbershopModel(
       id: map['id'] ?? 0,
       name: map['name'] ?? '',
-      address: map['address'] ?? '',
       phone: map['phone'] ?? '',
       email: map['email'] ?? '',
       logo: map['logo'] ?? '',
       website: map['website'] ?? '',
       description: map['description'] ?? '',
-      workingDays: map['workingDays'] != null ? List<int>.from(map['workingDays']) : null,
+      city: map['city'] ?? '',
+      state: map['state'] ?? '',
+      street: map['street'] ?? '',
+      number: map['number'] ?? '',
+      complement: map['complement'] ?? '',
+      zipCode: map['zipCode'] ?? '',
+      workingHours: map['workingHours'] != null
+          ? List<WorkingHour>.from(map['workingHours'].map((x) => WorkingHour.fromJson(x)))
+          : null,
     );
   }
 

@@ -6,7 +6,8 @@ import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 final class RestClient extends DioForNative {
   RestClient()
       : super(BaseOptions(
-          baseUrl: 'http://192.168.0.99:5270',
+          // baseUrl: 'http://192.168.0.99:5270', // Windows
+          baseUrl: 'http://localhost:5270', // Mac
           connectTimeout: const Duration(seconds: 10),
           receiveTimeout: const Duration(seconds: 60),
         )) {
@@ -18,14 +19,14 @@ final class RestClient extends DioForNative {
         responseBody: true,
       ),
       AuthInterceptor(),
-      PrettyDioLogger(
-        request: true,
-        requestBody: true,
-        requestHeader: true,
-        responseBody: true,
-        responseHeader: true,
-        error: true,
-      ),
+      // PrettyDioLogger(
+      //   request: true,
+      //   requestBody: true,
+      //   requestHeader: true,
+      //   responseBody: true,
+      //   responseHeader: true,
+      //   error: true,
+      // ),
     ]);
   }
 

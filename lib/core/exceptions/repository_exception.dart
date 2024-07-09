@@ -4,3 +4,7 @@ class RepositoryException implements Exception {
     required this.message,
   });
 }
+
+class RepositoryError extends RepositoryException {
+  RepositoryError({required super.message});
+}
