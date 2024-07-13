@@ -3,7 +3,6 @@ import 'dart:developer';
 import 'package:brasil_fields/brasil_fields.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:intl/intl.dart';
@@ -92,7 +91,7 @@ class _AgendamentoRapidoPageState extends State<AgendamentoRapidoPage> {
     _selectedTime = TimeOfDay.now();
 
     if (widget.agendamentoCubit.barbeiros.isNotEmpty) {
-      barbeiroSelecionado = widget.agendamentoCubit.barbeiros.first.id!; // Ou use o atributo desejado
+      barbeiroSelecionado = widget.agendamentoCubit.barbeiros.first.id!.toString(); // Ou use o atributo desejado
     }
     dataSelecionada = dateFormat.format(DateTime.now());
     log(dataSelecionada);

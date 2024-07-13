@@ -5,12 +5,11 @@ import 'package:brasil_fields/brasil_fields.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:la_barber/core/formatters.dart';
+import 'package:la_barber/core/utils/formatters.dart';
 import 'package:la_barber/core/time_utils.dart';
 import 'package:la_barber/core/ui/helpers/context_extension.dart';
 import 'package:la_barber/core/ui/widgets/custom_check_box.dart';
 import 'package:la_barber/core/ui/widgets/image_picker.dart';
-import 'package:la_barber/features/admin/barber/repository/models/barber_model.dart';
 import 'package:la_barber/features/admin/barbershop/presentation/widgets/time_display.dart';
 import 'package:la_barber/features/admin/barbershop/repository/entities/work_days.dart';
 import 'package:la_barber/features/admin/barbershop/repository/models/barbershop_model.dart';
@@ -247,7 +246,7 @@ class _BarbershopRegisterPageState extends State<BarbershopRegisterPage> {
         } else if (state is BarbershopLoading) {
           context.showLoadingDialog(context);
         } else if (state is BarbershopFailure) {
-          // context.hideLoadingDialog(context);
+          context.hideLoadingDialog(context);
           context.showError(state.errorMessage);
         } else if (state is BarbershopCepSuccess) {
           context.hideLoadingDialog(context);
@@ -309,10 +308,14 @@ class _BarbershopRegisterPageState extends State<BarbershopRegisterPage> {
                     label: Text('CEP'),
                   ),
                   onChanged: (value) {
-                    if (value.length == 8) {
-                      widget.barbershopCubit.getByCEP(value);
+                    if (value.length == 10) {
+                      widget.barbershopCubit.getByCEP(Formatters.formatCep(value));
                     }
                   },
+                  inputFormatters: [
+                    FilteringTextInputFormatter.digitsOnly,
+                    CepInputFormatter(),
+                  ],
                 ),
                 const SizedBox(height: 22),
                 TextFormField(
@@ -482,7 +485,7 @@ class _BarbershopRegisterPageState extends State<BarbershopRegisterPage> {
                             city: cidadeEC.text,
                             street: ruaEC.text,
                             state: estadoEC.text,
-                            zipCode: cepEC.text,
+                            zipCode: Formatters.formatCep(cepEC.text),
                             workingHours: WorkDays.convertWorkDaysToWorkingHours(openingDays),
                             // workingDays: openingDays.map((e) => e.numberDay).toList(),
                             email: '',

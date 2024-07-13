@@ -227,12 +227,17 @@ class Formatters {
     return "$currencySymbol $formatter";
   }
 
-  static String formatCEP(String cep) {
-    if (cep.length == 8) {
-      return '${cep.substring(0, 5)}-${cep.substring(5, cep.length)}';
-    }
-    return cep;
+  static String formatCep(String cep) {
+    // Remove quaisquer caracteres que não sejam dígitos
+    return cep.replaceAll(RegExp(r'\D'), '');
   }
+
+  // static String formatCEP(String cep) {
+  //   if (cep.length == 8) {
+  //     return '${cep.substring(0, 5)}-${cep.substring(5, cep.length)}';
+  //   }
+  //   return cep;
+  // }
 
   static String formatPhone(String? ddd, String? phone, {bool withHyphen = false}) {
     if (withHyphen) {

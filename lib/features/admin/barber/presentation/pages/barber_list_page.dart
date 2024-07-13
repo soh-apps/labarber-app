@@ -1,16 +1,13 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:la_barber/core/constants/routes.dart';
+import 'package:la_barber/core/di/di.dart';
 import 'package:la_barber/core/ui/barbershop_icons.dart';
 import 'package:la_barber/core/ui/constants.dart';
-import 'package:la_barber/core/ui/helpers/context_extension.dart';
 import 'package:la_barber/features/admin/barber/presentation/cubit/barber_cubit.dart';
 import 'package:la_barber/features/admin/barber/presentation/widgets/barber_header_widget.dart';
 import 'package:la_barber/features/admin/barber/presentation/widgets/barber_tile.dart';
-import 'package:la_barber/features/admin/barbershop/repository/models/barbershop_model.dart';
 import 'package:la_barber/features/admin/widgets/drawer_admin_widget.dart';
+import 'package:la_barber/features/common/auth/model/user_model.dart';
 
 class BarberListPage extends StatefulWidget {
   final BarberCubit barberCubit;
@@ -24,19 +21,34 @@ class BarberListPage extends StatefulWidget {
 }
 
 class _BarberListPageState extends State<BarberListPage> {
-  late BarbershopModel barberShop;
+  // late BarbershopModel barberShop;
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    barberShop = ModalRoute.of(context)!.settings.arguments as BarbershopModel;
-    widget.barberCubit.getAllBarbers(barberShop.id);
+    if (getIt<UserModel>().userType == UserType.admin) {
+      // barberShop = ModalRoute.of(context)!.settings.arguments as BarbershopModel;
+    } else {
+      // barberShop = widget.barberCubit.barbershop ?? Mocks.companies[0];
+    }
+
+    // widget.barberCubit.getAllBarbers(barberShop.id);
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    widget.barberCubit.getAllBarbers(0);
+    if (getIt<UserModel>().userType == UserType.manager) {
+      // Api que traz os dados da barbearia
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    log(barberShop.name);
+    // log(barberShop.name);
     return SafeArea(
       child: Scaffold(
         key: scaffoldKey,
@@ -45,7 +57,8 @@ class _BarberListPageState extends State<BarberListPage> {
           child: Column(
             children: [
               BarberHeaderWidget(
-                title: barberShop.name,
+                // title: barberShop.name,
+                title: 'NomeBarbearia',
                 scaffoldKey: scaffoldKey,
               ),
               BlocBuilder<BarberCubit, BarberState>(
@@ -57,7 +70,7 @@ class _BarberListPageState extends State<BarberListPage> {
                     if (widget.barberCubit.barbers.isEmpty) {
                       return RefreshIndicator(
                         onRefresh: () async {
-                          widget.barberCubit.getAllBarbers(barberShop.id);
+                          widget.barberCubit.getAllBarbers(0);
                         },
                         child: SingleChildScrollView(
                           physics: const AlwaysScrollableScrollPhysics(),
@@ -81,7 +94,7 @@ class _BarberListPageState extends State<BarberListPage> {
                   } else {
                     return RefreshIndicator(
                       onRefresh: () async {
-                        widget.barberCubit.getAllBarbers(barberShop.id);
+                        widget.barberCubit.getAllBarbers(0);
                       },
                       child: SingleChildScrollView(
                         physics:
@@ -105,7 +118,7 @@ class _BarberListPageState extends State<BarberListPage> {
           shape: const CircleBorder(),
           backgroundColor: ColorConstants.colorBrown,
           onPressed: () {
-            context.pushNamed(Routes.adminRegisterBarber, arguments: barberShop);
+            // context.pushNamed(Routes.adminRegisterBarber, arguments: barberShop);
           },
           child: const CircleAvatar(
             backgroundColor: Colors.white,

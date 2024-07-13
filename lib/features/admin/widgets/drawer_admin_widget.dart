@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:la_barber/core/constants/routes.dart';
 
 import 'package:la_barber/core/di/di.dart';
+import 'package:la_barber/core/ui/helpers/context_extension.dart';
 import 'package:la_barber/core/ui/styles/app_color.dart';
 import 'package:la_barber/core/ui/constants.dart';
 import 'package:la_barber/features/common/auth/model/user_model.dart';
@@ -60,7 +63,7 @@ class DrawerAdminWidget extends StatelessWidget {
                     const SizedBox(width: 8),
                     Expanded(
                       child: Text(
-                        '${getIt<UserModel>().name} ${getIt<UserModel>().name}',
+                        getIt<UserModel>().name,
                         style: const TextStyle(
                           color: Colors.black,
                           fontSize: 24,
@@ -86,22 +89,35 @@ class DrawerAdminWidget extends StatelessWidget {
           DrawerTile(
             title: 'Barbeiros Registrados',
             icon: const Icon(Icons.list_alt_outlined),
-            onTap: () => Navigator.pop(context),
+            onTap: () {
+              context.pop();
+              context.pop();
+              context.pushNamed(Routes.barberListPage);
+            },
           ),
           DrawerTile(
             title: 'Serviços Registrados',
             icon: const Icon(Icons.list),
-            onTap: () => Navigator.pop(context),
+            onTap: () {
+              context.pop();
+              context.pushNamed(Routes.servicoListPage);
+            },
           ),
           DrawerTile(
             title: 'Financeiro',
             icon: const Icon(Icons.auto_graph),
             onTap: () => Navigator.pop(context),
           ),
-          DrawerTile(
-            title: 'Unidades',
-            icon: const Icon(Icons.local_convenience_store_rounded),
-            onTap: () => Navigator.pop(context),
+          Visibility(
+            visible: getIt<UserModel>().userType == UserType.admin,
+            child: DrawerTile(
+              title: 'Unidades',
+              icon: const Icon(Icons.local_convenience_store_rounded),
+              onTap: () {
+                context.pop();
+                context.pushNamed(Routes.adminHomeBarberShop);
+              },
+            ),
           ),
           DrawerTile(
             title: 'Mensalistas',

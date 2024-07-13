@@ -2,11 +2,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:la_barber/core/constants/routes.dart';
+import 'package:la_barber/core/di/di.dart';
 import 'package:la_barber/core/ui/constants.dart';
 import 'package:la_barber/core/ui/helpers/context_extension.dart';
 import 'package:la_barber/core/ui/helpers/form_helper.dart';
 import 'package:la_barber/core/ui/helpers/messages.dart';
 import 'package:la_barber/core/ui/widgets/dialog_utils.dart';
+import 'package:la_barber/features/common/auth/model/user_model.dart';
 import 'package:la_barber/features/common/auth/presentation/cubits/auth_cubit.dart';
 import 'package:validatorless/validatorless.dart';
 
@@ -45,7 +47,12 @@ class _LoginPageState extends State<LoginPage> {
         } else if (state is AuthStateSuccess) {
           hideLoadingDialog(context); // Pop dialog
           context.showSuccess('Deu certo o Login');
-          Navigator.of(context).pushNamedAndRemoveUntil(Routes.adminHomeBarberShop, (route) => false);
+          if (getIt<UserModel>().userType == UserType.admin) {
+            //  context.pushNamed(Routes.barberListPage, arguments: barberShop);
+            Navigator.of(context).pushNamedAndRemoveUntil(Routes.adminHomeBarberShop, (route) => false);
+          } else if (getIt<UserModel>().userType == UserType.manager) {
+            Navigator.of(context).pushNamedAndRemoveUntil(Routes.barberListPage, (route) => false);
+          }
         } else if (state is AuthStateLoaging) {
           context.showLoadingDialog(context, message: "Loading");
 

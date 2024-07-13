@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:la_barber/core/formatters.dart';
+import 'package:la_barber/core/utils/formatters.dart';
 import 'package:la_barber/core/ui/constants.dart';
 
 class WeekdaysPanel extends StatelessWidget {

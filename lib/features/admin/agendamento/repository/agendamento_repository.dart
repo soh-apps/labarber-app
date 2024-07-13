@@ -1,3 +1,5 @@
+// ignore_for_file: unused_field
+
 import 'package:la_barber/core/restClient/rest_client.dart';
 
 class AgendamentoRepository {

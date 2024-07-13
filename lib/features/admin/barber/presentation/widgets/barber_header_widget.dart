@@ -10,9 +10,10 @@ import 'package:la_barber/core/ui/barbershop_icons.dart';
 import 'package:la_barber/core/ui/barbershop_nav_global_key.dart';
 import 'package:la_barber/core/ui/constants.dart';
 import 'package:la_barber/core/ui/widgets/dialog_utils.dart';
+import 'package:la_barber/features/admin/barbershop/presentation/cubit/barbershop_cubit.dart';
 import 'package:la_barber/features/common/auth/model/user_model.dart';
 
-class BarberHeaderWidget extends StatelessWidget {
+class BarberHeaderWidget extends StatefulWidget {
   final bool showFilter;
   final String title;
   final GlobalKey<ScaffoldState> scaffoldKey;
@@ -23,6 +24,17 @@ class BarberHeaderWidget extends StatelessWidget {
     required this.title,
     required this.scaffoldKey,
   });
+
+  @override
+  State<BarberHeaderWidget> createState() => _BarberHeaderWidgetState();
+}
+
+class _BarberHeaderWidgetState extends State<BarberHeaderWidget> {
+  @override
+  void initState() {
+    super.initState();
+    getIt<BarbershopCubit>().getBarberShopData(0);
+  }
 
   Future<void> logout(BuildContext context) async {
     showLoadingDialog(context, message: "Loading");
@@ -68,7 +80,7 @@ class BarberHeaderWidget extends StatelessWidget {
               GestureDetector(
                 onTap: () {
                   log('CLicado');
-                  scaffoldKey.currentState?.openDrawer();
+                  widget.scaffoldKey.currentState?.openDrawer();
                 },
                 child: const CircleAvatar(
                   backgroundColor: Color(0xffbdbdbd),
@@ -119,7 +131,7 @@ class BarberHeaderWidget extends StatelessWidget {
           ),
           Center(
             child: Text(
-              title,
+              widget.title,
               style: const TextStyle(
                 color: Colors.white,
                 fontWeight: FontWeight.w600,
@@ -128,13 +140,13 @@ class BarberHeaderWidget extends StatelessWidget {
             ),
           ),
           Offstage(
-            offstage: !showFilter,
+            offstage: !widget.showFilter,
             child: const SizedBox(
               height: 24,
             ),
           ),
           Offstage(
-            offstage: !showFilter,
+            offstage: !widget.showFilter,
             child: TextFormField(
               decoration: const InputDecoration(
                 label: Text('Buscar Unidade'),

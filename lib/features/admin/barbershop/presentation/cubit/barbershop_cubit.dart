@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:la_barber/core/di/di.dart';
 import 'package:la_barber/core/restClient/either.dart';
 import 'package:la_barber/features/admin/barbershop/repository/barbershop_repository.dart';
 import 'package:la_barber/features/admin/barbershop/repository/models/barbershop_model.dart';
@@ -48,6 +49,20 @@ class BarbershopCubit extends Cubit<BarbershopState> {
         emit(BarbershopSuccess());
       case Failure():
         emit(BarbershopFailure(errorMessage: mensagem));
+    }
+  }
+
+  Future<void> getBarberShopData(int companyId) async {
+    emit(BarbershopLoading());
+    final result = await barbershopRepository.getBarberShopData(companyId);
+
+    switch (result) {
+      case Success():
+        final BarbershopModel barberShop = result.value;
+        getIt.registerSingleton<BarbershopModel>(barberShop);
+        emit(BarbershopSuccess());
+      case Failure():
+        emit(const BarbershopFailure(errorMessage: 'Erro ao buscar dados da Barbearia'));
     }
   }
 

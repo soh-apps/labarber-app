@@ -1,5 +1,5 @@
 class BarberModel {
-  final String? id;
+  final int? id;
   final String? username;
   final String? email;
   final String? password;
@@ -54,7 +54,7 @@ class BarberModel {
 
   factory BarberModel.fromMap(Map<String, dynamic> map) {
     return BarberModel(
-      id: map['id'] ?? '',
+      id: map['id'] ?? 0,
       username: map['username'] ?? '',
       email: map['email'] ?? '',
       password: map['password'],
@@ -66,7 +66,7 @@ class BarberModel {
       telefone: map['telefone'],
       complement: map['complement'],
       zipCode: map['zipCode'],
-      commissioned: map['commissioned'],
+      commissioned: map['commissioned'] ?? false,
       barberUnitId: map['barberUnitId']?.toInt() ?? 0,
       isManager: map['isManager'] ?? false,
     );

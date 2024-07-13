@@ -1,7 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:dio/io.dart';
 import 'package:la_barber/core/restClient/interceptors/auth_interceptor.dart';
-import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
 final class RestClient extends DioForNative {
   RestClient()

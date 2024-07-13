@@ -1,5 +1,5 @@
 class ServicoModel {
-  final String? idServico;
+  final int? idServico;
   final String nome;
   final String urlImagem;
   final String? descricao;
@@ -39,7 +39,7 @@ class ServicoModel {
 
   factory ServicoModel.fromMap(Map<String, dynamic> map) {
     return ServicoModel(
-      idServico: map['id'] as String,
+      idServico: map['id'] ?? 0,
       nome: map['name'] as String,
       urlImagem: map['urlImage'] != null ? map['urlImage'] as String : '',
       tempoServico: map['timeToComplete'] != null ? map['timeToComplete'] as String : '',

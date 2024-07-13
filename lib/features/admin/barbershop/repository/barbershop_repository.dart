@@ -35,6 +35,26 @@ class BarbershopRepository {
     }
   }
 
+  Future<Either<AuthException, BarbershopModel>> getBarberShopData(int companyId) async {
+    try {
+      final Response response = await _restClient.auth.get(
+        '/api/BarberShop/GetBarberShopData?barberUnitId=$companyId',
+      );
+      var barberShop = BarbershopModel.fromMap(response.data);
+      return Success(barberShop);
+    } on DioException catch (e, s) {
+      if (e.response != null) {
+        final Response response = e.response!;
+        if (response.statusCode == 400) {
+          log('Erro ao busca dados da Barbearia', error: e, stackTrace: s);
+          return Failure(AuthUnauthorizedException());
+        }
+      }
+      log('Erro ao buscar Barbeiros', error: e, stackTrace: s);
+      return Failure(AuthError(message: 'Erro ao buscar dados da Barbearia'));
+    }
+  }
+
   Future<Either<AuthException, List<BarbershopModel>>> getAllCompanies() async {
     try {
       final Response response = await _restClient.auth.get(

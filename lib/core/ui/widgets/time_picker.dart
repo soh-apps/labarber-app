@@ -6,10 +6,10 @@ class TimePickerButton extends StatefulWidget {
   const TimePickerButton({super.key, required this.onTimeChanged});
 
   @override
-  _TimePickerButtonState createState() => _TimePickerButtonState();
+  TimePickerButtonState createState() => TimePickerButtonState();
 }
 
-class _TimePickerButtonState extends State<TimePickerButton> {
+class TimePickerButtonState extends State<TimePickerButton> {
   late TimeOfDay _selectedTime;
 
   @override

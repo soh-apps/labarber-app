@@ -28,7 +28,7 @@ class CaixaSelecaoBarbeiros extends StatelessWidget {
         },
         items: listaBarbeiros.map((barbeiro) {
           return DropdownMenuItem<String>(
-            value: barbeiro.id, // Valor associado ao barbeiro (pode ser o nome ou o ID)
+            value: barbeiro.id.toString(), // Valor associado ao barbeiro (pode ser o nome ou o ID)
             child: Text(barbeiro.name),
           );
         }).toList(),

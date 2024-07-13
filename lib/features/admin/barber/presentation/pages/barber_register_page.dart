@@ -8,6 +8,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:la_barber/core/ui/helpers/context_extension.dart';
 import 'package:la_barber/core/ui/widgets/custom_check_box.dart';
 import 'package:la_barber/core/ui/widgets/image_picker.dart';
+import 'package:la_barber/core/utils/formatters.dart';
 import 'package:la_barber/features/admin/barber/presentation/cubit/barber_cubit.dart';
 import 'package:la_barber/features/admin/barber/repository/models/barber_model.dart';
 import 'package:la_barber/features/admin/barbershop/repository/models/barbershop_model.dart';
@@ -34,6 +35,7 @@ class _BarberRegisterPageState extends State<BarberRegisterPage> {
 
   final usernameEC = TextEditingController();
   final passwordEC = TextEditingController();
+  final ufEC = TextEditingController();
   final cityEC = TextEditingController();
   final stateEC = TextEditingController();
   final streetEC = TextEditingController();
@@ -45,7 +47,6 @@ class _BarberRegisterPageState extends State<BarberRegisterPage> {
   final emailEC = TextEditingController();
   final telefoneEC = TextEditingController();
   final cepEC = TextEditingController();
-  final numeroEC = TextEditingController();
 
   File? _selectedImage;
   late BarbershopModel barberUnitId;
@@ -62,8 +63,8 @@ class _BarberRegisterPageState extends State<BarberRegisterPage> {
   void dispose() {
     nomeEC.dispose();
     telefoneEC.dispose();
+    ufEC.dispose();
     cepEC.dispose();
-    numeroEC.dispose();
     usernameEC.dispose();
     passwordEC.dispose();
     cityEC.dispose();
@@ -96,6 +97,15 @@ class _BarberRegisterPageState extends State<BarberRegisterPage> {
           context.showLoadingDialog(context, message: "Loading");
         } else if (state is BarberFailure) {
           context.hideLoadingDialog(context);
+          context.showError(state.errorMessage);
+        } else if (state is BarberCepSuccess) {
+          context.hideLoadingDialog(context);
+          setState(() {
+            cityEC.text = widget.barberCubit.cepModel?.localidade ?? cityEC.text;
+            stateEC.text = widget.barberCubit.cepModel?.uf ?? stateEC.text;
+            streetEC.text = widget.barberCubit.cepModel?.logradouro ?? streetEC.text;
+          });
+        } else if (state is BarberCepFailure) {
           context.showError(state.errorMessage);
         }
       },
@@ -226,6 +236,11 @@ class _BarberRegisterPageState extends State<BarberRegisterPage> {
                   decoration: const InputDecoration(
                     label: Text('CEP'),
                   ),
+                  onChanged: (value) {
+                    if (value.length == 10) {
+                      widget.barberCubit.getByCEP(Formatters.formatCep(value));
+                    }
+                  },
                   inputFormatters: [
                     FilteringTextInputFormatter.digitsOnly,
                     CepInputFormatter(),
@@ -235,11 +250,12 @@ class _BarberRegisterPageState extends State<BarberRegisterPage> {
                 const SizedBox(height: 22),
                 TextFormField(
                   onTapOutside: (_) => context.unfocus(),
-                  controller: streetEC,
+                  controller: stateEC,
                   decoration: const InputDecoration(
                     label: Text('Estado'),
                     hintText: 'EX: SP, RJ, etc...',
                   ),
+                  maxLength: 2,
                 ),
                 const SizedBox(height: 22),
                 TextFormField(
@@ -278,7 +294,7 @@ class _BarberRegisterPageState extends State<BarberRegisterPage> {
                             name: nomeEC.text,
                             email: emailEC.text,
                             telefone: telefoneEC.text,
-                            zipCode: cepEC.text,
+                            zipCode: Formatters.formatCep(cepEC.text),
                             street: streetEC.text,
                             number: numberEC.text,
                             complement: complementEC.text,

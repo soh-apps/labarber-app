@@ -100,7 +100,7 @@ class Mocks {
 
   static List<BarberModel> barberList = [
     BarberModel(
-      id: '1',
+      id: 1,
       username: 'john_barber',
       email: 'john.barber@example.com',
       password: 'password123',
@@ -116,7 +116,7 @@ class Mocks {
       isManager: true,
     ),
     BarberModel(
-      id: '2',
+      id: 2,
       username: 'jane_doe',
       email: 'jane.doe@example.com',
       password: 'securePass456',
@@ -132,7 +132,7 @@ class Mocks {
       isManager: false,
     ),
     BarberModel(
-      id: '3',
+      id: 3,
       username: 'alex_hair',
       email: 'alex.hair@example.com',
       password: 'haircut789',
@@ -148,7 +148,7 @@ class Mocks {
       isManager: false,
     ),
     BarberModel(
-      id: '4',
+      id: 4,
       username: 'chris_style',
       email: 'chris.style@example.com',
       password: 'stylePass321',
@@ -164,7 +164,7 @@ class Mocks {
       isManager: true,
     ),
     BarberModel(
-      id: '5',
+      id: 5,
       username: 'samuel_cuts',
       email: 'samuel.cuts@example.com',
       password: 'cuts1234',
@@ -183,7 +183,7 @@ class Mocks {
 
   static List<ServicoModel> servicosList = [
     ServicoModel(
-      idServico: '1',
+      idServico: 1,
       nome: 'Corte de Cabelo',
       urlImagem: 'assets/images/corte_cabelo.png',
       valor: 30.0,
@@ -194,7 +194,7 @@ class Mocks {
       isAtivo: false,
     ),
     ServicoModel(
-      idServico: '2',
+      idServico: 2,
       nome: 'Barba',
       urlImagem: 'assets/images/barba.png',
       valor: 20.0,
@@ -205,7 +205,7 @@ class Mocks {
       isAtivo: false,
     ),
     ServicoModel(
-      idServico: '3',
+      idServico: 3,
       nome: 'Manicure',
       urlImagem: 'assets/images/manicure.png',
       valor: 25.0,
@@ -216,7 +216,7 @@ class Mocks {
       isAtivo: false,
     ),
     ServicoModel(
-      idServico: '4',
+      idServico: 4,
       nome: 'Pedicure',
       urlImagem: 'assets/images/pedicure.png',
       valor: 28.0,
@@ -226,7 +226,7 @@ class Mocks {
       isAtivo: false,
     ),
     ServicoModel(
-      idServico: '5',
+      idServico: 5,
       nome: 'Coloração',
       urlImagem: 'assets/images/coloracao.png',
       valor: 45.0,
@@ -240,7 +240,7 @@ class Mocks {
   static List<AgendamentoModel> agendamentosList = [
     AgendamentoModel()
     // ServicoModel(
-    //   idServico: '1',
+    //   idServico: 1,
     //   nome: 'Corte de Cabelo',
     //   urlImagem: 'assets/images/corte_cabelo.png',
     //   valor: 30.0,

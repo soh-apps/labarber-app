@@ -13,9 +13,21 @@ final class BarberLoading extends BarberState {}
 
 final class BarberSuccess extends BarberState {}
 
+final class BarberCepSuccess extends BarberState {}
+
 final class BarberFailure extends BarberState {
   final String errorMessage;
   const BarberFailure({
+    required this.errorMessage,
+  });
+
+  @override
+  List<Object> get props => [errorMessage];
+}
+
+final class BarberCepFailure extends BarberState {
+  final String errorMessage;
+  const BarberCepFailure({
     required this.errorMessage,
   });
 

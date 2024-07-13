@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:la_barber/core/constants/routes.dart';
@@ -25,33 +23,41 @@ class ServicosListPage extends StatefulWidget {
 }
 
 class _ServicosListPageState extends State<ServicosListPage> {
-  late BarbershopModel barberShop;
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
+  // @override
+  // void didChangeDependencies() {
+  //   super.didChangeDependencies();
+  //   // barberShop = ModalRoute.of(context)!.settings.arguments as BarbershopModel;
+  //   // barberShop = BarbershopModel(
+  //   //   id: 2,
+  //   //   name: 'Barbearia do Zé',
+  //   //   address: 'Rua do Zé, 123',
+  //   //   phone: '123456789',
+  //   //   email: '',
+  //   //   logo: '',
+  //   //   website: '',
+  //   //   description: '',
+  //   // );
+
+  //   // Registrando barberShop como singleton no get_it
+  //   // getIt.registerSingleton<BarbershopModel>(barberShop);
+
+  //   widget.servicoCubit.getAllServicos(0);
+  // }
+  String title = '';
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    // barberShop = ModalRoute.of(context)!.settings.arguments as BarbershopModel;
-    // barberShop = BarbershopModel(
-    //   id: 2,
-    //   name: 'Barbearia do Zé',
-    //   address: 'Rua do Zé, 123',
-    //   phone: '123456789',
-    //   email: '',
-    //   logo: '',
-    //   website: '',
-    //   description: '',
-    // );
+  void initState() {
+    widget.servicoCubit.getAllServicos(0);
 
-    // Registrando barberShop como singleton no get_it
-    getIt.registerSingleton<BarbershopModel>(barberShop);
-
-    widget.servicoCubit.getAllServicos(barberShop.id);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      title = getIt<BarbershopModel>().name;
+    });
+    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    log(barberShop.name);
     return SafeArea(
       child: Scaffold(
         key: scaffoldKey,
@@ -60,7 +66,7 @@ class _ServicosListPageState extends State<ServicosListPage> {
           child: Column(
             children: [
               ServicoHeaderWidget(
-                title: barberShop.name,
+                title: title,
               ),
               BlocBuilder<ServicoCubit, ServicoState>(
                 bloc: widget.servicoCubit,
@@ -71,7 +77,7 @@ class _ServicosListPageState extends State<ServicosListPage> {
                     if (widget.servicoCubit.servicos.isEmpty) {
                       return RefreshIndicator(
                         onRefresh: () async {
-                          widget.servicoCubit.getAllServicos(barberShop.id);
+                          widget.servicoCubit.getAllServicos(0);
                         },
                         child: SingleChildScrollView(
                           physics: const AlwaysScrollableScrollPhysics(),
@@ -95,7 +101,7 @@ class _ServicosListPageState extends State<ServicosListPage> {
                   } else {
                     return RefreshIndicator(
                       onRefresh: () async {
-                        widget.servicoCubit.getAllServicos(barberShop.id);
+                        widget.servicoCubit.getAllServicos(0);
                       },
                       child: SingleChildScrollView(
                         physics: const AlwaysScrollableScrollPhysics(),

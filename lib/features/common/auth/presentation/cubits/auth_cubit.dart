@@ -8,7 +8,7 @@ import 'package:get_it/get_it.dart';
 import 'package:la_barber/core/constants/local_secure_storage_key.dart';
 import 'package:la_barber/core/constants/local_storage_key.dart';
 import 'package:la_barber/core/exceptions/auth_exception.dart';
-import 'package:la_barber/core/formatters.dart';
+import 'package:la_barber/core/utils/formatters.dart';
 import 'package:la_barber/core/local_secure_storage/local_secure_storage.dart';
 import 'package:la_barber/core/restClient/either.dart';
 import 'package:la_barber/features/common/auth/model/user_model.dart';
