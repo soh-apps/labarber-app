@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:la_barber/core/constants/routes.dart';
 import 'package:la_barber/core/di/di.dart';
 import 'package:la_barber/core/ui/barbershop_icons.dart';
 import 'package:la_barber/core/ui/constants.dart';
+import 'package:la_barber/core/ui/helpers/context_extension.dart';
 import 'package:la_barber/features/admin/barber/presentation/cubit/barber_cubit.dart';
 import 'package:la_barber/features/admin/barber/presentation/widgets/barber_header_widget.dart';
 import 'package:la_barber/features/admin/barber/presentation/widgets/barber_tile.dart';
@@ -85,8 +87,40 @@ class _BarberListPageState extends State<BarberListPage> {
                     } else {}
                     return Expanded(
                       child: ListView.builder(
-                        itemCount: widget.barberCubit.barbers.length,
+                        itemCount: widget.barberCubit.barbers.length + 1,
                         itemBuilder: (BuildContext context, int index) {
+                          if (index == widget.barberCubit.barbers.length) {
+                            return Container(
+                                margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 24),
+                                padding: const EdgeInsets.all(10),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(8),
+                                  border: Border.all(color: ColorConstants.colorBrown),
+                                ),
+                                child: GestureDetector(
+                                  onTap: () {
+                                    context.pushNamed(Routes.adminRegisterBarber);
+                                  },
+                                  child: const Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        'Adicionar Barbeiro',
+                                        style: TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 16, // Ajuste o tamanho da fonte conforme necessário
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      Icon(
+                                        BarbershopIcons.addEmplyeee,
+                                        size: 48,
+                                        color: Colors.green,
+                                      ),
+                                    ],
+                                  ),
+                                ));
+                          }
                           return BarberTile(barber: widget.barberCubit.barbers[index]);
                         },
                       ),
@@ -114,18 +148,27 @@ class _BarberListPageState extends State<BarberListPage> {
             ],
           ),
         ),
-        floatingActionButton: FloatingActionButton(
-          shape: const CircleBorder(),
-          backgroundColor: ColorConstants.colorBrown,
-          onPressed: () {
-            // context.pushNamed(Routes.adminRegisterBarber, arguments: barberShop);
-          },
-          child: const CircleAvatar(
-            backgroundColor: Colors.white,
-            maxRadius: 12,
-            child: Icon(
-              BarbershopIcons.addEmplyeee,
-              color: ColorConstants.colorBrown,
+        floatingActionButton: Padding(
+          padding: const EdgeInsets.only(bottom: 16),
+          child: SizedBox(
+            height: 50,
+            width: 140,
+            child: FloatingActionButton(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(16),
+              ),
+              backgroundColor: ColorConstants.colorBrown,
+              onPressed: () {
+                context.pushNamed(Routes.adminRegisterBarber);
+              },
+              child: const Text(
+                'AGENDAR',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
             ),
           ),
         ),

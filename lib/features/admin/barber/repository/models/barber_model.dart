@@ -11,6 +11,7 @@ class BarberModel {
   final String? telefone;
   final String? complement;
   final String? zipCode;
+  final String? imageUrl;
   final bool commissioned;
   final int barberUnitId;
   final bool isManager;
@@ -26,6 +27,7 @@ class BarberModel {
     this.number,
     this.telefone,
     this.complement,
+    this.imageUrl,
     this.zipCode,
     required this.commissioned,
     required this.barberUnitId,
@@ -49,6 +51,7 @@ class BarberModel {
       'commissioned': commissioned,
       'barberUnitId': barberUnitId,
       'isManager': isManager,
+      // 'imageUrl': imageUrl,
     };
   }
 
@@ -58,6 +61,7 @@ class BarberModel {
       username: map['username'] ?? '',
       email: map['email'] ?? '',
       password: map['password'],
+      imageUrl: map['imageUrl'],
       name: map['name'] ?? '',
       city: map['city'],
       state: map['state'],

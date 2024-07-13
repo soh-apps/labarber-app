@@ -4,7 +4,9 @@ import 'dart:io';
 import 'package:brasil_fields/brasil_fields.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:la_barber/core/di/di.dart';
 import 'package:la_barber/core/ui/helpers/context_extension.dart';
 import 'package:la_barber/core/ui/widgets/custom_check_box.dart';
 import 'package:la_barber/core/ui/widgets/image_picker.dart';
@@ -49,14 +51,15 @@ class _BarberRegisterPageState extends State<BarberRegisterPage> {
   final cepEC = TextEditingController();
 
   File? _selectedImage;
-  late BarbershopModel barberUnitId;
+  // late BarbershopModel barberUnitId;
   bool isComoissioned = true;
   bool isManager = true;
+  String barberName = '';
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    barberUnitId = ModalRoute.of(context)!.settings.arguments as BarbershopModel;
+    // barberUnitId = ModalRoute.of(context)!.settings.arguments as BarbershopModel;
   }
 
   @override
@@ -81,6 +84,20 @@ class _BarberRegisterPageState extends State<BarberRegisterPage> {
     setState(() {
       _selectedImage = image;
     });
+  }
+
+  @override
+  void initState() {
+    // Verifica se a instância está registrada no getIt
+    if (getIt.isRegistered<BarbershopModel>()) {
+      try {
+        barberName = getIt<BarbershopModel>().name;
+      } catch (e) {
+        // Loga o erro ou trata de outra forma necessária
+        print('Erro ao obter o nome do barbeiro: $e');
+      }
+    }
+    super.initState();
   }
 
   @override
@@ -119,12 +136,15 @@ class _BarberRegisterPageState extends State<BarberRegisterPage> {
             child: Form(
               key: formKey,
               child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                Center(
-                  child: Text(
-                    'UNIDADE - ${barberUnitId.name}',
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18,
+                Visibility(
+                  visible: barberName.isNotEmpty,
+                  child: Center(
+                    child: Text(
+                      'UNIDADE - $barberName',
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
+                      ),
                     ),
                   ),
                 ),
@@ -303,7 +323,7 @@ class _BarberRegisterPageState extends State<BarberRegisterPage> {
                             username: usernameEC.text,
                             password: passwordEC.text,
                             commissioned: isComoissioned,
-                            barberUnitId: barberUnitId.id,
+                            barberUnitId: 0,
                             isManager: isManager,
                             // image: _selectedImage,
                           );
