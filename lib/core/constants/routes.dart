@@ -1,14 +1,21 @@
 class Routes {
   static const String login = '/auth/login';
-  static const String homeAdmin = '/home/adm';
-  static const String adminHomeBarberShop = '/home/barbershop';
-  static const String adminRegisterBarbershop = 'admin/barbershop/register';
-  static const String adminRegisterBarber = 'admin/barber/register';
+  // BarberShop
+  static const String barberShopList = '/barbershop/list';
+  static const String barbershopRegister = 'barbershop/register';
+  static const String barbershopEdit = 'barbershop/edit';
+
+  // Barber
+  static const String barberRegister = 'barber/register';
   static const String barberListPage = '/barber/list';
   static const String barberDetailPage = '/barber/detail';
+
+  // Servicos
   static const String servicoListPage = '/servico/list';
   static const String servicoRegisterPage = '/servico/register';
   static const String servicoEditPage = '/servico/edit';
   static const String servicoDetailPage = '/servico/detail';
+
+  // Agendamento
   static const String agendamentoRapidoPage = '/agendamento/agendamento-rapido';
 }

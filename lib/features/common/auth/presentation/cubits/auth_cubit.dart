@@ -76,7 +76,7 @@ class AuthCubit extends Cubit<AuthState> {
 
     switch (loginResult) {
       case Success():
-        saveLocalUser(loginResult.value);
+        await saveLocalUser(loginResult.value);
 
         emit(AuthStateSuccess(userType: loginResult.value.userType!));
 

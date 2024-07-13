@@ -115,7 +115,7 @@ class DrawerAdminWidget extends StatelessWidget {
               icon: const Icon(Icons.local_convenience_store_rounded),
               onTap: () {
                 context.pop();
-                context.pushNamed(Routes.adminHomeBarberShop);
+                context.pushNamed(Routes.barberShopList);
               },
             ),
           ),

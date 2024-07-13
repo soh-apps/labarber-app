@@ -47,11 +47,13 @@ class _LoginPageState extends State<LoginPage> {
         } else if (state is AuthStateSuccess) {
           hideLoadingDialog(context); // Pop dialog
           context.showSuccess('Deu certo o Login');
-          if (getIt<UserModel>().userType == UserType.admin) {
-            //  context.pushNamed(Routes.barberListPage, arguments: barberShop);
-            Navigator.of(context).pushNamedAndRemoveUntil(Routes.adminHomeBarberShop, (route) => false);
+          if (state.userType == UserType.admin) {
+            Navigator.of(context).pushNamedAndRemoveUntil(Routes.barberShopList, (route) => false);
           } else if (getIt<UserModel>().userType == UserType.manager) {
             Navigator.of(context).pushNamedAndRemoveUntil(Routes.barberListPage, (route) => false);
+          } else {
+            //! TODO: Implementar a rota para o cliente
+            // Navigator.of(context).pushNamedAndRemoveUntil(Routes.barberListPage, (route) => false);
           }
         } else if (state is AuthStateLoaging) {
           context.showLoadingDialog(context, message: "Loading");

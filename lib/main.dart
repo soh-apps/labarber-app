@@ -49,9 +49,9 @@ class _MainAppState extends State<MainApp> {
 
       routes: {
         Routes.login: (context) => LoginPage(authCubit: authCubit),
-        Routes.adminHomeBarberShop: (_) => BarbershopListPage(barbershopCubit: getIt()),
-        Routes.adminRegisterBarber: (_) => BarberRegisterPage(barberCubit: getIt()),
-        Routes.adminRegisterBarbershop: (_) => BarbershopRegisterPage(barbershopCubit: getIt()),
+        Routes.barberShopList: (_) => BarbershopListPage(barbershopCubit: getIt()),
+        Routes.barberRegister: (_) => BarberRegisterPage(barberCubit: getIt()),
+        Routes.barbershopRegister: (_) => BarbershopRegisterPage(barbershopCubit: getIt()),
         Routes.barberListPage: (_) => BarberListPage(barberCubit: getIt()),
         Routes.barberDetailPage: (_) => const BarberDetailPage(),
         Routes.servicoListPage: (_) => ServicosListPage(servicoCubit: getIt()),

@@ -5,10 +5,10 @@ import 'package:la_barber/core/ui/constants.dart';
 import 'package:la_barber/core/ui/helpers/context_extension.dart';
 import 'package:la_barber/features/admin/barbershop/repository/models/barbershop_model.dart';
 
-class BarbershopHomeTile extends StatelessWidget {
+class BarbershopTile extends StatelessWidget {
   final BarbershopModel barberShop;
 
-  const BarbershopHomeTile({
+  const BarbershopTile({
     super.key,
     required this.barberShop,
   });

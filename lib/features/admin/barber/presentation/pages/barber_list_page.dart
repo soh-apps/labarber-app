@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:la_barber/core/constants/routes.dart';
@@ -90,17 +92,17 @@ class _BarberListPageState extends State<BarberListPage> {
                         itemCount: widget.barberCubit.barbers.length + 1,
                         itemBuilder: (BuildContext context, int index) {
                           if (index == widget.barberCubit.barbers.length) {
-                            return Container(
-                                margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 24),
-                                padding: const EdgeInsets.all(10),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(8),
-                                  border: Border.all(color: ColorConstants.colorBrown),
-                                ),
-                                child: GestureDetector(
-                                  onTap: () {
-                                    context.pushNamed(Routes.adminRegisterBarber);
-                                  },
+                            return GestureDetector(
+                              onTap: () {
+                                context.pushNamed(Routes.barberRegister);
+                              },
+                              child: Container(
+                                  margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 24),
+                                  padding: const EdgeInsets.all(10),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(8),
+                                    border: Border.all(color: ColorConstants.colorBrown),
+                                  ),
                                   child: const Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
@@ -118,8 +120,8 @@ class _BarberListPageState extends State<BarberListPage> {
                                         color: Colors.green,
                                       ),
                                     ],
-                                  ),
-                                ));
+                                  )),
+                            );
                           }
                           return BarberTile(barber: widget.barberCubit.barbers[index]);
                         },
@@ -159,7 +161,8 @@ class _BarberListPageState extends State<BarberListPage> {
               ),
               backgroundColor: ColorConstants.colorBrown,
               onPressed: () {
-                context.pushNamed(Routes.adminRegisterBarber);
+                log('Agendar');
+                // context.pushNamed(Routes.adminRegisterBarber);
               },
               child: const Text(
                 'AGENDAR',

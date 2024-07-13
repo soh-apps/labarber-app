@@ -53,7 +53,7 @@ class _BarbershopListPageState extends State<BarbershopListPage> {
                       child: ListView.builder(
                         itemCount: widget.barbershopCubit.barberUnits.length,
                         itemBuilder: (BuildContext context, int index) {
-                          return BarbershopHomeTile(barberShop: widget.barbershopCubit.barberUnits[index]);
+                          return BarbershopTile(barberShop: widget.barbershopCubit.barberUnits[index]);
                         },
                       ),
                     );
@@ -82,7 +82,7 @@ class _BarbershopListPageState extends State<BarbershopListPage> {
           shape: const CircleBorder(),
           backgroundColor: ColorConstants.colorBrown,
           onPressed: () {
-            context.pushNamed(Routes.adminRegisterBarbershop);
+            context.pushNamed(Routes.barbershopRegister);
           },
           child: const CircleAvatar(
             backgroundColor: Colors.white,
