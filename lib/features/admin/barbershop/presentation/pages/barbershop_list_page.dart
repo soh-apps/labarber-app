@@ -84,7 +84,7 @@ class _BarbershopListPageState extends State<BarbershopListPage> {
           shape: const CircleBorder(),
           backgroundColor: ColorConstants.colorBrown,
           onPressed: () {
-            context.pushNamed(Routes.barbershopRegister);
+            context.pushNamed(Routes.barbershopRegister).then((value) => widget.barbershopCubit.getAllCompanies());
           },
           child: const CircleAvatar(
             backgroundColor: Colors.white,
