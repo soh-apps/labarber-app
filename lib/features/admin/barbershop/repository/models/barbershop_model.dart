@@ -62,7 +62,7 @@ class BarbershopModel {
       'number': number,
       'complement': complement,
       'zipCode': zipCode,
-      'workingHours': workingHours,
+      'availabilities': workingHours,
     };
   }
 
@@ -81,8 +81,8 @@ class BarbershopModel {
       number: map['number'] ?? '',
       complement: map['complement'] ?? '',
       zipCode: map['zipCode'] ?? '',
-      workingHours: map['workingHours'] != null
-          ? List<WorkingHour>.from(map['workingHours'].map((x) => WorkingHour.fromJson(x)))
+      workingHours: map['availabilities'] != null
+          ? List<WorkingHour>.from(map['availabilities'].map((x) => WorkingHour.fromJson(x)))
           : null,
     );
   }

@@ -38,7 +38,7 @@ class BarbershopRepository {
   Future<Either<AuthException, BarbershopModel>> getBarberShopData(int companyId) async {
     try {
       final Response response = await _restClient.auth.get(
-        '/api/BarberShop/GetBarberShopData?barberUnitId=$companyId',
+        '/api/BarberUnit/$companyId',
       );
       var barberShop = BarbershopModel.fromMap(response.data);
       return Success(barberShop);
@@ -81,7 +81,7 @@ class BarbershopRepository {
         '/api/BarberUnit/Create',
         data: barberShop.toMapv0(),
       );
-      if (response.statusCode == 200) {
+      if (response.statusCode == 201) {
         return Success(response.data);
       } else {
         return Failure(RepositoryError(message: 'Erro ao Cadastrar Unidade'));

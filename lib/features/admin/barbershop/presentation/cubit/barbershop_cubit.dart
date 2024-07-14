@@ -66,6 +66,18 @@ class BarbershopCubit extends Cubit<BarbershopState> {
     }
   }
 
+  Future<void> getBarbershopDetail(int companyId) async {
+    emit(BarbershopLoading());
+    final result = await barbershopRepository.getBarberShopData(companyId);
+
+    switch (result) {
+      case Success():
+        emit(BarbershopActualSuccess(barbershop: result.value));
+      case Failure():
+        emit(const BarbershopFailure(errorMessage: 'Erro ao buscar dados da Barbearia'));
+    }
+  }
+
   Future<void> getByCEP(String cep) async {
     emit(BarbershopLoading());
 

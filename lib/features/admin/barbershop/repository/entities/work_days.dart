@@ -21,8 +21,10 @@ class WorkDays {
 
   // Método para converter lista de WorkDays em lista de WorkingHour
   static List<WorkingHour> convertWorkDaysToWorkingHours(List<WorkDays> workDaysList) {
-    // Agrupar WorkDays por períodos de trabalho
+    // Agrupar WorkDays por períodos de trabalho e intervalos
     Map<String, List<int>> periodMap = {};
+    Map<String, List<int>> breakMap = {};
+
     for (var workDay in workDaysList) {
       if (workDay.isWork && workDay.startTime != null && workDay.endTime != null) {
         String periodKey = '${workDay.startTime}-${workDay.endTime}';
@@ -31,19 +33,81 @@ class WorkDays {
         }
         periodMap[periodKey]!.add(workDay.numberDay);
       }
+
+      if (workDay.isAlmoco && workDay.breakStartTime != null && workDay.breakEndTime != null) {
+        String breakKey = '${workDay.breakStartTime}-${workDay.breakEndTime}';
+        if (!breakMap.containsKey(breakKey)) {
+          breakMap[breakKey] = [];
+        }
+        breakMap[breakKey]!.add(workDay.numberDay);
+      }
     }
 
-    // Criar lista de WorkingHour a partir do mapa agrupado
+    // Criar lista de WorkingHour a partir dos mapas agrupados
     List<WorkingHour> workingHoursList = [];
-    periodMap.forEach((key, value) {
+
+    // Adicionar períodos de trabalho normais e considerar intervalos de almoço
+    periodMap.forEach((key, days) {
       var times = key.split('-');
-      workingHoursList.add(
-        WorkingHour(
-          workingDays: value,
-          startingHour: times[0],
-          endingHour: times[1],
-        ),
-      );
+      String start = times[0];
+      String end = times[1];
+
+      bool addedNormalPeriod = false;
+
+      // Processar intervalos de almoço
+      breakMap.forEach((breakKey, breakDays) {
+        var breakTimes = breakKey.split('-');
+        String breakStart = breakTimes[0];
+        String breakEnd = breakTimes[1];
+
+        // Verificar se os dias de intervalo de almoço coincidem com os dias de trabalho
+        List<int> overlappingDays = breakDays.where((day) => days.contains(day)).toList();
+        if (overlappingDays.isNotEmpty) {
+          // Adicionar período antes do intervalo de almoço
+          workingHoursList.add(
+            WorkingHour(
+              workingDays: overlappingDays,
+              startingHour: start,
+              endingHour: breakStart,
+            ),
+          );
+
+          // Adicionar período após o intervalo de almoço
+          workingHoursList.add(
+            WorkingHour(
+              workingDays: overlappingDays,
+              startingHour: breakEnd,
+              endingHour: end,
+            ),
+          );
+
+          // Remover os dias com intervalo de almoço da lista de dias normais
+          days.removeWhere((day) => overlappingDays.contains(day));
+        }
+      });
+
+      // Adicionar período normal para os dias restantes
+      if (days.isNotEmpty) {
+        workingHoursList.add(
+          WorkingHour(
+            workingDays: days,
+            startingHour: start,
+            endingHour: end,
+          ),
+        );
+        addedNormalPeriod = true;
+      }
+
+      // Se não adicionou período normal, considerar como intervalos de almoço
+      if (!addedNormalPeriod && breakMap.isEmpty) {
+        workingHoursList.add(
+          WorkingHour(
+            workingDays: days,
+            startingHour: start,
+            endingHour: end,
+          ),
+        );
+      }
     });
 
     return workingHoursList;

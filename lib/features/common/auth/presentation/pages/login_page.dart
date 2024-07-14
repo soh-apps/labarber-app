@@ -48,7 +48,7 @@ class _LoginPageState extends State<LoginPage> {
           hideLoadingDialog(context); // Pop dialog
           context.showSuccess('Deu certo o Login');
           if (state.userType == UserType.admin) {
-            Navigator.of(context).pushNamedAndRemoveUntil(Routes.barberShopList, (route) => false);
+            Navigator.of(context).pushNamedAndRemoveUntil(Routes.barbershopList, (route) => false);
           } else if (getIt<UserModel>().userType == UserType.manager) {
             Navigator.of(context).pushNamedAndRemoveUntil(Routes.barberListPage, (route) => false);
           } else {

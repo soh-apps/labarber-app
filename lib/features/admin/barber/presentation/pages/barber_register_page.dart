@@ -4,7 +4,6 @@ import 'dart:io';
 import 'package:brasil_fields/brasil_fields.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:la_barber/core/di/di.dart';
 import 'package:la_barber/core/ui/helpers/context_extension.dart';
@@ -94,7 +93,7 @@ class _BarberRegisterPageState extends State<BarberRegisterPage> {
         barberName = getIt<BarbershopModel>().name;
       } catch (e) {
         // Loga o erro ou trata de outra forma necessária
-        print('Erro ao obter o nome do barbeiro: $e');
+        log('Erro ao obter o nome do barbeiro: $e');
       }
     }
     super.initState();
@@ -328,10 +327,6 @@ class _BarberRegisterPageState extends State<BarberRegisterPage> {
                             // image: _selectedImage,
                           );
                           widget.barberCubit.registerBarber(barber);
-                        // barbershopRegisterVM.register(
-                        //     name: nameEC.text,
-                        //     email: emailEC.text,
-                        // );
                       }
                     },
                     child: const Text('CADASTRAR COLABORADOR'),

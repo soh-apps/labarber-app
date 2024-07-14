@@ -20,19 +20,19 @@ import 'package:la_barber/core/ui/helpers/messages.dart';
 import 'package:la_barber/core/ui/widgets/weekdays_panel.dart';
 import 'package:la_barber/features/admin/barbershop/presentation/cubit/barbershop_cubit.dart';
 
-class BarbershopRegisterPage extends StatefulWidget {
+class BarbershopEditPage extends StatefulWidget {
   final BarbershopCubit barbershopCubit;
 
-  const BarbershopRegisterPage({
+  const BarbershopEditPage({
     super.key,
     required this.barbershopCubit,
   });
 
   @override
-  State<BarbershopRegisterPage> createState() => _BarbershopRegisterPageState();
+  State<BarbershopEditPage> createState() => _BarbershopEditPageState();
 }
 
-class _BarbershopRegisterPageState extends State<BarbershopRegisterPage> {
+class _BarbershopEditPageState extends State<BarbershopEditPage> {
   final formKey = GlobalKey<FormState>();
   final nomeEC = TextEditingController();
   final telefoneEC = TextEditingController();
@@ -242,7 +242,7 @@ class _BarbershopRegisterPageState extends State<BarbershopRegisterPage> {
         if (state is BarbershopSuccess) {
           context.hideLoadingDialog(context);
           context.showSuccess('Unidade Cadastrada com Sucesso!');
-          context.pop();
+          // context.pop();
         } else if (state is BarbershopLoading) {
           context.showLoadingDialog(context);
         } else if (state is BarbershopFailure) {
@@ -495,8 +495,6 @@ class _BarbershopRegisterPageState extends State<BarbershopRegisterPage> {
                           );
 
                           widget.barbershopCubit.registerBarberShop(barbershop);
-
-                        // );
                       }
                     },
                     child: const Text('CADASTRAR ESTABELECIMENTO'),

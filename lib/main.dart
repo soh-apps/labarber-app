@@ -8,6 +8,7 @@ import 'package:la_barber/features/admin/agendamento/presentation/pages/agendame
 import 'package:la_barber/features/admin/barber/presentation/pages/barber_detail_page.dart';
 import 'package:la_barber/features/admin/barber/presentation/pages/barber_list_page.dart';
 import 'package:la_barber/features/admin/barber/presentation/pages/barber_register_page.dart';
+import 'package:la_barber/features/admin/barbershop/presentation/pages/barbershop_detalhes_page.dart';
 import 'package:la_barber/features/admin/barbershop/presentation/pages/barbershop_list_page.dart';
 import 'package:la_barber/features/admin/barbershop/presentation/pages/barbershop_register_page.dart';
 import 'package:la_barber/features/admin/servicos/presentation/pages/servico_detalhes_page.dart';
@@ -44,22 +45,29 @@ class _MainAppState extends State<MainApp> {
     return MaterialApp(
       theme: BarbershopTheme.themeData,
       initialRoute: Routes.login,
-      // initialRoute: Routes.servicoListPage,
       navigatorKey: BarbershopNavGlobalKey.instance.navKey,
-
       routes: {
+        // Login
         Routes.login: (context) => LoginPage(authCubit: authCubit),
-        Routes.barberShopList: (_) => BarbershopListPage(barbershopCubit: getIt()),
+
+        // BarberShop
+        Routes.barbershopList: (_) => BarbershopListPage(barbershopCubit: getIt()),
+        Routes.barbershopRegister: (_) => BarbershopEditPage(barbershopCubit: getIt()),
+        Routes.barbershopEdit: (_) => BarbershopEditPage(barbershopCubit: getIt()),
+        Routes.barbershopDetail: (_) => BarbershopDetalhesPage(barbershopCubit: getIt()),
+
+        // Barber
         Routes.barberRegister: (_) => BarberRegisterPage(barberCubit: getIt()),
-        Routes.barbershopRegister: (_) => BarbershopRegisterPage(barbershopCubit: getIt()),
         Routes.barberListPage: (_) => BarberListPage(barberCubit: getIt()),
         Routes.barberDetailPage: (_) => const BarberDetailPage(),
+
+        // Servicos
         Routes.servicoListPage: (_) => ServicosListPage(servicoCubit: getIt()),
         Routes.servicoRegisterPage: (_) => ServicoRegisterPage(servicoCubit: getIt()),
         Routes.servicoDetailPage: (_) => const ServicoDetalhesPage(),
-        Routes.agendamentoRapidoPage: (_) => AgendamentoRapidoPage(
-              agendamentoCubit: getIt(),
-            ),
+
+        // Agendamento
+        Routes.agendamentoRapidoPage: (_) => AgendamentoRapidoPage(agendamentoCubit: getIt()),
         Routes.servicoEditPage: (_) => ServicoEditPage(servicoCubit: getIt()),
       },
       home: const Scaffold(

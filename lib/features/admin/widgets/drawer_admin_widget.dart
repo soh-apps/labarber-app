@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:la_barber/core/constants/routes.dart';
 
 import 'package:la_barber/core/di/di.dart';
@@ -115,7 +114,7 @@ class DrawerAdminWidget extends StatelessWidget {
               icon: const Icon(Icons.local_convenience_store_rounded),
               onTap: () {
                 context.pop();
-                context.pushNamed(Routes.barberShopList);
+                context.pushNamed(Routes.barbershopList);
               },
             ),
           ),

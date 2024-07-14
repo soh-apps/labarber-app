@@ -58,16 +58,18 @@ class _BarbershopListPageState extends State<BarbershopListPage> {
                       ),
                     );
                   } else {
-                    return RefreshIndicator(
-                      onRefresh: widget.barbershopCubit.getAllCompanies,
-                      child: SingleChildScrollView(
-                        physics:
-                            const AlwaysScrollableScrollPhysics(), // Isso garante que o RefreshIndicator funcione mesmo que não haja scroll.
-                        child: SizedBox(
-                          height:
-                              MediaQuery.sizeOf(context).height / 2, // Isso garante que o Container ocupe a tela toda.
-                          child: const Center(
-                            child: Text('Error'),
+                    return Expanded(
+                      child: RefreshIndicator(
+                        onRefresh: widget.barbershopCubit.getAllCompanies,
+                        child: SingleChildScrollView(
+                          physics:
+                              const AlwaysScrollableScrollPhysics(), // Isso garante que o RefreshIndicator funcione mesmo que não haja scroll.
+                          child: SizedBox(
+                            height: MediaQuery.sizeOf(context).height /
+                                2, // Isso garante que o Container ocupe a tela toda.
+                            child: const Center(
+                              child: Text('Error'),
+                            ),
                           ),
                         ),
                       ),

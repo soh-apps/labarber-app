@@ -1,9 +1,10 @@
 class Routes {
   static const String login = '/auth/login';
   // BarberShop
-  static const String barberShopList = '/barbershop/list';
+  static const String barbershopList = '/barbershop/list';
   static const String barbershopRegister = 'barbershop/register';
   static const String barbershopEdit = 'barbershop/edit';
+  static const String barbershopDetail = 'barbershop/detail';
 
   // Barber
   static const String barberRegister = 'barber/register';

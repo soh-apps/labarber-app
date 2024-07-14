@@ -5,10 +5,12 @@ import 'package:la_barber/core/ui/styles/text_styles_typography.dart';
 class ServicesDetailTile extends StatelessWidget {
   final String title;
   final String content;
+  final double fontSize;
   const ServicesDetailTile({
     super.key,
     required this.title,
     required this.content,
+    this.fontSize = 22,
   });
 
   @override
@@ -26,7 +28,7 @@ class ServicesDetailTile extends StatelessWidget {
             padding: const EdgeInsets.all(12),
             child: Text(
               content,
-              style: AppTextStyles.titleLarge(),
+              style: AppTextStyles.titleLarge().copyWith(fontSize: fontSize),
             ),
           ),
         ],

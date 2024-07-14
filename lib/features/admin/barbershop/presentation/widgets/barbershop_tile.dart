@@ -64,9 +64,9 @@ class BarbershopTile extends StatelessWidget {
                       OutlinedButton(
                         style: ElevatedButton.styleFrom(padding: const EdgeInsets.symmetric(horizontal: 12)),
                         onPressed: () {
-                          context.pushNamed('/employee/schedule', arguments: barberShop);
+                          context.pushNamed(Routes.barbershopDetail, arguments: barberShop);
                         },
-                        child: const Text('VER AGENDA'),
+                        child: const Text('DETALHES'),
                       ),
                       ElevatedButton(
                         style: ElevatedButton.styleFrom(padding: const EdgeInsets.symmetric(horizontal: 12)),

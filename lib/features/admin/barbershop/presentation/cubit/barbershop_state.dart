@@ -13,6 +13,13 @@ final class BarbershopLoading extends BarbershopState {}
 
 final class BarbershopSuccess extends BarbershopState {}
 
+final class BarbershopActualSuccess extends BarbershopState {
+  final BarbershopModel barbershop;
+  const BarbershopActualSuccess({
+    required this.barbershop,
+  });
+}
+
 final class BarbershopCepSuccess extends BarbershopState {}
 
 final class BarbershopFailure extends BarbershopState {
