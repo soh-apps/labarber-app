@@ -1,6 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:la_barber/core/constants/routes.dart';
+import 'package:la_barber/core/ui/helpers/context_extension.dart';
 
 import 'package:la_barber/core/ui/styles/app_color.dart';
 import 'package:la_barber/core/ui/widgets/custom_button.dart';
@@ -51,6 +53,7 @@ class _BarbershopDetalhesPageState extends State<BarbershopDetalhesPage> {
           if (state is BarbershopLoading) {
             return const Expanded(child: Center(child: CircularProgressIndicator()));
           } else if (state is BarbershopActualSuccess) {
+            barbershop = state.barbershop;
             return Padding(
               padding: const EdgeInsets.all(20.0),
               child: SingleChildScrollView(
@@ -76,15 +79,9 @@ class _BarbershopDetalhesPageState extends State<BarbershopDetalhesPage> {
                       content: state.barbershop.phone,
                       fontSize: 16,
                     ),
-
                     GroupedWorkingHoursWidget(
                       workingHours: state.barbershop.workingHours ?? [],
                     ),
-                    // ServicesDetailTile(title: 'Tempo de Serviço', content: '${servico.tempoServico} minutos'),
-                    // ServicesDetailTile(title: 'Valor do Serviço', content: 'R\$ ${servico.valor.toStringAsFixed(2)}'),
-                    // ServicesDetailTile(title: 'Valor da Comissão', content: 'R\$ ${servico.comissao.toStringAsFixed(2)}'),
-                    // ServicesDetailTile(title: 'Porcentagem Comissão', content: '${servico.porcentagemComissao}%'),
-                    // ServicesDetailTile(title: 'Descrição do Serviço', content: servico.descricao ?? ''),
                     const SizedBox(height: 80),
                   ],
                 ),
@@ -119,7 +116,7 @@ class _BarbershopDetalhesPageState extends State<BarbershopDetalhesPage> {
             paddingHorizontal: 12,
             text: 'Editar',
             onPressed: () {
-              // Navigator.pushNamed(context, Routes.servicoEditPage, arguments: servico);
+              context.pushNamed(Routes.barbershopEdit, arguments: barbershop);
             },
           ),
         ),

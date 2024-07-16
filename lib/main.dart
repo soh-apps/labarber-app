@@ -9,6 +9,7 @@ import 'package:la_barber/features/admin/barber/presentation/pages/barber_detail
 import 'package:la_barber/features/admin/barber/presentation/pages/barber_list_page.dart';
 import 'package:la_barber/features/admin/barber/presentation/pages/barber_register_page.dart';
 import 'package:la_barber/features/admin/barbershop/presentation/pages/barbershop_detalhes_page.dart';
+import 'package:la_barber/features/admin/barbershop/presentation/pages/barbershop_edit_page.dart';
 import 'package:la_barber/features/admin/barbershop/presentation/pages/barbershop_list_page.dart';
 import 'package:la_barber/features/admin/barbershop/presentation/pages/barbershop_register_page.dart';
 import 'package:la_barber/features/admin/servicos/presentation/pages/servico_detalhes_page.dart';
@@ -52,7 +53,7 @@ class _MainAppState extends State<MainApp> {
 
         // BarberShop
         Routes.barbershopList: (_) => BarbershopListPage(barbershopCubit: getIt()),
-        Routes.barbershopRegister: (_) => BarbershopEditPage(barbershopCubit: getIt()),
+        Routes.barbershopRegister: (_) => BarbershopRegisterPage(barbershopCubit: getIt()),
         Routes.barbershopEdit: (_) => BarbershopEditPage(barbershopCubit: getIt()),
         Routes.barbershopDetail: (_) => BarbershopDetalhesPage(barbershopCubit: getIt()),
 

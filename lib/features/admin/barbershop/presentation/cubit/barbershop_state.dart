@@ -11,7 +11,12 @@ final class BarbershopInitial extends BarbershopState {}
 
 final class BarbershopLoading extends BarbershopState {}
 
-final class BarbershopSuccess extends BarbershopState {}
+final class BarbershopSuccess extends BarbershopState {
+  final String? message;
+  const BarbershopSuccess({
+    this.message,
+  });
+}
 
 final class BarbershopActualSuccess extends BarbershopState {
   final BarbershopModel barbershop;

@@ -20,19 +20,19 @@ import 'package:la_barber/core/ui/helpers/messages.dart';
 import 'package:la_barber/core/ui/widgets/weekdays_panel.dart';
 import 'package:la_barber/features/admin/barbershop/presentation/cubit/barbershop_cubit.dart';
 
-class BarbershopRegisterPage extends StatefulWidget {
+class BarbershopEditPage extends StatefulWidget {
   final BarbershopCubit barbershopCubit;
 
-  const BarbershopRegisterPage({
+  const BarbershopEditPage({
     super.key,
     required this.barbershopCubit,
   });
 
   @override
-  State<BarbershopRegisterPage> createState() => _BarbershopRegisterPageState();
+  State<BarbershopEditPage> createState() => _BarbershopEditPageState();
 }
 
-class _BarbershopRegisterPageState extends State<BarbershopRegisterPage> {
+class _BarbershopEditPageState extends State<BarbershopEditPage> {
   final formKey = GlobalKey<FormState>();
   final nomeEC = TextEditingController();
   final telefoneEC = TextEditingController();
@@ -41,6 +41,23 @@ class _BarbershopRegisterPageState extends State<BarbershopRegisterPage> {
   final estadoEC = TextEditingController();
   final ruaEC = TextEditingController();
   final numeroEC = TextEditingController();
+
+  late BarbershopModel barbershop;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    barbershop = context.modalRoute?.settings.arguments as BarbershopModel;
+    nomeEC.text = barbershop.name;
+    telefoneEC.text = barbershop.phone;
+    cepEC.text = Formatters.formatCep(barbershop.zipCode);
+    estadoEC.text = barbershop.state;
+    cidadeEC.text = barbershop.city;
+    ruaEC.text = barbershop.street;
+    numeroEC.text = barbershop.number ?? '';
+    openingDays = WorkDays.convertWorkingHoursToWorkDays(barbershop.workingHours ?? []);
+  }
 
   @override
   void dispose() {
@@ -487,14 +504,13 @@ class _BarbershopRegisterPageState extends State<BarbershopRegisterPage> {
                             state: estadoEC.text,
                             zipCode: Formatters.formatCep(cepEC.text),
                             workingHours: WorkDays.convertWorkDaysToWorkingHours(openingDays),
-                            // workingDays: openingDays.map((e) => e.numberDay).toList(),
                             email: '',
                             logo: '',
                             website: '',
                             description: '',
                           );
 
-                          widget.barbershopCubit.registrarBarbearia(barbershop);
+                          widget.barbershopCubit.editarBarbearia(barbershop);
                       }
                     },
                     child: const Text('CADASTRAR ESTABELECIMENTO'),

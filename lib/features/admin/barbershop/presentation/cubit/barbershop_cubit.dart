@@ -18,7 +18,7 @@ class BarbershopCubit extends Cubit<BarbershopState> {
   String mensagem = '';
   ViaCEPModel? cepModel;
 
-  Future<void> registerBarberShop(BarbershopModel barberShop) async {
+  Future<void> registrarBarbearia(BarbershopModel barberShop) async {
     final result = await barbershopRepository.cadastrarBarbearia(barberShop);
 
     // final dto = (
@@ -31,7 +31,20 @@ class BarbershopCubit extends Cubit<BarbershopState> {
     switch (result) {
       case Success():
         mensagem = result.value;
-        emit(BarbershopSuccess());
+        emit(const BarbershopSuccess());
+      case Failure():
+        mensagem = result.exception.message;
+        emit(BarbershopFailure(errorMessage: mensagem));
+    }
+  }
+
+  Future<void> editarBarbearia(BarbershopModel barberShop) async {
+    final result = await barbershopRepository.editarBarbearia(barberShop);
+
+    switch (result) {
+      case Success():
+        mensagem = result.value;
+        emit(const BarbershopSuccess(message: 'Barbearia editada com sucesso'));
       case Failure():
         mensagem = result.exception.message;
         emit(BarbershopFailure(errorMessage: mensagem));
@@ -46,7 +59,7 @@ class BarbershopCubit extends Cubit<BarbershopState> {
     switch (result) {
       case Success():
         barberUnits = result.value;
-        emit(BarbershopSuccess());
+        emit(const BarbershopSuccess());
       case Failure():
         emit(BarbershopFailure(errorMessage: mensagem));
     }
@@ -60,7 +73,7 @@ class BarbershopCubit extends Cubit<BarbershopState> {
       case Success():
         final BarbershopModel barberShop = result.value;
         getIt.registerSingleton<BarbershopModel>(barberShop);
-        emit(BarbershopSuccess());
+        emit(const BarbershopSuccess());
       case Failure():
         emit(const BarbershopFailure(errorMessage: 'Erro ao buscar dados da Barbearia'));
     }

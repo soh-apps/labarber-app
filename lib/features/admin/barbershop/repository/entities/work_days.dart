@@ -112,4 +112,40 @@ class WorkDays {
 
     return workingHoursList;
   }
+
+  // Método para converter lista de WorkingHours em lista de WorkDays
+  static List<WorkDays> convertWorkingHoursToWorkDays(List<WorkingHour> workingHoursList) {
+    List<WorkDays> workDaysList = [];
+
+    for (var workingHour in workingHoursList) {
+      for (var day in workingHour.workingDays) {
+        // Verificar se já existe um WorkDay para o dia atual
+        var existingWorkDay = workDaysList.firstWhere(
+          (workDay) => workDay.numberDay == day,
+          orElse: () => WorkDays(numberDay: day),
+        );
+
+        // Atualizar WorkDay existente ou adicionar um novo
+        if (existingWorkDay.isWork) {
+          // Se já houver um período de trabalho, adicionar um intervalo de almoço
+          if (existingWorkDay.breakStartTime == null && existingWorkDay.breakEndTime == null) {
+            existingWorkDay.isAlmoco = true;
+            existingWorkDay.breakStartTime = workingHour.startingHour;
+            existingWorkDay.breakEndTime = workingHour.endingHour;
+          }
+        } else {
+          existingWorkDay.isWork = true;
+          existingWorkDay.startTime = workingHour.startingHour;
+          existingWorkDay.endTime = workingHour.endingHour;
+        }
+
+        // Adicionar ou atualizar a lista de WorkDays
+        if (!workDaysList.contains(existingWorkDay)) {
+          workDaysList.add(existingWorkDay);
+        }
+      }
+    }
+
+    return workDaysList;
+  }
 }

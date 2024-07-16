@@ -94,8 +94,32 @@ class BarbershopRepository {
           return Failure(RepositoryException(message: 'Erro ao Cadastrar Unidade - ${e.message}'));
         }
       }
-      log('Erro ao Cadastrar colaborador', error: e, stackTrace: s);
+      log('Erro ao Cadastrar Unidade', error: e, stackTrace: s);
       return Failure(RepositoryError(message: 'Erro ao Cadastrar Unidade - ${e.message}'));
+    }
+  }
+
+  Future<Either<RepositoryException, String>> editarBarbearia(BarbershopModel barberShop) async {
+    try {
+      final Response response = await _restClient.auth.post(
+        '/api/BarberUnit/Update',
+        data: barberShop.toMapv0(),
+      );
+      if (response.statusCode == 201) {
+        return Success(response.data);
+      } else {
+        return Failure(RepositoryError(message: 'Erro ao Editar Unidade'));
+      }
+    } on DioException catch (e, s) {
+      if (e.response != null) {
+        final Response response = e.response!;
+        if (response.statusCode == 400) {
+          log('Erro ao Editar Unidade - ${e.message}', error: e, stackTrace: s);
+          return Failure(RepositoryException(message: 'Erro ao Editar Unidade - ${e.message}'));
+        }
+      }
+      log('Erro ao Editar Unidade', error: e, stackTrace: s);
+      return Failure(RepositoryError(message: 'Erro ao Editar Unidade - ${e.message}'));
     }
   }
 }
