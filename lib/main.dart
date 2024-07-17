@@ -6,6 +6,7 @@ import 'package:la_barber/core/ui/barbershop_nav_global_key.dart';
 import 'package:la_barber/core/ui/barbershop_theme.dart';
 import 'package:la_barber/features/admin/agendamento/presentation/pages/agendamento_rapido_page.dart';
 import 'package:la_barber/features/admin/barber/presentation/pages/barber_detail_page.dart';
+import 'package:la_barber/features/admin/barber/presentation/pages/barber_edit_page.dart';
 import 'package:la_barber/features/admin/barber/presentation/pages/barber_list_page.dart';
 import 'package:la_barber/features/admin/barber/presentation/pages/barber_register_page.dart';
 import 'package:la_barber/features/admin/barbershop/presentation/pages/barbershop_detalhes_page.dart';
@@ -59,6 +60,7 @@ class _MainAppState extends State<MainApp> {
 
         // Barber
         Routes.barberRegister: (_) => BarberRegisterPage(barberCubit: getIt()),
+        Routes.barberEdit: (_) => BarberEditPage(barberCubit: getIt()),
         Routes.barberListPage: (_) => BarberListPage(barberCubit: getIt()),
         Routes.barberDetailPage: (_) => const BarberDetailPage(),
 

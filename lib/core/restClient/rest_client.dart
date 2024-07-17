@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:dio/dio.dart';
 import 'package:dio/io.dart';
 import 'package:la_barber/core/restClient/interceptors/auth_interceptor.dart';
@@ -12,11 +14,13 @@ final class RestClient extends DioForNative {
         )) {
     interceptors.addAll([
       LogInterceptor(
-        requestBody: true,
-        requestHeader: true,
-        responseHeader: true,
-        responseBody: true,
-      ),
+          requestBody: true,
+          requestHeader: true,
+          responseHeader: true,
+          responseBody: true,
+          logPrint: (Object object) {
+            log(object.toString());
+          }),
       AuthInterceptor(),
       // PrettyDioLogger(
       //   request: true,

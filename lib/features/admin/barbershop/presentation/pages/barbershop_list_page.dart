@@ -65,8 +65,7 @@ class _BarbershopListPageState extends State<BarbershopListPage> {
                           physics:
                               const AlwaysScrollableScrollPhysics(), // Isso garante que o RefreshIndicator funcione mesmo que não haja scroll.
                           child: SizedBox(
-                            height: MediaQuery.sizeOf(context).height /
-                                2, // Isso garante que o Container ocupe a tela toda.
+                            height: MediaQuery.sizeOf(context).height / 2,
                             child: const Center(
                               child: Text('Error'),
                             ),

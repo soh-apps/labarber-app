@@ -51,18 +51,14 @@ class BarbershopModel {
     return {
       'id': id,
       'name': name,
-      'phone': phone,
-      'email': email,
-      'logo': logo,
-      'website': website,
-      'description': description,
       'city': city,
       'state': state,
       'street': street,
       'number': number,
-      'complement': complement,
+      'phone': phone,
       'zipCode': zipCode,
-      'availabilities': workingHours,
+      'complement': complement,
+      'workingHours': workingHours?.map((wh) => wh.toMap()).toList(),
     };
   }
 

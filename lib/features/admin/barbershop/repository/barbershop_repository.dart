@@ -101,9 +101,9 @@ class BarbershopRepository {
 
   Future<Either<RepositoryException, String>> editarBarbearia(BarbershopModel barberShop) async {
     try {
-      final Response response = await _restClient.auth.post(
+      final Response response = await _restClient.auth.put(
         '/api/BarberUnit/Update',
-        data: barberShop.toMapv0(),
+        data: barberShop.toMap(),
       );
       if (response.statusCode == 201) {
         return Success(response.data);

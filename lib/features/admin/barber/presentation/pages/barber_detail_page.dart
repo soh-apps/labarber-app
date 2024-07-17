@@ -1,5 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:la_barber/core/constants/routes.dart';
+import 'package:la_barber/core/ui/helpers/context_extension.dart';
 import 'package:la_barber/core/ui/styles/app_color.dart';
 import 'package:la_barber/core/ui/styles/text_styles_typography.dart';
 import 'package:la_barber/core/ui/widgets/custom_button.dart';
@@ -70,6 +72,7 @@ class _BarberDetailPageState extends State<BarberDetailPage> {
                   paddingHorizontal: 12,
                   text: 'Editar',
                   onPressed: () {
+                    context.pushNamed(Routes.barberEdit, arguments: barber);
                     // Navigator.pushNamed(context, Routes.servicoEditPage, arguments: servico);
                   },
                 ),

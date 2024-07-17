@@ -8,6 +8,7 @@ class Routes {
 
   // Barber
   static const String barberRegister = 'barber/register';
+  static const String barberEdit = 'barber/edit';
   static const String barberListPage = '/barber/list';
   static const String barberDetailPage = '/barber/detail';
 

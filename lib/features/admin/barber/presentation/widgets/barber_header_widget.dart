@@ -10,7 +10,6 @@ import 'package:la_barber/core/ui/barbershop_icons.dart';
 import 'package:la_barber/core/ui/barbershop_nav_global_key.dart';
 import 'package:la_barber/core/ui/constants.dart';
 import 'package:la_barber/core/ui/widgets/dialog_utils.dart';
-import 'package:la_barber/features/admin/barbershop/presentation/cubit/barbershop_cubit.dart';
 import 'package:la_barber/features/common/auth/model/user_model.dart';
 
 class BarberHeaderWidget extends StatefulWidget {
@@ -33,7 +32,7 @@ class _BarberHeaderWidgetState extends State<BarberHeaderWidget> {
   @override
   void initState() {
     super.initState();
-    getIt<BarbershopCubit>().getBarberShopData(0);
+    // getIt<BarbershopCubit>().getBarberShopData(0);
   }
 
   Future<void> logout(BuildContext context) async {

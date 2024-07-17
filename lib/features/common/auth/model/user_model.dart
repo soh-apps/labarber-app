@@ -1,46 +1,6 @@
 import 'dart:convert';
 
-enum UserType {
-  master,
-  admin,
-  manager,
-  barber,
-  client;
-}
-
-UserType getType(int codUserType) {
-  switch (codUserType) {
-    case 1:
-      return UserType.master;
-    case 2:
-      return UserType.admin;
-    case 3:
-      return UserType.manager;
-    case 4:
-      return UserType.barber;
-    case 5:
-      return UserType.client;
-    default:
-      return UserType.client;
-  }
-}
-
-int getTypeCode(UserType userType) {
-  switch (userType) {
-    case UserType.master:
-      return 1;
-    case UserType.admin:
-      return 2;
-    case UserType.manager:
-      return 3;
-    case UserType.barber:
-      return 4;
-    case UserType.client:
-      return 5;
-    default:
-      return 5;
-  }
-}
+import 'package:la_barber/core/utils/user_type_enum.dart';
 
 class UserModel {
   String token;
@@ -62,7 +22,7 @@ class UserModel {
       'token': token,
       'refreshToken': refreshToken,
       'name': name,
-      'userType': userType != null ? getTypeCode(userType!) : null,
+      'userType': userType != null ? UserTypeHelper.getTypeCode(userType!) : null,
       'credentialId': credentialId,
     };
   }
@@ -71,7 +31,7 @@ class UserModel {
     return UserModel(
       token: map['token'],
       refreshToken: map['refreshToken'],
-      userType: getType(map['userType']?.toInt()),
+      userType: UserTypeHelper.getType(map['userType']?.toInt()),
       name: map['name'],
       credentialId: map['credentialId'].toInt(),
     );

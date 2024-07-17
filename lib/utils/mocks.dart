@@ -1,3 +1,4 @@
+import 'package:la_barber/core/utils/user_type_enum.dart';
 import 'package:la_barber/features/admin/agendamento/repository/model/agendamento_model.dart';
 import 'package:la_barber/features/admin/barber/repository/models/barber_model.dart';
 import 'package:la_barber/features/admin/barbershop/repository/models/barbershop_model.dart';
@@ -114,6 +115,7 @@ class Mocks {
       commissioned: true,
       barberUnitId: 1,
       isManager: true,
+      userType: UserType.manager,
     ),
     BarberModel(
       id: 2,
@@ -130,6 +132,7 @@ class Mocks {
       commissioned: false,
       barberUnitId: 2,
       isManager: false,
+      userType: UserType.barber,
     ),
     BarberModel(
       id: 3,
@@ -146,6 +149,7 @@ class Mocks {
       commissioned: true,
       barberUnitId: 3,
       isManager: false,
+      userType: UserType.barber,
     ),
     BarberModel(
       id: 4,
@@ -162,6 +166,7 @@ class Mocks {
       commissioned: true,
       barberUnitId: 4,
       isManager: true,
+      userType: UserType.manager,
     ),
     BarberModel(
       id: 5,
@@ -178,6 +183,7 @@ class Mocks {
       commissioned: false,
       barberUnitId: 5,
       isManager: false,
+      userType: UserType.barber,
     ),
   ];
 

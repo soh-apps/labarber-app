@@ -7,9 +7,12 @@ import 'package:la_barber/core/di/di.dart';
 import 'package:la_barber/core/ui/barbershop_icons.dart';
 import 'package:la_barber/core/ui/constants.dart';
 import 'package:la_barber/core/ui/helpers/context_extension.dart';
+import 'package:la_barber/core/utils/user_type_enum.dart';
 import 'package:la_barber/features/admin/barber/presentation/cubit/barber_cubit.dart';
 import 'package:la_barber/features/admin/barber/presentation/widgets/barber_header_widget.dart';
 import 'package:la_barber/features/admin/barber/presentation/widgets/barber_tile.dart';
+import 'package:la_barber/features/admin/barbershop/presentation/cubit/barbershop_cubit.dart';
+import 'package:la_barber/features/admin/barbershop/repository/models/barbershop_model.dart';
 import 'package:la_barber/features/admin/widgets/drawer_admin_widget.dart';
 import 'package:la_barber/features/common/auth/model/user_model.dart';
 
@@ -25,28 +28,20 @@ class BarberListPage extends StatefulWidget {
 }
 
 class _BarberListPageState extends State<BarberListPage> {
-  // late BarbershopModel barberShop;
+  late BarbershopModel barberShop;
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
-  void didChangeDependencies() {
+  void didChangeDependencies() async {
     super.didChangeDependencies();
+
     if (getIt<UserModel>().userType == UserType.admin) {
-      // barberShop = ModalRoute.of(context)!.settings.arguments as BarbershopModel;
-    } else {
-      // barberShop = widget.barberCubit.barbershop ?? Mocks.companies[0];
-    }
-
-    // widget.barberCubit.getAllBarbers(barberShop.id);
-  }
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    widget.barberCubit.getAllBarbers(0);
-    if (getIt<UserModel>().userType == UserType.manager) {
-      // Api que traz os dados da barbearia
+      barberShop = ModalRoute.of(context)!.settings.arguments as BarbershopModel;
+      await getIt<BarbershopCubit>().getBarberShopData(barberShop.id);
+      widget.barberCubit.getAllBarbers(barberShop.id);
+    } else if (getIt<UserModel>().userType == UserType.manager) {
+      await getIt<BarbershopCubit>().getBarberShopData(0);
+      widget.barberCubit.getAllBarbers(0);
     }
   }
 

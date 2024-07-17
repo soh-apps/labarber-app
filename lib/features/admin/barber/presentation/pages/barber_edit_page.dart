@@ -20,46 +20,52 @@ import 'package:validatorless/validatorless.dart';
 import 'package:la_barber/core/ui/helpers/form_helper.dart';
 import 'package:la_barber/core/ui/helpers/messages.dart';
 
-class BarberRegisterPage extends StatefulWidget {
+class BarberEditPage extends StatefulWidget {
   final BarberCubit barberCubit;
 
-  const BarberRegisterPage({
+  const BarberEditPage({
     super.key,
     required this.barberCubit,
   });
 
   @override
-  State<BarberRegisterPage> createState() => _BarberRegisterPageState();
+  State<BarberEditPage> createState() => _BarberEditPageState();
 }
 
-class _BarberRegisterPageState extends State<BarberRegisterPage> {
+class _BarberEditPageState extends State<BarberEditPage> {
   final formKey = GlobalKey<FormState>();
 
-  final usernameEC = TextEditingController();
-  final passwordEC = TextEditingController();
   final ufEC = TextEditingController();
   final cityEC = TextEditingController();
   final stateEC = TextEditingController();
   final streetEC = TextEditingController();
   final numberEC = TextEditingController();
   final complementEC = TextEditingController();
-  final zipCodeEC = TextEditingController();
-
-  final nomeEC = TextEditingController();
-  final emailEC = TextEditingController();
-  final telefoneEC = TextEditingController();
   final cepEC = TextEditingController();
 
+  final nomeEC = TextEditingController();
+  final telefoneEC = TextEditingController();
+
   File? _selectedImage;
-  // late BarbershopModel barberUnitId;
+  late BarberModel barber;
   bool isComoissioned = true;
   bool isManager = true;
-  String barberName = '';
+  String barberShopName = '';
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    // barberUnitId = ModalRoute.of(context)!.settings.arguments as BarbershopModel;
+    barber = ModalRoute.of(context)!.settings.arguments as BarberModel;
+    nomeEC.text = barber.name;
+    telefoneEC.text = barber.telefone ?? '';
+    cepEC.text = Formatters.formatCep(barber.zipCode ?? '');
+    cityEC.text = barber.city ?? '';
+    stateEC.text = barber.state ?? '';
+    streetEC.text = barber.street ?? '';
+    numberEC.text = barber.number ?? '';
+    complementEC.text = barber.complement ?? '';
+    isComoissioned = barber.commissioned;
+    isManager = barber.isManager;
   }
 
   @override
@@ -68,15 +74,11 @@ class _BarberRegisterPageState extends State<BarberRegisterPage> {
     telefoneEC.dispose();
     ufEC.dispose();
     cepEC.dispose();
-    usernameEC.dispose();
-    passwordEC.dispose();
     cityEC.dispose();
     stateEC.dispose();
     streetEC.dispose();
     numberEC.dispose();
     complementEC.dispose();
-    zipCodeEC.dispose();
-    emailEC.dispose();
     super.dispose();
   }
 
@@ -91,7 +93,7 @@ class _BarberRegisterPageState extends State<BarberRegisterPage> {
     // Verifica se a instância está registrada no getIt
     if (getIt.isRegistered<BarbershopModel>()) {
       try {
-        barberName = getIt<BarbershopModel>().name;
+        barberShopName = getIt<BarbershopModel>().name;
       } catch (e) {
         // Loga o erro ou trata de outra forma necessária
         log('Erro ao obter o nome do barbeiro: $e');
@@ -107,7 +109,7 @@ class _BarberRegisterPageState extends State<BarberRegisterPage> {
       listener: (context, state) {
         if (state is BarberSuccess) {
           context.hideLoadingDialog(context);
-          context.showSuccess('Colaborador Criado com Sucesso!');
+          context.showSuccess('Colaborador Editado com Sucesso!');
           context.pop();
           // Navigator.of(context).pushNamedAndRemoveUntil(Routes.homeAdmin, (route) => false);
         } else if (state is BarberLoading) {
@@ -128,7 +130,7 @@ class _BarberRegisterPageState extends State<BarberRegisterPage> {
       },
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('Cadastrar Colaborador '),
+          title: const Text('Editar Colaborador '),
         ),
         body: Padding(
           padding: const EdgeInsets.all(20.0),
@@ -137,10 +139,10 @@ class _BarberRegisterPageState extends State<BarberRegisterPage> {
               key: formKey,
               child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                 Visibility(
-                  visible: barberName.isNotEmpty,
+                  visible: barberShopName.isNotEmpty,
                   child: Center(
                     child: Text(
-                      'UNIDADE - $barberName',
+                      'UNIDADE - $barberShopName',
                       style: const TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 18,
@@ -153,58 +155,6 @@ class _BarberRegisterPageState extends State<BarberRegisterPage> {
                   child: ImagePickerWidget(
                     imageUrl: null,
                     onImageSelected: _onImageSelected,
-                  ),
-                ),
-                const SizedBox(height: 22),
-                const Center(
-                  child: Text(
-                    'Dados de Login',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18,
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 22),
-                TextFormField(
-                  onTapOutside: (_) => context.unfocus(),
-                  controller: nomeEC,
-                  validator: Validatorless.required('Nome obrigatório'),
-                  decoration: const InputDecoration(
-                    label: Text('Nome'),
-                    hintText: 'Nome do Colaborador',
-                  ),
-                ),
-                const SizedBox(height: 22),
-                TextFormField(
-                  onTapOutside: (_) => context.unfocus(),
-                  controller: usernameEC,
-                  validator: Validatorless.required('Usuário de Login obrigatório'),
-                  decoration: const InputDecoration(
-                    label: Text('Usuário de Login'),
-                  ),
-                ),
-                const SizedBox(height: 22),
-                TextFormField(
-                  onTapOutside: (_) => context.unfocus(),
-                  controller: passwordEC,
-                  validator: Validatorless.required('Senha do usuário obrigatório'),
-                  decoration: const InputDecoration(
-                    label: Text('Senha do usuário'),
-                  ),
-                ),
-                const SizedBox(height: 22),
-                TextFormField(
-                  onTapOutside: (_) => context.unfocus(),
-                  controller: emailEC,
-                  validator: Validatorless.multiple(
-                    [
-                      Validatorless.required('E-mail obrigatorio'),
-                      Validatorless.email('E-mail invalido'),
-                    ],
-                  ),
-                  decoration: const InputDecoration(
-                    label: Text('E-mail'),
                   ),
                 ),
                 const SizedBox(height: 22),
@@ -227,13 +177,13 @@ class _BarberRegisterPageState extends State<BarberRegisterPage> {
                   },
                 ),
                 const SizedBox(height: 22),
-                const Center(
-                  child: Text(
-                    'Dados de Usuário',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18,
-                    ),
+                TextFormField(
+                  onTapOutside: (_) => context.unfocus(),
+                  controller: nomeEC,
+                  validator: Validatorless.required('Nome obrigatório'),
+                  decoration: const InputDecoration(
+                    label: Text('Nome'),
+                    hintText: 'Nome do Colaborador',
                   ),
                 ),
                 const SizedBox(height: 22),
@@ -310,9 +260,10 @@ class _BarberRegisterPageState extends State<BarberRegisterPage> {
                           context.showError('Formulário invalido');
                         case true:
                           log(_selectedImage.toString());
-                          final barber = BarberModel(
+                          final barberDto = BarberModel(
+                            id: barber.id,
                             name: nomeEC.text,
-                            email: emailEC.text,
+                            email: barber.email,
                             telefone: telefoneEC.text,
                             zipCode: Formatters.formatCep(cepEC.text),
                             street: streetEC.text,
@@ -320,18 +271,17 @@ class _BarberRegisterPageState extends State<BarberRegisterPage> {
                             complement: complementEC.text,
                             city: cityEC.text,
                             state: stateEC.text,
-                            username: usernameEC.text,
-                            password: passwordEC.text,
                             commissioned: isComoissioned,
                             barberUnitId: 0,
                             isManager: isManager,
                             userType: isManager ? UserType.manager : UserType.barber,
+
                             // image: _selectedImage,
                           );
-                          widget.barberCubit.registerBarber(barber);
+                          widget.barberCubit.registerBarber(barberDto);
                       }
                     },
-                    child: const Text('CADASTRAR COLABORADOR'),
+                    child: const Text('EDITAR COLABORADOR'),
                   ),
                 ),
               ]),

@@ -11,6 +11,7 @@ import 'package:la_barber/core/exceptions/auth_exception.dart';
 import 'package:la_barber/core/utils/formatters.dart';
 import 'package:la_barber/core/local_secure_storage/local_secure_storage.dart';
 import 'package:la_barber/core/restClient/either.dart';
+import 'package:la_barber/core/utils/user_type_enum.dart';
 import 'package:la_barber/features/common/auth/model/user_model.dart';
 import 'package:la_barber/features/common/auth/repository/auth_repository.dart';
 import 'package:shared_preferences/shared_preferences.dart';

@@ -253,6 +253,7 @@ class _BarbershopEditPageState extends State<BarbershopEditPage> {
 
   @override
   Widget build(BuildContext context) {
+    log('Tela Rebuildando');
     return BlocListener<BarbershopCubit, BarbershopState>(
       bloc: widget.barbershopCubit,
       listener: (context, state) {
@@ -283,240 +284,243 @@ class _BarbershopEditPageState extends State<BarbershopEditPage> {
           child: SingleChildScrollView(
             child: Form(
               key: formKey,
-              child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                const SizedBox(height: 5),
-                const SizedBox(height: 20),
-                Center(
-                  child: ImagePickerWidget(
-                    imageUrl: null,
-                    onImageSelected: _onImageSelected,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const SizedBox(height: 5),
+                  const SizedBox(height: 20),
+                  Center(
+                    child: ImagePickerWidget(
+                      imageUrl: null,
+                      onImageSelected: _onImageSelected,
+                    ),
                   ),
-                ),
-                const SizedBox(height: 20),
-                TextFormField(
-                  onTapOutside: (_) => context.unfocus(),
-                  controller: nomeEC,
-                  validator: Validatorless.required('Nome obrigatório'),
-                  decoration: const InputDecoration(
-                    label: Text('Nome'),
+                  const SizedBox(height: 20),
+                  TextFormField(
+                    onTapOutside: (_) => context.unfocus(),
+                    controller: nomeEC,
+                    validator: Validatorless.required('Nome obrigatório'),
+                    decoration: const InputDecoration(
+                      label: Text('Nome'),
+                    ),
                   ),
-                ),
-                const SizedBox(height: 22),
-                TextFormField(
-                  onTapOutside: (_) => context.unfocus(),
-                  controller: telefoneEC,
-                  validator: Validatorless.required('Telefone obrigatório'),
-                  decoration: const InputDecoration(
-                    label: Text('Telefone'),
+                  const SizedBox(height: 22),
+                  TextFormField(
+                    // onTapOutside: (_) => context.unfocus(),
+                    controller: telefoneEC,
+                    validator: Validatorless.required('Telefone obrigatório'),
+                    decoration: const InputDecoration(
+                      label: Text('Telefone'),
+                    ),
+                    keyboardType: TextInputType.number,
+                    inputFormatters: [
+                      // obrigatório
+                      FilteringTextInputFormatter.digitsOnly,
+                      TelefoneInputFormatter(),
+                    ],
                   ),
-                  keyboardType: TextInputType.number,
-                  inputFormatters: [
-                    // obrigatório
-                    FilteringTextInputFormatter.digitsOnly,
-                    TelefoneInputFormatter(),
-                  ],
-                ),
-                const SizedBox(height: 22),
-                TextFormField(
-                  onTapOutside: (_) => context.unfocus(),
-                  controller: cepEC,
-                  validator: Validatorless.required('Cep obrigatório'),
-                  decoration: const InputDecoration(
-                    label: Text('CEP'),
+                  const SizedBox(height: 22),
+                  TextFormField(
+                    onTapOutside: (_) => context.unfocus(),
+                    controller: cepEC,
+                    validator: Validatorless.required('Cep obrigatório'),
+                    decoration: const InputDecoration(
+                      label: Text('CEP'),
+                    ),
+                    onChanged: (value) {
+                      if (value.length == 10) {
+                        widget.barbershopCubit.getByCEP(Formatters.formatCep(value));
+                      }
+                    },
+                    inputFormatters: [
+                      FilteringTextInputFormatter.digitsOnly,
+                      CepInputFormatter(),
+                    ],
                   ),
-                  onChanged: (value) {
-                    if (value.length == 10) {
-                      widget.barbershopCubit.getByCEP(Formatters.formatCep(value));
-                    }
-                  },
-                  inputFormatters: [
-                    FilteringTextInputFormatter.digitsOnly,
-                    CepInputFormatter(),
-                  ],
-                ),
-                const SizedBox(height: 22),
-                TextFormField(
-                  onTapOutside: (_) => context.unfocus(),
-                  controller: estadoEC,
-                  decoration: const InputDecoration(
-                    label: Text('Estado'),
+                  const SizedBox(height: 22),
+                  TextFormField(
+                    onTapOutside: (_) => context.unfocus(),
+                    controller: estadoEC,
+                    decoration: const InputDecoration(
+                      label: Text('Estado'),
+                    ),
+                    validator: Validatorless.required('Estado obrigatório'),
+                    maxLength: 2,
                   ),
-                  validator: Validatorless.required('Estado obrigatório'),
-                  maxLength: 2,
-                ),
-                const SizedBox(height: 22),
-                TextFormField(
-                  onTapOutside: (_) => context.unfocus(),
-                  controller: cidadeEC,
-                  decoration: const InputDecoration(
-                    label: Text('Cidade'),
+                  const SizedBox(height: 22),
+                  TextFormField(
+                    onTapOutside: (_) => context.unfocus(),
+                    controller: cidadeEC,
+                    decoration: const InputDecoration(
+                      label: Text('Cidade'),
+                    ),
+                    validator: Validatorless.required('Cidade obrigatório'),
                   ),
-                  validator: Validatorless.required('Cidade obrigatório'),
-                ),
-                const SizedBox(height: 22),
-                TextFormField(
-                  onTapOutside: (_) => context.unfocus(),
-                  controller: ruaEC,
-                  decoration: const InputDecoration(
-                    label: Text('Rua'),
+                  const SizedBox(height: 22),
+                  TextFormField(
+                    onTapOutside: (_) => context.unfocus(),
+                    controller: ruaEC,
+                    decoration: const InputDecoration(
+                      label: Text('Rua'),
+                    ),
+                    validator: Validatorless.required('Rua obrigatório'),
                   ),
-                  validator: Validatorless.required('Rua obrigatório'),
-                ),
-                const SizedBox(height: 22),
-                TextFormField(
-                  onTapOutside: (_) => context.unfocus(),
-                  controller: numeroEC,
-                  decoration: const InputDecoration(
-                    label: Text('Número'),
+                  const SizedBox(height: 22),
+                  TextFormField(
+                    onTapOutside: (_) => context.unfocus(),
+                    controller: numeroEC,
+                    decoration: const InputDecoration(
+                      label: Text('Número'),
+                    ),
                   ),
-                ),
-                const SizedBox(height: 24),
-                WeekdaysPanel(
-                  onDayPressed: (String value) {
-                    addOpenDay(value);
-                    setState(() {
-                      visibleHorarioAbertura = true;
-                    });
-                  },
-                  openingDays: openingDays.map((e) => e.numberDay).toList(),
-                ),
-                const SizedBox(height: 24),
-                Visibility(
-                  visible: visibleHorarioAbertura,
-                  child: Column(
-                    children: [
-                      Text('Horários de atendimento para o dia selecionado $diaSemanaString'),
-                      const SizedBox(height: 12),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          TimeDisplay(
-                            label: 'Abertura',
-                            time: openingDays
-                                        .firstWhere(
-                                            (day) => day.numberDay == Formatters.getNumberDayofWeek(diaSemanaString),
-                                            orElse: () => WorkDays(numberDay: 0))
-                                        .startTime !=
-                                    null
-                                ? TimeOfDay(
-                                    hour: int.parse(openingDays
-                                        .firstWhere(
-                                            (day) => day.numberDay == Formatters.getNumberDayofWeek(diaSemanaString))
-                                        .startTime!
-                                        .split(":")[0]),
-                                    minute: int.parse(openingDays
-                                        .firstWhere(
-                                            (day) => day.numberDay == Formatters.getNumberDayofWeek(diaSemanaString))
-                                        .startTime!
-                                        .split(":")[1]))
-                                : _horaAbertura,
-                            onSelectTime: () =>
-                                _selectOpeningTime(context, Formatters.getNumberDayofWeek(diaSemanaString), 'start'),
-                          ),
-                          TimeDisplay(
-                            label: 'Fechamento',
-                            time: openingDays
-                                        .firstWhere(
-                                            (day) => day.numberDay == Formatters.getNumberDayofWeek(diaSemanaString),
-                                            orElse: () => WorkDays(numberDay: 0))
-                                        .endTime !=
-                                    null
-                                ? TimeOfDay(
-                                    hour: int.parse(openingDays
-                                        .firstWhere(
-                                            (day) => day.numberDay == Formatters.getNumberDayofWeek(diaSemanaString))
-                                        .endTime!
-                                        .split(":")[0]),
-                                    minute: int.parse(openingDays
-                                        .firstWhere(
-                                            (day) => day.numberDay == Formatters.getNumberDayofWeek(diaSemanaString))
-                                        .endTime!
-                                        .split(":")[1]))
-                                : _horaFechamento,
-                            onSelectTime: () =>
-                                _selectOpeningTime(context, Formatters.getNumberDayofWeek(diaSemanaString), 'end'),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 28),
-                      Visibility(
-                        visible: isHorarioAlmoco,
-                        child: Row(
+                  const SizedBox(height: 24),
+                  WeekdaysPanel(
+                    onDayPressed: (String value) {
+                      addOpenDay(value);
+                      setState(() {
+                        visibleHorarioAbertura = true;
+                      });
+                    },
+                    openingDays: openingDays.map((e) => e.numberDay).toList(),
+                  ),
+                  const SizedBox(height: 24),
+                  Visibility(
+                    visible: visibleHorarioAbertura,
+                    child: Column(
+                      children: [
+                        Text('Horários de atendimento para o dia selecionado $diaSemanaString'),
+                        const SizedBox(height: 12),
+                        Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             TimeDisplay(
-                              label: 'Início',
-                              time: _horaInicioAlmoco,
-                              onSelectTime: () => _selectBreakTime(
-                                  context, Formatters.getNumberDayofWeek(diaSemanaString), 'breakStart'),
+                              label: 'Abertura',
+                              time: openingDays
+                                          .firstWhere(
+                                              (day) => day.numberDay == Formatters.getNumberDayofWeek(diaSemanaString),
+                                              orElse: () => WorkDays(numberDay: 0))
+                                          .startTime !=
+                                      null
+                                  ? TimeOfDay(
+                                      hour: int.parse(openingDays
+                                          .firstWhere(
+                                              (day) => day.numberDay == Formatters.getNumberDayofWeek(diaSemanaString))
+                                          .startTime!
+                                          .split(":")[0]),
+                                      minute: int.parse(openingDays
+                                          .firstWhere(
+                                              (day) => day.numberDay == Formatters.getNumberDayofWeek(diaSemanaString))
+                                          .startTime!
+                                          .split(":")[1]))
+                                  : _horaAbertura,
+                              onSelectTime: () =>
+                                  _selectOpeningTime(context, Formatters.getNumberDayofWeek(diaSemanaString), 'start'),
                             ),
                             TimeDisplay(
-                              label: 'Fim',
-                              time: _horaFimAlmoco,
+                              label: 'Fechamento',
+                              time: openingDays
+                                          .firstWhere(
+                                              (day) => day.numberDay == Formatters.getNumberDayofWeek(diaSemanaString),
+                                              orElse: () => WorkDays(numberDay: 0))
+                                          .endTime !=
+                                      null
+                                  ? TimeOfDay(
+                                      hour: int.parse(openingDays
+                                          .firstWhere(
+                                              (day) => day.numberDay == Formatters.getNumberDayofWeek(diaSemanaString))
+                                          .endTime!
+                                          .split(":")[0]),
+                                      minute: int.parse(openingDays
+                                          .firstWhere(
+                                              (day) => day.numberDay == Formatters.getNumberDayofWeek(diaSemanaString))
+                                          .endTime!
+                                          .split(":")[1]))
+                                  : _horaFechamento,
                               onSelectTime: () =>
-                                  _selectBreakTime(context, Formatters.getNumberDayofWeek(diaSemanaString), 'breakEnd'),
+                                  _selectOpeningTime(context, Formatters.getNumberDayofWeek(diaSemanaString), 'end'),
                             ),
                           ],
                         ),
-                      ),
-                      CustomCheckbox(
-                        value: isHorarioAlmoco,
-                        label: 'Adicionar horário de almoço',
-                        onChanged: (value) {
-                          checkBoxAlmoco(value ?? false);
-                        },
-                      ),
-                      const SizedBox(height: 48),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 34),
-                        child: OutlinedButton(
-                          style: ElevatedButton.styleFrom(minimumSize: const Size.fromHeight(56)),
-                          onPressed: () {
-                            removeOpenDay(diaSemanaString);
-                            diaSemanaString = '';
-                            isHorarioAlmoco = false;
-                            visibleHorarioAbertura = false;
-                          },
-                          child: const Text('REMOVER DIA'),
+                        const SizedBox(height: 28),
+                        Visibility(
+                          visible: isHorarioAlmoco,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              TimeDisplay(
+                                label: 'Início',
+                                time: _horaInicioAlmoco,
+                                onSelectTime: () => _selectBreakTime(
+                                    context, Formatters.getNumberDayofWeek(diaSemanaString), 'breakStart'),
+                              ),
+                              TimeDisplay(
+                                label: 'Fim',
+                                time: _horaFimAlmoco,
+                                onSelectTime: () => _selectBreakTime(
+                                    context, Formatters.getNumberDayofWeek(diaSemanaString), 'breakEnd'),
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
-                      const SizedBox(height: 24),
-                    ],
+                        CustomCheckbox(
+                          value: isHorarioAlmoco,
+                          label: 'Adicionar horário de almoço',
+                          onChanged: (value) {
+                            checkBoxAlmoco(value ?? false);
+                          },
+                        ),
+                        const SizedBox(height: 48),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 34),
+                          child: OutlinedButton(
+                            style: ElevatedButton.styleFrom(minimumSize: const Size.fromHeight(56)),
+                            onPressed: () {
+                              removeOpenDay(diaSemanaString);
+                              diaSemanaString = '';
+                              isHorarioAlmoco = false;
+                              visibleHorarioAbertura = false;
+                            },
+                            child: const Text('REMOVER DIA'),
+                          ),
+                        ),
+                        const SizedBox(height: 24),
+                      ],
+                    ),
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(right: 12, left: 12, top: 12),
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(minimumSize: const Size.fromHeight(56)),
-                    onPressed: () {
-                      switch (formKey.currentState?.validate()) {
-                        case null || false:
-                          context.showError('Formulário invalido');
-                        case true:
-                          log(_selectedImage.toString());
-                          BarbershopModel barbershop = BarbershopModel(
-                            id: 0,
-                            name: nomeEC.text,
-                            phone: telefoneEC.text,
-                            number: numeroEC.text,
-                            city: cidadeEC.text,
-                            street: ruaEC.text,
-                            state: estadoEC.text,
-                            zipCode: Formatters.formatCep(cepEC.text),
-                            workingHours: WorkDays.convertWorkDaysToWorkingHours(openingDays),
-                            email: '',
-                            logo: '',
-                            website: '',
-                            description: '',
-                          );
+                  Padding(
+                    padding: const EdgeInsets.only(right: 12, left: 12, top: 12),
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(minimumSize: const Size.fromHeight(56)),
+                      onPressed: () {
+                        switch (formKey.currentState?.validate()) {
+                          case null || false:
+                            context.showError('Formulário invalido');
+                          case true:
+                            log(_selectedImage.toString());
+                            BarbershopModel barbershopEnv = BarbershopModel(
+                              id: barbershop.id,
+                              name: nomeEC.text,
+                              phone: telefoneEC.text,
+                              number: numeroEC.text,
+                              city: cidadeEC.text,
+                              street: ruaEC.text,
+                              state: estadoEC.text,
+                              zipCode: Formatters.formatCep(cepEC.text),
+                              workingHours: WorkDays.convertWorkDaysToWorkingHours(openingDays),
+                              email: '',
+                              logo: '',
+                              website: '',
+                              description: '',
+                            );
 
-                          widget.barbershopCubit.editarBarbearia(barbershop);
-                      }
-                    },
-                    child: const Text('CADASTRAR ESTABELECIMENTO'),
+                            widget.barbershopCubit.editarBarbearia(barbershopEnv);
+                        }
+                      },
+                      child: const Text('CADASTRAR ESTABELECIMENTO'),
+                    ),
                   ),
-                ),
-              ]),
+                ],
+              ),
             ),
           ),
         ),
