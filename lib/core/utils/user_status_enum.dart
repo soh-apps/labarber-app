@@ -53,4 +53,20 @@ class UserStatusHelper {
         return 'Inativo';
     }
   }
+
+  // Converte um UserStatus para uma string legível
+  static String getStatusNameForInt(int status) {
+    switch (status) {
+      case 0:
+        return 'Inativo';
+      case 1:
+        return 'Ativo';
+      case 2:
+        return 'Indisponível';
+      case 3:
+        return 'Em ferias';
+      default:
+        return 'Inativo';
+    }
+  }
 }

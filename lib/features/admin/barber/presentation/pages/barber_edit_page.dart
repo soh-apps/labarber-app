@@ -25,10 +25,12 @@ import 'package:la_barber/core/ui/helpers/messages.dart';
 
 class BarberEditPage extends StatefulWidget {
   final BarberCubit barberCubit;
+  final BarberModel barber;
 
   const BarberEditPage({
     super.key,
     required this.barberCubit,
+    required this.barber,
   });
 
   @override
@@ -50,7 +52,6 @@ class _BarberEditPageState extends State<BarberEditPage> {
   final telefoneEC = TextEditingController();
 
   File? _selectedImage;
-  late BarberModel barber;
   bool isComoissioned = false;
   bool isManager = false;
   String barberShopName = '';
@@ -60,32 +61,29 @@ class _BarberEditPageState extends State<BarberEditPage> {
   void initState() {
     super.initState();
 
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      barber = ModalRoute.of(context)!.settings.arguments as BarberModel;
-      nomeEC.text = barber.name;
-      telefoneEC.text = barber.telefone ?? '';
-      cepEC.text = Formatters.formatCep(barber.zipCode ?? '');
-      cityEC.text = barber.city ?? '';
-      stateEC.text = barber.state ?? '';
-      streetEC.text = barber.street ?? '';
-      numberEC.text = barber.number ?? '';
-      complementEC.text = barber.complement ?? '';
-      isComoissioned = barber.commissioned;
-      isManager = barber.isManager;
-      selectedStatus = UserStatusHelper.getStatus(barber.status);
+    nomeEC.text = widget.barber.name;
+    telefoneEC.text = widget.barber.telefone ?? '';
+    cepEC.text = Formatters.formatCep(widget.barber.zipCode ?? '');
+    cityEC.text = widget.barber.city ?? '';
+    stateEC.text = widget.barber.state ?? '';
+    streetEC.text = widget.barber.street ?? '';
+    numberEC.text = widget.barber.number ?? '';
+    complementEC.text = widget.barber.complement ?? '';
+    isComoissioned = widget.barber.commissioned;
+    isManager = widget.barber.isManager;
+    selectedStatus = UserStatusHelper.getStatus(widget.barber.status);
 
-      // Verifica se a instância está registrada no getIt
-      if (getIt.isRegistered<BarbershopModel>()) {
-        try {
-          setState(() {
-            barberShopName = getIt<BarbershopModel>().name;
-          });
-        } catch (e) {
-          // Loga o erro ou trata de outra forma necessária
-          log('Erro ao obter o nome do barbeiro: $e');
-        }
+    // Verifica se a instância está registrada no getIt
+    if (getIt.isRegistered<BarbershopModel>()) {
+      try {
+        setState(() {
+          barberShopName = getIt<BarbershopModel>().name;
+        });
+      } catch (e) {
+        // Loga o erro ou trata de outra forma necessária
+        log('Erro ao obter o nome do barbeiro: $e');
       }
-    });
+    }
   }
 
   @override
@@ -268,6 +266,18 @@ class _BarberEditPageState extends State<BarberEditPage> {
                   ],
                   keyboardType: TextInputType.number,
                 ),
+                const SizedBox(height: 22),
+                TextFormField(
+                  onTapOutside: (_) => context.unfocus(),
+                  controller: complementEC,
+                  decoration: const InputDecoration(
+                    label: Text('Complemento'),
+                  ),
+                  inputFormatters: [
+                    FilteringTextInputFormatter.digitsOnly,
+                  ],
+                  keyboardType: TextInputType.number,
+                ),
                 const SizedBox(height: 48),
                 Padding(
                   padding: const EdgeInsets.only(right: 12, left: 12),
@@ -280,10 +290,10 @@ class _BarberEditPageState extends State<BarberEditPage> {
                         case true:
                           log(_selectedImage.toString());
                           final barberDto = BarberModel(
-                            id: barber.id,
+                            id: widget.barber.id,
                             name: nomeEC.text,
-                            email: barber.email,
-                            telefone: telefoneEC.text,
+                            email: widget.barber.email,
+                            telefone: Formatters.removeSpecialCharacters(telefoneEC.text),
                             zipCode: Formatters.formatCep(cepEC.text),
                             street: streetEC.text,
                             number: numberEC.text,

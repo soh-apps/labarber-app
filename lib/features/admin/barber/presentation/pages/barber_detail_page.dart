@@ -1,11 +1,14 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 import 'package:la_barber/core/constants/routes.dart';
 import 'package:la_barber/core/ui/helpers/context_extension.dart';
 import 'package:la_barber/core/ui/styles/app_color.dart';
 import 'package:la_barber/core/ui/styles/text_styles_typography.dart';
 import 'package:la_barber/core/ui/widgets/custom_button.dart';
+import 'package:la_barber/core/utils/user_status_enum.dart';
+import 'package:la_barber/core/utils/user_type_enum.dart';
 import 'package:la_barber/features/admin/barber/repository/models/barber_model.dart';
 import 'package:la_barber/features/admin/servicos/presentation/widgets/services_detail_tile.dart';
 
@@ -49,14 +52,26 @@ class BarberDetailPage extends StatelessWidget {
               const SizedBox(height: 12),
               Center(
                 child: Text(
-                  barber.name,
+                  barber.name.toUpperCase(),
                   style: AppTextStyles.titleLarge(),
                 ),
               ),
               const SizedBox(height: 12),
-              ServicesDetailTile(title: 'Telefone', content: barber.name),
-              ServicesDetailTile(title: 'E-mail', content: barber.email ?? ''),
-              ServicesDetailTile(title: 'Cargo', content: barber.telefone ?? ''),
+              Visibility(
+                visible: barber.telefone != null && barber.telefone != '',
+                child: ServicesDetailTile(title: 'Telefone', content: barber.telefone ?? ''),
+              ),
+              ServicesDetailTile(
+                title: 'Cargo',
+                content: UserTypeHelper.getTypeName(barber.userType),
+              ),
+              Visibility(
+                visible: barber.state != null && barber.state != '',
+                child: ServicesDetailTile(
+                  title: 'Status',
+                  content: UserStatusHelper.getStatusNameForInt(barber.status),
+                ),
+              ),
               const SizedBox(height: 80),
               SizedBox(
                 width: double.infinity,

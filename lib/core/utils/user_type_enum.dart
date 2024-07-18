@@ -42,4 +42,22 @@ class UserTypeHelper {
         return 5;
     }
   }
+
+  // Converte um UserType para uma String
+  static String getTypeName(UserType userType) {
+    switch (userType) {
+      case UserType.master:
+        return 'Master';
+      case UserType.admin:
+        return 'Admin';
+      case UserType.manager:
+        return 'Gerente';
+      case UserType.barber:
+        return 'Barbeiro';
+      case UserType.client:
+        return 'Cliente';
+      default:
+        return '';
+    }
+  }
 }

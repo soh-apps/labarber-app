@@ -259,6 +259,10 @@ class Formatters {
     return '';
   }
 
+  static String removeSpecialCharacters(String phoneNumber) {
+    return phoneNumber.replaceAll(RegExp(r'[^0-9]'), '');
+  }
+
   static String? cutTheText(String? text, int size) {
     if (text != null && text.length >= size) {
       text = text.substring(0, size);

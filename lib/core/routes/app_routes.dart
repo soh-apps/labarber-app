@@ -38,13 +38,11 @@ class AppRoutes {
 
     // Barber
     _AppRouteItem(Routes.barberRegister, (context) => BarberRegisterPage(barberCubit: getIt())),
-    _AppRouteItem(Routes.barberEdit, (context) => BarberEditPage(barberCubit: getIt())),
+    _AppRouteItem(Routes.barberEdit,
+        (context) => BarberEditPage(barberCubit: getIt(), barber: routeArguments(context) as BarberModel)),
     _AppRouteItem(Routes.barberListPage, (context) => BarberListPage(barberCubit: getIt())),
     _AppRouteItem(
-        Routes.barberDetailPage,
-        (context) => BarberDetailPage(
-              barber: routeArguments(context) as BarberModel,
-            )),
+        Routes.barberDetailPage, (context) => BarberDetailPage(barber: routeArguments(context) as BarberModel)),
 
     // Servicos
     _AppRouteItem(Routes.servicoListPage, (context) => ServicosListPage(servicoCubit: getIt())),

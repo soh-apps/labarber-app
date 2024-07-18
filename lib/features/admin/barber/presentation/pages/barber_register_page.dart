@@ -299,6 +299,17 @@ class _BarberRegisterPageState extends State<BarberRegisterPage> {
                   keyboardType: TextInputType.number,
                 ),
                 const SizedBox(height: 22),
+                TextFormField(
+                  onTapOutside: (_) => context.unfocus(),
+                  controller: complementEC,
+                  decoration: const InputDecoration(
+                    label: Text('Complemento'),
+                  ),
+                  inputFormatters: [
+                    FilteringTextInputFormatter.digitsOnly,
+                  ],
+                  keyboardType: TextInputType.number,
+                ),
                 const SizedBox(height: 48),
                 Padding(
                   padding: const EdgeInsets.only(right: 12, left: 12),

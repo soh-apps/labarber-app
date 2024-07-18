@@ -21,13 +21,6 @@ class BarbershopCubit extends Cubit<BarbershopState> {
   Future<void> registrarBarbearia(BarbershopModel barberShop) async {
     final result = await barbershopRepository.cadastrarBarbearia(barberShop);
 
-    // final dto = (
-    //   name: name,
-    //   email: email,
-    //   openingDays: openingDays,
-    //   openingHours: openingHours
-    // );
-
     switch (result) {
       case Success():
         mensagem = result.value;
@@ -99,7 +92,6 @@ class BarbershopCubit extends Cubit<BarbershopState> {
     switch (result) {
       case Success():
         cepModel = result.value;
-        // barberUnits = result.value;
         emit(BarbershopCepSuccess());
       case Failure():
         emit(BarbershopCepFail(errorMessage: mensagem));
