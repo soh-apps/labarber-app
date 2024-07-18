@@ -32,22 +32,34 @@ class _BarberListPageState extends State<BarberListPage> {
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
-  void didChangeDependencies() async {
-    super.didChangeDependencies();
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      // if (getIt<UserModel>().userType == UserType.admin) {
+      //   barberShop = ModalRoute.of(context)!.settings.arguments as BarbershopModel;
+      //   await getIt<BarbershopCubit>().getBarberShopData(barberShop.id);
+      //   widget.barberCubit.getAllBarbers(barberShop.id);
+      // } else if (getIt<UserModel>().userType == UserType.manager) {
+      //   await getIt<BarbershopCubit>().getBarberShopData(0);
+      //   widget.barberCubit.getAllBarbers(0);
+      // }
+    });
+    super.initState();
+  }
 
+  void verifyData(BuildContext context) {
     if (getIt<UserModel>().userType == UserType.admin) {
       barberShop = ModalRoute.of(context)!.settings.arguments as BarbershopModel;
-      await getIt<BarbershopCubit>().getBarberShopData(barberShop.id);
+      getIt<BarbershopCubit>().getBarberShopData(barberShop.id);
       widget.barberCubit.getAllBarbers(barberShop.id);
     } else if (getIt<UserModel>().userType == UserType.manager) {
-      await getIt<BarbershopCubit>().getBarberShopData(0);
+      getIt<BarbershopCubit>().getBarberShopData(0);
       widget.barberCubit.getAllBarbers(0);
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    // log(barberShop.name);
+    verifyData(context);
     return SafeArea(
       child: Scaffold(
         key: scaffoldKey,
@@ -56,8 +68,7 @@ class _BarberListPageState extends State<BarberListPage> {
           child: Column(
             children: [
               BarberHeaderWidget(
-                // title: barberShop.name,
-                title: 'NomeBarbearia',
+                title: barberShop.name,
                 scaffoldKey: scaffoldKey,
               ),
               BlocBuilder<BarberCubit, BarberState>(
@@ -65,7 +76,7 @@ class _BarberListPageState extends State<BarberListPage> {
                 builder: (context, state) {
                   if (state is BarberLoading) {
                     return const Center(child: CircularProgressIndicator());
-                  } else if (state is BarberSuccess) {
+                  } else if (state is BarberSuccess || state is BarberEditSuccess) {
                     if (widget.barberCubit.barbers.isEmpty) {
                       return RefreshIndicator(
                         onRefresh: () async {
@@ -125,7 +136,7 @@ class _BarberListPageState extends State<BarberListPage> {
                   } else {
                     return RefreshIndicator(
                       onRefresh: () async {
-                        widget.barberCubit.getAllBarbers(0);
+                        widget.barberCubit.getAllBarbers(getIt<BarbershopModel>().id);
                       },
                       child: SingleChildScrollView(
                         physics:

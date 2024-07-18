@@ -56,6 +56,30 @@ class BarberRepository {
     }
   }
 
+  Future<Either<AuthException, String>> editarColaborador(BarberModel barber) async {
+    try {
+      final Response response = await _restClient.auth.put(
+        '/api/Barber/Update',
+        data: barber.toMapUpdate(),
+      );
+      if (response.statusCode == 204) {
+        return Success(response.data);
+      } else {
+        return Failure(AuthError(message: 'Erro ao Editar colaborador'));
+      }
+    } on DioException catch (e, s) {
+      if (e.response != null) {
+        final Response response = e.response!;
+        if (response.statusCode == 400) {
+          log('Erro ao Editar colaborador - ${e.message}', error: e, stackTrace: s);
+          return Failure(AuthUnauthorizedException());
+        }
+      }
+      log('Erro ao Editar colaborador', error: e, stackTrace: s);
+      return Failure(AuthError(message: 'Erro ao Editar colaborador - ${e.message}'));
+    }
+  }
+
   Future<Either<RepositoryException, ViaCEPModel>> getByCEP(String cep) async {
     String viacepBaseUrl = 'https://viacep.com.br/ws';
     try {

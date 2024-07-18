@@ -5,13 +5,16 @@ import 'package:brasil_fields/brasil_fields.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:la_barber/core/constants/routes.dart';
 import 'package:la_barber/core/di/di.dart';
 import 'package:la_barber/core/ui/helpers/context_extension.dart';
 import 'package:la_barber/core/ui/widgets/custom_check_box.dart';
 import 'package:la_barber/core/ui/widgets/image_picker.dart';
 import 'package:la_barber/core/utils/formatters.dart';
+import 'package:la_barber/core/utils/user_status_enum.dart';
 import 'package:la_barber/core/utils/user_type_enum.dart';
 import 'package:la_barber/features/admin/barber/presentation/cubit/barber_cubit.dart';
+import 'package:la_barber/features/admin/barber/presentation/widgets/user_status_dropdown.dart';
 import 'package:la_barber/features/admin/barber/repository/models/barber_model.dart';
 import 'package:la_barber/features/admin/barbershop/repository/models/barbershop_model.dart';
 
@@ -48,24 +51,41 @@ class _BarberEditPageState extends State<BarberEditPage> {
 
   File? _selectedImage;
   late BarberModel barber;
-  bool isComoissioned = true;
-  bool isManager = true;
+  bool isComoissioned = false;
+  bool isManager = false;
   String barberShopName = '';
+  UserStatus selectedStatus = UserStatus.active;
 
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    barber = ModalRoute.of(context)!.settings.arguments as BarberModel;
-    nomeEC.text = barber.name;
-    telefoneEC.text = barber.telefone ?? '';
-    cepEC.text = Formatters.formatCep(barber.zipCode ?? '');
-    cityEC.text = barber.city ?? '';
-    stateEC.text = barber.state ?? '';
-    streetEC.text = barber.street ?? '';
-    numberEC.text = barber.number ?? '';
-    complementEC.text = barber.complement ?? '';
-    isComoissioned = barber.commissioned;
-    isManager = barber.isManager;
+  void initState() {
+    super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      barber = ModalRoute.of(context)!.settings.arguments as BarberModel;
+      nomeEC.text = barber.name;
+      telefoneEC.text = barber.telefone ?? '';
+      cepEC.text = Formatters.formatCep(barber.zipCode ?? '');
+      cityEC.text = barber.city ?? '';
+      stateEC.text = barber.state ?? '';
+      streetEC.text = barber.street ?? '';
+      numberEC.text = barber.number ?? '';
+      complementEC.text = barber.complement ?? '';
+      isComoissioned = barber.commissioned;
+      isManager = barber.isManager;
+      selectedStatus = UserStatusHelper.getStatus(barber.status);
+
+      // Verifica se a instância está registrada no getIt
+      if (getIt.isRegistered<BarbershopModel>()) {
+        try {
+          setState(() {
+            barberShopName = getIt<BarbershopModel>().name;
+          });
+        } catch (e) {
+          // Loga o erro ou trata de outra forma necessária
+          log('Erro ao obter o nome do barbeiro: $e');
+        }
+      }
+    });
   }
 
   @override
@@ -82,24 +102,17 @@ class _BarberEditPageState extends State<BarberEditPage> {
     super.dispose();
   }
 
+  void _onSelectCargo(UserStatus status) {
+    log(UserStatusHelper.getStatusName(status));
+    setState(() {
+      selectedStatus = status;
+    });
+  }
+
   void _onImageSelected(File? image) {
     setState(() {
       _selectedImage = image;
     });
-  }
-
-  @override
-  void initState() {
-    // Verifica se a instância está registrada no getIt
-    if (getIt.isRegistered<BarbershopModel>()) {
-      try {
-        barberShopName = getIt<BarbershopModel>().name;
-      } catch (e) {
-        // Loga o erro ou trata de outra forma necessária
-        log('Erro ao obter o nome do barbeiro: $e');
-      }
-    }
-    super.initState();
   }
 
   @override
@@ -109,8 +122,9 @@ class _BarberEditPageState extends State<BarberEditPage> {
       listener: (context, state) {
         if (state is BarberSuccess) {
           context.hideLoadingDialog(context);
+          context.popUntil((route) => route.settings.name == Routes.barberListPage);
           context.showSuccess('Colaborador Editado com Sucesso!');
-          context.pop();
+
           // Navigator.of(context).pushNamedAndRemoveUntil(Routes.homeAdmin, (route) => false);
         } else if (state is BarberLoading) {
           context.showLoadingDialog(context, message: "Loading");
@@ -176,6 +190,12 @@ class _BarberEditPageState extends State<BarberEditPage> {
                     });
                   },
                 ),
+                const SizedBox(height: 12),
+                Center(
+                    child: UserStatusDropdown(
+                  onPressed: _onSelectCargo,
+                  selectedStatus: selectedStatus,
+                )),
                 const SizedBox(height: 22),
                 TextFormField(
                   onTapOutside: (_) => context.unfocus(),
@@ -248,7 +268,6 @@ class _BarberEditPageState extends State<BarberEditPage> {
                   ],
                   keyboardType: TextInputType.number,
                 ),
-                const SizedBox(height: 22),
                 const SizedBox(height: 48),
                 Padding(
                   padding: const EdgeInsets.only(right: 12, left: 12),
@@ -272,13 +291,14 @@ class _BarberEditPageState extends State<BarberEditPage> {
                             city: cityEC.text,
                             state: stateEC.text,
                             commissioned: isComoissioned,
-                            barberUnitId: 0,
+                            barberUnitId: getIt<BarbershopModel>().id,
                             isManager: isManager,
                             userType: isManager ? UserType.manager : UserType.barber,
+                            status: UserStatusHelper.getStatusCode(selectedStatus),
 
                             // image: _selectedImage,
                           );
-                          widget.barberCubit.registerBarber(barberDto);
+                          widget.barberCubit.editBarber(barberDto);
                       }
                     },
                     child: const Text('EDITAR COLABORADOR'),

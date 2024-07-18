@@ -13,6 +13,8 @@ final class BarberLoading extends BarberState {}
 
 final class BarberSuccess extends BarberState {}
 
+final class BarberEditSuccess extends BarberState {}
+
 final class BarberCepSuccess extends BarberState {}
 
 final class BarberFailure extends BarberState {

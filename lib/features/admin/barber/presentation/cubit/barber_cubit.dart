@@ -37,6 +37,21 @@ class BarberCubit extends Cubit<BarberState> {
     }
   }
 
+  Future<void> editBarber(BarberModel barber) async {
+    final result = await barberRepository.editarColaborador(barber);
+
+    switch (result) {
+      case Success():
+        mensagem = result.value;
+        await getAllBarbers(barber.barberUnitId);
+        emit(BarberEditSuccess());
+
+      case Failure():
+        mensagem = result.exception.message;
+        emit(BarberFailure(errorMessage: mensagem));
+    }
+  }
+
   Future<void> getAllBarbers(int companyId) async {
     emit(BarberLoading());
     final result = await barberRepository.getAllBarbers(companyId);
