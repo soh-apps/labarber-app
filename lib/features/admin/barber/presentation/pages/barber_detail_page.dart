@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+
 import 'package:la_barber/core/constants/routes.dart';
 import 'package:la_barber/core/ui/helpers/context_extension.dart';
 import 'package:la_barber/core/ui/styles/app_color.dart';
@@ -8,22 +9,14 @@ import 'package:la_barber/core/ui/widgets/custom_button.dart';
 import 'package:la_barber/features/admin/barber/repository/models/barber_model.dart';
 import 'package:la_barber/features/admin/servicos/presentation/widgets/services_detail_tile.dart';
 
-class BarberDetailPage extends StatefulWidget {
-  const BarberDetailPage({super.key});
+class BarberDetailPage extends StatelessWidget {
+  final BarberModel barber;
+  const BarberDetailPage({
+    super.key,
+    required this.barber,
+  });
 
-  @override
-  State<BarberDetailPage> createState() => _BarberDetailPageState();
-}
-
-class _BarberDetailPageState extends State<BarberDetailPage> {
-  late BarberModel barber;
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    barber = ModalRoute.of(context)!.settings.arguments as BarberModel;
-  }
-
+  // late BarberModel barber;
   @override
   Widget build(BuildContext context) {
     return Scaffold(

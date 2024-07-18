@@ -2,23 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:la_barber/core/constants/routes.dart';
 import 'package:la_barber/core/di/di.dart';
+import 'package:la_barber/core/routes/app_routes.dart';
 import 'package:la_barber/core/ui/barbershop_nav_global_key.dart';
 import 'package:la_barber/core/ui/barbershop_theme.dart';
-import 'package:la_barber/features/admin/agendamento/presentation/pages/agendamento_rapido_page.dart';
-import 'package:la_barber/features/admin/barber/presentation/pages/barber_detail_page.dart';
-import 'package:la_barber/features/admin/barber/presentation/pages/barber_edit_page.dart';
-import 'package:la_barber/features/admin/barber/presentation/pages/barber_list_page.dart';
-import 'package:la_barber/features/admin/barber/presentation/pages/barber_register_page.dart';
-import 'package:la_barber/features/admin/barbershop/presentation/pages/barbershop_detalhes_page.dart';
-import 'package:la_barber/features/admin/barbershop/presentation/pages/barbershop_edit_page.dart';
-import 'package:la_barber/features/admin/barbershop/presentation/pages/barbershop_list_page.dart';
-import 'package:la_barber/features/admin/barbershop/presentation/pages/barbershop_register_page.dart';
-import 'package:la_barber/features/admin/servicos/presentation/pages/servico_detalhes_page.dart';
-import 'package:la_barber/features/admin/servicos/presentation/pages/servico_edit_page.dart';
-import 'package:la_barber/features/admin/servicos/presentation/pages/servico_register_page.dart';
-import 'package:la_barber/features/admin/servicos/presentation/pages/servicos_list_page.dart';
 import 'package:la_barber/features/common/auth/presentation/cubits/auth_cubit.dart';
-import 'package:la_barber/features/common/auth/presentation/pages/login_page.dart';
 
 Future<void> main() async {
   await configureInjection();
@@ -48,31 +35,7 @@ class _MainAppState extends State<MainApp> {
       theme: BarbershopTheme.themeData,
       initialRoute: Routes.login,
       navigatorKey: BarbershopNavGlobalKey.instance.navKey,
-      routes: {
-        // Login
-        Routes.login: (context) => LoginPage(authCubit: authCubit),
-
-        // BarberShop
-        Routes.barbershopList: (_) => BarbershopListPage(barbershopCubit: getIt()),
-        Routes.barbershopRegister: (_) => BarbershopRegisterPage(barbershopCubit: getIt()),
-        Routes.barbershopEdit: (_) => BarbershopEditPage(barbershopCubit: getIt()),
-        Routes.barbershopDetail: (_) => BarbershopDetalhesPage(barbershopCubit: getIt()),
-
-        // Barber
-        Routes.barberRegister: (_) => BarberRegisterPage(barberCubit: getIt()),
-        Routes.barberEdit: (_) => BarberEditPage(barberCubit: getIt()),
-        Routes.barberListPage: (_) => BarberListPage(barberCubit: getIt()),
-        Routes.barberDetailPage: (_) => const BarberDetailPage(),
-
-        // Servicos
-        Routes.servicoListPage: (_) => ServicosListPage(servicoCubit: getIt()),
-        Routes.servicoRegisterPage: (_) => ServicoRegisterPage(servicoCubit: getIt()),
-        Routes.servicoDetailPage: (_) => const ServicoDetalhesPage(),
-
-        // Agendamento
-        Routes.agendamentoRapidoPage: (_) => AgendamentoRapidoPage(agendamentoCubit: getIt()),
-        Routes.servicoEditPage: (_) => ServicoEditPage(servicoCubit: getIt()),
-      },
+      routes: AppRoutes.routes,
       home: const Scaffold(
         body: Center(
           child: Text('Hello World!'),
