@@ -17,7 +17,7 @@ class BarbershopTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        context.pushNamed(Routes.barberListPage, arguments: barberShop);
+        context.pushReplacementNamed(Routes.barberListPage, arguments: barberShop);
       },
       child: Container(
         width: 200,

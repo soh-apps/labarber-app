@@ -86,8 +86,8 @@ class _AgendamentoRapidoPageState extends State<AgendamentoRapidoPage> {
 
   @override
   void initState() {
-    widget.agendamentoCubit.getAllBarbers(barberShop.id);
-    widget.agendamentoCubit.getAllServicos(barberShop.id);
+    widget.agendamentoCubit.getAllInfo(barberShop.id);
+    // widget.agendamentoCubit.getAllServicos(barberShop.id);
     _selectedTime = TimeOfDay.now();
 
     if (widget.agendamentoCubit.barbeiros.isNotEmpty) {
@@ -127,7 +127,9 @@ class _AgendamentoRapidoPageState extends State<AgendamentoRapidoPage> {
               return const Center(child: CircularProgressIndicator());
             } else if (state is AgendamentoFailure) {
               return const Center(child: CircularProgressIndicator());
-            } else {
+            } else if (state is AgendamentoSuccess) {
+              barbeiroSelecionado = widget.agendamentoCubit.barbeiros.first.id.toString();
+              var servicos = widget.agendamentoCubit.servicos;
               return SingleChildScrollView(
                 child: Padding(
                   padding: const EdgeInsets.all(32),
@@ -179,14 +181,14 @@ class _AgendamentoRapidoPageState extends State<AgendamentoRapidoPage> {
                           style: AppTextStyles.titleLarge(),
                         )),
                         SizedBox(height: padding),
-                        for (int index = 0; index < widget.agendamentoCubit.servicos.length; index++)
+                        for (int index = 0; index < servicos.length; index++)
                           CaixaSelecaoServico(
-                            servico: widget.agendamentoCubit.servicos[index],
+                            servico: servicos[index],
                             onChanged: (bool value) {
                               _onServicoChanged(index, value);
                             },
                             isFirst: index == 0,
-                            isLast: index == widget.agendamentoCubit.servicos.length - 1,
+                            isLast: index == servicos.length - 1,
                           ),
                         SizedBox(height: padding),
                         Column(
@@ -285,6 +287,8 @@ class _AgendamentoRapidoPageState extends State<AgendamentoRapidoPage> {
                   ),
                 ),
               );
+            } else {
+              return const Center(child: CircularProgressIndicator());
             }
           }),
     );

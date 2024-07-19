@@ -48,6 +48,7 @@ class ServicoModel {
       descricao: map['description'] != null ? (map['descricao'] as num).toString() : null,
       barberUnitId: map['barberUnitId'] != null ? (map['barberUnitId'] as num).toInt() : null,
       porcentagemComissao: map['barberUnitId'] != null ? (map['barberUnitId'] as num).toInt() : 0,
+      isAtivo: false,
     );
   }
 

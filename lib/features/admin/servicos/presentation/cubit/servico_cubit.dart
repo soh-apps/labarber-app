@@ -4,7 +4,7 @@ import 'package:la_barber/core/restClient/either.dart';
 
 import 'package:la_barber/features/admin/servicos/repository/models/servico_model.dart';
 import 'package:la_barber/features/admin/servicos/repository/servicos_repository.dart';
-import 'package:la_barber/utils/mocks.dart';
+import 'package:la_barber/core/utils/mocks.dart';
 
 part 'servico_state.dart';
 

@@ -42,8 +42,8 @@ Future<void> configureInjection() async {
         getIt<BarberRepository>(),
         getIt<ServicosRepository>(),
       ));
-  getIt.registerFactory<BarbershopCubit>(() => BarbershopCubit(getIt<BarbershopRepository>()));
-  getIt.registerFactory<BarberCubit>(() => BarberCubit(getIt<BarberRepository>()));
+  getIt.registerLazySingleton<BarbershopCubit>(() => BarbershopCubit(getIt<BarbershopRepository>()));
+  getIt.registerLazySingleton<BarberCubit>(() => BarberCubit(getIt<BarberRepository>()));
 
   await getIt.allReady();
 

@@ -33,6 +33,7 @@ class BarberListPage extends StatefulWidget {
 class _BarberListPageState extends State<BarberListPage> {
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
   final BarbershopCubit barbershopCubit = getIt<BarbershopCubit>();
+  late BarbershopModel barberShopLocao;
 
   @override
   void initState() {
@@ -41,6 +42,7 @@ class _BarberListPageState extends State<BarberListPage> {
   }
 
   void verifyData() {
+    barberShopLocao = widget.barberShop;
     if (getIt<UserModel>().userType == UserType.admin) {
       barbershopCubit.getBarberShopData(widget.barberShop.id);
       widget.barberCubit.getAllBarbers(widget.barberShop.id);
@@ -52,6 +54,7 @@ class _BarberListPageState extends State<BarberListPage> {
 
   @override
   Widget build(BuildContext context) {
+    log('Tela Rebuildou');
     return SafeArea(
       child: Scaffold(
         key: scaffoldKey,
@@ -160,7 +163,11 @@ class _BarberListPageState extends State<BarberListPage> {
               backgroundColor: ColorConstants.colorBrown,
               onPressed: () {
                 log('Agendar');
-                // context.pushNamed(Routes.adminRegisterBarber);
+                context.pushNamed(Routes.agendamentoRapidoPage).then(
+                  (value) {
+                    widget.barberCubit.getAllBarbers(widget.barberShop.id);
+                  },
+                );
               },
               child: const Text(
                 'AGENDAR',

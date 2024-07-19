@@ -1,13 +1,15 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:la_barber/core/restClient/either.dart';
 import 'package:la_barber/features/admin/agendamento/repository/agendamento_repository.dart';
 import 'package:la_barber/features/admin/agendamento/repository/model/agendamento_model.dart';
 import 'package:la_barber/features/admin/barber/repository/barber_repository.dart';
 import 'package:la_barber/features/admin/barber/repository/models/barber_model.dart';
+import 'package:la_barber/features/admin/servicos/presentation/cubit/servico_cubit.dart';
 import 'package:la_barber/features/admin/servicos/repository/models/servico_model.dart';
 import 'package:la_barber/features/admin/servicos/repository/servicos_repository.dart';
 
-import 'package:la_barber/utils/mocks.dart';
+import 'package:la_barber/core/utils/mocks.dart';
 
 part 'agendamento_state.dart';
 
@@ -26,31 +28,31 @@ class AgendamentoCubit extends Cubit<AgendamentoState> {
   List<ServicoModel> servicos = [];
   List<BarberModel> barbeiros = [];
 
-  Future<void> getAllBarbers(int companyId) async {
+  Future<void> getAllInfo(int companyId) async {
     emit(AgendamentoLoading());
-    // final result = await barberRepository.getAllBarbers(companyId);
+    final result = await barberRepository.getAllBarbers(companyId);
 
-    // switch (result) {
-    //   case Success():
-    //     barbeiros = result.value;
-    //     emit(AgendamentoSuccess());
-    //   case Failure():
-    // }
+    switch (result) {
+      case Success():
+        barbeiros = result.value;
+        getAllServicos(companyId);
+      // emit(AgendamentoSuccess());
+      case Failure():
+    }
 
-    barbeiros = Mocks.barberList;
+    // barbeiros = Mocks.barberList;
     emit(AgendamentoSuccess());
   }
 
   Future<void> getAllServicos(int companyId) async {
     emit(AgendamentoLoading());
-    //   final result = await servicosRepository.getAllServicos(companyId);
+    // final result = await servicosRepository.getAllServicos(companyId);
 
-    //   switch (result) {
-    //     case Success():
-    //       servicos = result.value;
-    //       emit(ServicoSuccess());
-    //     case Failure():
-    //   }
+    // switch (result) {
+    //   case Success():
+    //     servicos = result.value;
+    //     emit(AgendamentoSuccess());
+    //   case Failure():
     // }
 
     servicos = Mocks.servicosList;

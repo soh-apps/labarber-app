@@ -13,7 +13,7 @@ class ServicosRepository {
   Future<Either<AuthException, List<ServicoModel>>> getAllServicos(int companyId) async {
     try {
       final Response response = await _restClient.auth.get(
-        '/api/Service/GetAllServices?barberUnitId=$companyId',
+        '/api/Service/List?id=$companyId',
       );
       var user = ServicoModel.fromList(response.data);
       return Success(user);
