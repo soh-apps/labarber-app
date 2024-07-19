@@ -64,7 +64,7 @@ class BarbershopModel {
 
   factory BarbershopModel.fromMap(Map<String, dynamic> map) {
     return BarbershopModel(
-      id: map['id'] ?? 0,
+      id: map['id'],
       name: map['name'] ?? '',
       phone: map['phone'] ?? '',
       email: map['email'] ?? '',

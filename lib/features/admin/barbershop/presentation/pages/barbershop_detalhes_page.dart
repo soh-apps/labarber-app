@@ -1,9 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+
 import 'package:la_barber/core/constants/routes.dart';
 import 'package:la_barber/core/ui/helpers/context_extension.dart';
-
 import 'package:la_barber/core/ui/styles/app_color.dart';
 import 'package:la_barber/core/ui/widgets/custom_button.dart';
 import 'package:la_barber/features/admin/barbershop/presentation/cubit/barbershop_cubit.dart';
@@ -13,9 +12,11 @@ import 'package:la_barber/features/admin/servicos/presentation/widgets/services_
 
 class BarbershopDetalhesPage extends StatefulWidget {
   final BarbershopCubit barbershopCubit;
+  final BarbershopModel barbershop;
   const BarbershopDetalhesPage({
     super.key,
     required this.barbershopCubit,
+    required this.barbershop,
   });
 
   @override
@@ -23,20 +24,12 @@ class BarbershopDetalhesPage extends StatefulWidget {
 }
 
 class _BarbershopDetalhesPageState extends State<BarbershopDetalhesPage> {
-  late BarbershopModel barbershop;
-  @override
-  void didChangeDependencies() {
-    barbershop = ModalRoute.of(context)!.settings.arguments as BarbershopModel;
-    widget.barbershopCubit.getBarbershopDetail(barbershop.id);
-    super.didChangeDependencies();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColor.bg100,
       appBar: AppBar(
-        title: Text(barbershop.name.toUpperCase()),
+        title: Text(widget.barbershop.name.toUpperCase()),
         backgroundColor: AppColor.bg100,
         actions: [
           IconButton(
@@ -47,64 +40,38 @@ class _BarbershopDetalhesPageState extends State<BarbershopDetalhesPage> {
           ),
         ],
       ),
-      body: BlocBuilder<BarbershopCubit, BarbershopState>(
-        bloc: widget.barbershopCubit,
-        builder: (context, state) {
-          if (state is BarbershopLoading) {
-            return const Expanded(child: Center(child: CircularProgressIndicator()));
-          } else if (state is BarbershopActualSuccess) {
-            barbershop = state.barbershop;
-            return Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Center(
-                      child: CachedNetworkImage(
-                        imageUrl: barbershop.logo,
-                        placeholder: (context, url) => const CircularProgressIndicator(),
-                        errorWidget: (context, url, error) => Image.asset('assets/images/logo.png'),
-                      ),
-                    ),
-                    const SizedBox(height: 20),
-                    ServicesDetailTile(
-                      title: 'Endereco',
-                      content:
-                          'Rua: ${state.barbershop.street}, ${state.barbershop.number}, ${state.barbershop.city} - ${state.barbershop.state}',
-                      fontSize: 16,
-                    ),
-                    ServicesDetailTile(
-                      title: 'Telefone',
-                      content: state.barbershop.phone,
-                      fontSize: 16,
-                    ),
-                    GroupedWorkingHoursWidget(
-                      workingHours: state.barbershop.workingHours ?? [],
-                    ),
-                    const SizedBox(height: 80),
-                  ],
+      body: Padding(
+        padding: const EdgeInsets.all(20.0),
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Center(
+                child: CachedNetworkImage(
+                  imageUrl: widget.barbershop.logo,
+                  placeholder: (context, url) => const CircularProgressIndicator(),
+                  errorWidget: (context, url, error) => Image.asset('assets/images/logo.png'),
                 ),
               ),
-            );
-          } else {
-            return RefreshIndicator(
-              onRefresh: () async {
-                await widget.barbershopCubit.getBarbershopDetail(barbershop.id);
-              },
-              child: SingleChildScrollView(
-                physics:
-                    const AlwaysScrollableScrollPhysics(), // Isso garante que o RefreshIndicator funcione mesmo que não haja scroll.
-                child: SizedBox(
-                  height: MediaQuery.sizeOf(context).height / 2, // Isso garante que o Container ocupe a tela toda.
-                  child: const Center(
-                    child: Text('Error'),
-                  ),
-                ),
+              const SizedBox(height: 20),
+              ServicesDetailTile(
+                title: 'Endereco',
+                content:
+                    'Rua: ${widget.barbershop.street}, ${widget.barbershop.number}, ${widget.barbershop.city} - ${widget.barbershop.state}',
+                fontSize: 16,
               ),
-            );
-          }
-        },
+              ServicesDetailTile(
+                title: 'Telefone',
+                content: widget.barbershop.phone,
+                fontSize: 16,
+              ),
+              GroupedWorkingHoursWidget(
+                workingHours: widget.barbershop.workingHours ?? [],
+              ),
+              const SizedBox(height: 80),
+            ],
+          ),
+        ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: Padding(
@@ -116,7 +83,7 @@ class _BarbershopDetalhesPageState extends State<BarbershopDetalhesPage> {
             paddingHorizontal: 12,
             text: 'Editar',
             onPressed: () {
-              context.pushNamed(Routes.barbershopEdit, arguments: barbershop);
+              context.pushNamed(Routes.barbershopEdit, arguments: widget.barbershop);
             },
           ),
         ),

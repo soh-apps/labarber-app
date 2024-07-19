@@ -60,42 +60,6 @@ class BarbershopHeaderWidget extends StatelessWidget {
           Row(
             mainAxisSize: MainAxisSize.max,
             children: [
-              GestureDetector(
-                onTap: () {
-                  scaffoldKey.currentState?.openDrawer();
-                },
-                child: const CircleAvatar(
-                  backgroundColor: Color(0xffbdbdbd),
-                  child: SizedBox.shrink(),
-                ),
-              ),
-              const SizedBox(
-                width: 16,
-              ),
-              Flexible(
-                child: Text(
-                  getIt<UserModel>().name,
-                  overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 14,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-              const SizedBox(
-                width: 16,
-              ),
-              const Expanded(
-                child: Text(
-                  'editar',
-                  style: TextStyle(
-                    color: ColorConstants.colorBrown,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-              ),
               const Spacer(),
               IconButton(
                 padding: EdgeInsets.zero,
@@ -108,18 +72,6 @@ class BarbershopHeaderWidget extends StatelessWidget {
               )
             ],
           ),
-          const SizedBox(
-            height: 24,
-          ),
-          const Text(
-            'Bem Vindo',
-            style: TextStyle(
-              color: Colors.white,
-              fontWeight: FontWeight.w500,
-              fontSize: 18,
-            ),
-          ),
-          const SizedBox(height: 24),
           const Center(
             child: Text(
               'Unidades',

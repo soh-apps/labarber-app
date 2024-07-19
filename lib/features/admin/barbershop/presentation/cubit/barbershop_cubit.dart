@@ -1,5 +1,8 @@
+import 'dart:developer';
+
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:get_it/get_it.dart';
 import 'package:la_barber/core/di/di.dart';
 import 'package:la_barber/core/restClient/either.dart';
 import 'package:la_barber/features/admin/barbershop/repository/barbershop_repository.dart';
@@ -64,25 +67,35 @@ class BarbershopCubit extends Cubit<BarbershopState> {
 
     switch (result) {
       case Success():
-        final BarbershopModel barberShop = result.value;
-        getIt.registerSingleton<BarbershopModel>(barberShop);
+        if (getIt.isRegistered<BarbershopModel>()) {
+          await GetIt.instance.unregister<BarbershopModel>();
+          try {
+            getIt.registerSingleton<BarbershopModel>(result.value);
+          } catch (e) {
+            // Loga o erro ou trata de outra forma necessária
+            log('Erro ao registrar barbearia $e');
+          }
+        } else {
+          getIt.registerSingleton<BarbershopModel>(result.value);
+        }
+
         emit(const BarbershopSuccess());
       case Failure():
         emit(const BarbershopFailure(errorMessage: 'Erro ao buscar dados da Barbearia'));
     }
   }
 
-  Future<void> getBarbershopDetail(int companyId) async {
-    emit(BarbershopLoading());
-    final result = await barbershopRepository.getBarberShopData(companyId);
+  // Future<void> getBarbershopDetail(int companyId) async {
+  //   emit(BarbershopLoading());
+  //   final result = await barbershopRepository.getBarberShopData(companyId);
 
-    switch (result) {
-      case Success():
-        emit(BarbershopActualSuccess(barbershop: result.value));
-      case Failure():
-        emit(const BarbershopFailure(errorMessage: 'Erro ao buscar dados da Barbearia'));
-    }
-  }
+  //   switch (result) {
+  //     case Success():
+  //       emit(BarbershopActualSuccess(barbershop: result.value));
+  //     case Failure():
+  //       emit(const BarbershopFailure(errorMessage: 'Erro ao buscar dados da Barbearia'));
+  //   }
+  // }
 
   Future<void> getByCEP(String cep) async {
     emit(BarbershopLoading());

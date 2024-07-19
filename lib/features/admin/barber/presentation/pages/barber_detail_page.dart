@@ -1,6 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 import 'package:la_barber/core/constants/routes.dart';
 import 'package:la_barber/core/ui/helpers/context_extension.dart';

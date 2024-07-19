@@ -4,22 +4,25 @@ import 'package:brasil_fields/brasil_fields.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:la_barber/core/di/di.dart';
+import 'package:validatorless/validatorless.dart';
+
 import 'package:la_barber/core/ui/helpers/context_extension.dart';
+import 'package:la_barber/core/ui/helpers/form_helper.dart';
+import 'package:la_barber/core/ui/helpers/messages.dart';
 import 'package:la_barber/features/admin/barbershop/repository/models/barbershop_model.dart';
 import 'package:la_barber/features/admin/servicos/presentation/cubit/servico_cubit.dart';
 import 'package:la_barber/features/admin/servicos/presentation/widgets/image_picker_servico_widget.dart';
 import 'package:la_barber/features/admin/servicos/repository/models/servico_model.dart';
-import 'package:validatorless/validatorless.dart';
-
-import 'package:la_barber/core/ui/helpers/form_helper.dart';
-import 'package:la_barber/core/ui/helpers/messages.dart';
 
 class ServicoEditPage extends StatefulWidget {
   final ServicoCubit servicoCubit;
+  final ServicoModel servico;
 
   const ServicoEditPage({
     super.key,
     required this.servicoCubit,
+    required this.servico,
   });
 
   @override
@@ -36,22 +39,17 @@ class _ServicoEditPageState extends State<ServicoEditPage> {
   String _formattedTime = '';
   String porcentagem = '';
 
-  late BarbershopModel barberShop;
-  late ServicoModel servicoModel;
+  final BarbershopModel barberShop = getIt<BarbershopModel>();
 
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-
-    servicoModel = ModalRoute.of(context)!.settings.arguments as ServicoModel;
-    setState(() {
-      nomeEC.text = servicoModel.nome;
-      tempoServicoEC.text = servicoModel.tempoServico;
-      valorEC.text = servicoModel.valor.toString();
-      comissaoEC.text = servicoModel.comissao.toString();
-      descricaoServicoEc.text = servicoModel.descricao ?? '';
-      porcentagem = '${servicoModel.porcentagemComissao} %';
-    });
+  void initState() {
+    super.initState();
+    nomeEC.text = widget.servico.nome;
+    tempoServicoEC.text = widget.servico.tempoServico;
+    valorEC.text = widget.servico.valor.toStringAsFixed(2).replaceAll('.', ',');
+    comissaoEC.text = widget.servico.comissao.toStringAsFixed(2).replaceAll('.', ',');
+    descricaoServicoEc.text = widget.servico.descricao ?? '';
+    porcentagem = '${widget.servico.porcentagemComissao} %';
   }
 
   @override
@@ -128,7 +126,7 @@ class _ServicoEditPageState extends State<ServicoEditPage> {
       },
       child: Scaffold(
         appBar: AppBar(
-          title: Text(servicoModel.nome.toUpperCase()),
+          title: Text(widget.servico.nome.toUpperCase()),
         ),
         body: Padding(
           padding: const EdgeInsets.all(20.0),

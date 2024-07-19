@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+
 import 'package:la_barber/core/constants/routes.dart';
 import 'package:la_barber/core/ui/styles/app_color.dart';
 import 'package:la_barber/core/ui/widgets/custom_button.dart';
@@ -7,13 +8,14 @@ import 'package:la_barber/features/admin/servicos/presentation/widgets/services_
 import 'package:la_barber/features/admin/servicos/repository/models/servico_model.dart';
 
 class ServicoDetalhesPage extends StatelessWidget {
+  final ServicoModel servico;
   const ServicoDetalhesPage({
     super.key,
+    required this.servico,
   });
 
   @override
   Widget build(BuildContext context) {
-    ServicoModel servico = ModalRoute.of(context)!.settings.arguments as ServicoModel;
     return Scaffold(
       backgroundColor: AppColor.bg100,
       appBar: AppBar(
@@ -44,8 +46,11 @@ class ServicoDetalhesPage extends StatelessWidget {
               const SizedBox(height: 20),
               ServicesDetailTile(title: 'Nome', content: servico.nome),
               ServicesDetailTile(title: 'Tempo de Serviço', content: '${servico.tempoServico} minutos'),
-              ServicesDetailTile(title: 'Valor do Serviço', content: 'R\$ ${servico.valor.toStringAsFixed(2)}'),
-              ServicesDetailTile(title: 'Valor da Comissão', content: 'R\$ ${servico.comissao.toStringAsFixed(2)}'),
+              ServicesDetailTile(
+                  title: 'Valor do Serviço', content: 'R\$ ${servico.valor.toStringAsFixed(2).replaceAll('.', ',')}'),
+              ServicesDetailTile(
+                  title: 'Valor da Comissão',
+                  content: 'R\$ ${servico.comissao.toStringAsFixed(2).replaceAll('.', ',')}'),
               ServicesDetailTile(title: 'Porcentagem Comissão', content: '${servico.porcentagemComissao}%'),
               ServicesDetailTile(title: 'Descrição do Serviço', content: servico.descricao ?? ''),
               const SizedBox(height: 80),

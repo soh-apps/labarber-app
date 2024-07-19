@@ -6,6 +6,7 @@ import 'package:la_barber/core/ui/helpers/context_extension.dart';
 import 'package:la_barber/core/ui/styles/app_color.dart';
 import 'package:la_barber/core/ui/constants.dart';
 import 'package:la_barber/core/utils/user_type_enum.dart';
+import 'package:la_barber/features/admin/barbershop/repository/models/barbershop_model.dart';
 import 'package:la_barber/features/common/auth/model/user_model.dart';
 
 class DrawerAdminWidget extends StatelessWidget {
@@ -100,7 +101,7 @@ class DrawerAdminWidget extends StatelessWidget {
             icon: const Icon(Icons.list),
             onTap: () {
               context.pop();
-              context.pushNamed(Routes.servicoListPage);
+              context.pushNamed(Routes.servicoListPage, arguments: getIt<BarbershopModel>());
             },
           ),
           DrawerTile(

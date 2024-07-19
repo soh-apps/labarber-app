@@ -51,16 +51,9 @@ class _BarberRegisterPageState extends State<BarberRegisterPage> {
   final cepEC = TextEditingController();
 
   File? _selectedImage;
-  // late BarbershopModel barberUnitId;
   bool isComoissioned = true;
   bool isManager = true;
   String barberName = '';
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    // barberUnitId = ModalRoute.of(context)!.settings.arguments as BarbershopModel;
-  }
 
   @override
   void dispose() {

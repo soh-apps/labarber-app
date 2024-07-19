@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
 import 'package:la_barber/core/constants/routes.dart';
 import 'package:la_barber/core/di/di.dart';
 import 'package:la_barber/core/ui/barbershop_icons.dart';
@@ -18,9 +19,11 @@ import 'package:la_barber/features/common/auth/model/user_model.dart';
 
 class BarberListPage extends StatefulWidget {
   final BarberCubit barberCubit;
+  final BarbershopModel barberShop;
   const BarberListPage({
     super.key,
     required this.barberCubit,
+    required this.barberShop,
   });
 
   @override
@@ -28,38 +31,27 @@ class BarberListPage extends StatefulWidget {
 }
 
 class _BarberListPageState extends State<BarberListPage> {
-  late BarbershopModel barberShop;
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+  final BarbershopCubit barbershopCubit = getIt<BarbershopCubit>();
 
   @override
   void initState() {
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
-      // if (getIt<UserModel>().userType == UserType.admin) {
-      //   barberShop = ModalRoute.of(context)!.settings.arguments as BarbershopModel;
-      //   await getIt<BarbershopCubit>().getBarberShopData(barberShop.id);
-      //   widget.barberCubit.getAllBarbers(barberShop.id);
-      // } else if (getIt<UserModel>().userType == UserType.manager) {
-      //   await getIt<BarbershopCubit>().getBarberShopData(0);
-      //   widget.barberCubit.getAllBarbers(0);
-      // }
-    });
+    verifyData();
     super.initState();
   }
 
-  void verifyData(BuildContext context) {
+  void verifyData() {
     if (getIt<UserModel>().userType == UserType.admin) {
-      barberShop = ModalRoute.of(context)!.settings.arguments as BarbershopModel;
-      getIt<BarbershopCubit>().getBarberShopData(barberShop.id);
-      widget.barberCubit.getAllBarbers(barberShop.id);
+      barbershopCubit.getBarberShopData(widget.barberShop.id);
+      widget.barberCubit.getAllBarbers(widget.barberShop.id);
     } else if (getIt<UserModel>().userType == UserType.manager) {
-      getIt<BarbershopCubit>().getBarberShopData(0);
+      barbershopCubit.getBarberShopData(0);
       widget.barberCubit.getAllBarbers(0);
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    verifyData(context);
     return SafeArea(
       child: Scaffold(
         key: scaffoldKey,
@@ -68,7 +60,7 @@ class _BarberListPageState extends State<BarberListPage> {
           child: Column(
             children: [
               BarberHeaderWidget(
-                title: barberShop.name,
+                title: widget.barberShop.name,
                 scaffoldKey: scaffoldKey,
               ),
               BlocBuilder<BarberCubit, BarberState>(
@@ -80,7 +72,7 @@ class _BarberListPageState extends State<BarberListPage> {
                     if (widget.barberCubit.barbers.isEmpty) {
                       return RefreshIndicator(
                         onRefresh: () async {
-                          widget.barberCubit.getAllBarbers(0);
+                          widget.barberCubit.getAllBarbers(widget.barberShop.id);
                         },
                         child: SingleChildScrollView(
                           physics: const AlwaysScrollableScrollPhysics(),
@@ -136,7 +128,7 @@ class _BarberListPageState extends State<BarberListPage> {
                   } else {
                     return RefreshIndicator(
                       onRefresh: () async {
-                        widget.barberCubit.getAllBarbers(getIt<BarbershopModel>().id);
+                        widget.barberCubit.getAllBarbers(widget.barberShop.id);
                       },
                       child: SingleChildScrollView(
                         physics:

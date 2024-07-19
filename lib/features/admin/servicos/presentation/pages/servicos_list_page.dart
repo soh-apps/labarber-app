@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
 import 'package:la_barber/core/constants/routes.dart';
-import 'package:la_barber/core/di/di.dart';
 import 'package:la_barber/core/ui/barbershop_icons.dart';
 import 'package:la_barber/core/ui/constants.dart';
 import 'package:la_barber/core/ui/helpers/context_extension.dart';
@@ -13,9 +13,11 @@ import 'package:la_barber/features/admin/widgets/drawer_admin_widget.dart';
 
 class ServicosListPage extends StatefulWidget {
   final ServicoCubit servicoCubit;
+  final BarbershopModel barbershop;
   const ServicosListPage({
     super.key,
     required this.servicoCubit,
+    required this.barbershop,
   });
 
   @override
@@ -25,34 +27,9 @@ class ServicosListPage extends StatefulWidget {
 class _ServicosListPageState extends State<ServicosListPage> {
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
-  // @override
-  // void didChangeDependencies() {
-  //   super.didChangeDependencies();
-  //   // barberShop = ModalRoute.of(context)!.settings.arguments as BarbershopModel;
-  //   // barberShop = BarbershopModel(
-  //   //   id: 2,
-  //   //   name: 'Barbearia do Zé',
-  //   //   address: 'Rua do Zé, 123',
-  //   //   phone: '123456789',
-  //   //   email: '',
-  //   //   logo: '',
-  //   //   website: '',
-  //   //   description: '',
-  //   // );
-
-  //   // Registrando barberShop como singleton no get_it
-  //   // getIt.registerSingleton<BarbershopModel>(barberShop);
-
-  //   widget.servicoCubit.getAllServicos(0);
-  // }
-  String title = '';
   @override
   void initState() {
-    widget.servicoCubit.getAllServicos(0);
-
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      title = getIt<BarbershopModel>().name;
-    });
+    widget.servicoCubit.getAllServicos(widget.barbershop.id);
     super.initState();
   }
 
@@ -66,7 +43,7 @@ class _ServicosListPageState extends State<ServicosListPage> {
           child: Column(
             children: [
               ServicoHeaderWidget(
-                title: title,
+                title: widget.barbershop.name,
               ),
               BlocBuilder<ServicoCubit, ServicoState>(
                 bloc: widget.servicoCubit,

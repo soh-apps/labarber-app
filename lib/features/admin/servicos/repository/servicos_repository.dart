@@ -57,7 +57,7 @@ class ServicosRepository {
   Future<Either<AuthException, String>> editarServico(ServicoModel barber) async {
     try {
       final Response response = await _restClient.auth.put(
-        '/api/Service/Edit',
+        '/api/Service/Update',
         data: barber.toMap(),
       );
       if (response.statusCode == 200) {

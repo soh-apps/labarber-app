@@ -3,6 +3,8 @@ import 'package:la_barber/core/constants/routes.dart';
 import 'package:la_barber/core/di/di.dart';
 import 'package:la_barber/features/admin/barber/repository/models/barber_model.dart';
 import 'package:la_barber/features/admin/barbershop/presentation/pages/barbershop_list_page.dart';
+import 'package:la_barber/features/admin/barbershop/repository/models/barbershop_model.dart';
+import 'package:la_barber/features/admin/servicos/repository/models/servico_model.dart';
 import 'package:la_barber/features/common/auth/presentation/pages/login_page.dart';
 import 'package:la_barber/features/admin/agendamento/presentation/pages/agendamento_rapido_page.dart';
 import 'package:la_barber/features/admin/barber/presentation/pages/barber_detail_page.dart';
@@ -34,21 +36,28 @@ class AppRoutes {
     _AppRouteItem(Routes.barbershopList, (context) => BarbershopListPage(barbershopCubit: getIt())),
     _AppRouteItem(Routes.barbershopRegister, (context) => BarbershopRegisterPage(barbershopCubit: getIt())),
     _AppRouteItem(Routes.barbershopEdit, (context) => BarbershopEditPage(barbershopCubit: getIt())),
-    _AppRouteItem(Routes.barbershopDetail, (context) => BarbershopDetalhesPage(barbershopCubit: getIt())),
+    _AppRouteItem(
+        Routes.barbershopDetail,
+        (context) =>
+            BarbershopDetalhesPage(barbershopCubit: getIt(), barbershop: routeArguments(context) as BarbershopModel)),
 
     // Barber
     _AppRouteItem(Routes.barberRegister, (context) => BarberRegisterPage(barberCubit: getIt())),
     _AppRouteItem(Routes.barberEdit,
         (context) => BarberEditPage(barberCubit: getIt(), barber: routeArguments(context) as BarberModel)),
-    _AppRouteItem(Routes.barberListPage, (context) => BarberListPage(barberCubit: getIt())),
+    _AppRouteItem(Routes.barberListPage,
+        (context) => BarberListPage(barberCubit: getIt(), barberShop: routeArguments(context) as BarbershopModel)),
     _AppRouteItem(
         Routes.barberDetailPage, (context) => BarberDetailPage(barber: routeArguments(context) as BarberModel)),
 
     // Servicos
-    _AppRouteItem(Routes.servicoListPage, (context) => ServicosListPage(servicoCubit: getIt())),
+    _AppRouteItem(Routes.servicoListPage,
+        (context) => ServicosListPage(servicoCubit: getIt(), barbershop: routeArguments(context) as BarbershopModel)),
     _AppRouteItem(Routes.servicoRegisterPage, (context) => ServicoRegisterPage(servicoCubit: getIt())),
-    _AppRouteItem(Routes.servicoDetailPage, (context) => const ServicoDetalhesPage()),
-    _AppRouteItem(Routes.servicoEditPage, (context) => ServicoEditPage(servicoCubit: getIt())),
+    _AppRouteItem(
+        Routes.servicoDetailPage, (context) => ServicoDetalhesPage(servico: routeArguments(context) as ServicoModel)),
+    _AppRouteItem(Routes.servicoEditPage,
+        (context) => ServicoEditPage(servicoCubit: getIt(), servico: routeArguments(context) as ServicoModel)),
 
     // Agendamento
     _AppRouteItem(Routes.agendamentoRapidoPage, (context) => AgendamentoRapidoPage(agendamentoCubit: getIt())),

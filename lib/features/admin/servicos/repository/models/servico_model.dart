@@ -27,13 +27,13 @@ class ServicoModel {
     return <String, dynamic>{
       'id': idServico,
       'name': nome,
-      'urlImage': urlImagem,
       'value': valor,
       'valueComission': comissao,
       'description': descricao,
       'timeToComplete': tempoServico,
       'barberUnitId': barberUnitId,
-      'porcentagemComissao': porcentagemComissao,
+      'commissionPercent': porcentagemComissao,
+      // 'urlImage': urlImagem,
     };
   }
 
