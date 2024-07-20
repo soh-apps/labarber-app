@@ -60,7 +60,12 @@ class AppRoutes {
         (context) => ServicoEditPage(servicoCubit: getIt(), servico: routeArguments(context) as ServicoModel)),
 
     // Agendamento
-    _AppRouteItem(Routes.agendamentoRapidoPage, (context) => AgendamentoRapidoPage(agendamentoCubit: getIt())),
+    _AppRouteItem(
+        Routes.agendamentoRapidoPage,
+        (context) => AgendamentoRapidoPage(
+              agendamentoCubit: getIt(),
+              barber: routeArguments(context) != null ? routeArguments(context) as BarberModel : null,
+            )),
   ];
 }
 

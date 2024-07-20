@@ -6,24 +6,28 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:intl/intl.dart';
+
 import 'package:la_barber/core/ui/forma_pagamento_dropdown.dart';
 import 'package:la_barber/core/ui/helpers/form_helper.dart';
 import 'package:la_barber/core/ui/status_pagamento_dropdown.dart';
+import 'package:la_barber/core/ui/styles/app_color.dart';
 import 'package:la_barber/core/ui/styles/text_styles_typography.dart';
 import 'package:la_barber/core/ui/widgets/caixa_selecao_servico.dart';
 import 'package:la_barber/core/ui/widgets/calendario_agendamento.dart';
 import 'package:la_barber/core/ui/widgets/time_picker.dart';
-
 import 'package:la_barber/features/admin/agendamento/presentation/cubits/agendamento_cubit.dart';
+import 'package:la_barber/features/admin/barber/repository/models/barber_model.dart';
 import 'package:la_barber/features/admin/barbershop/repository/models/barbershop_model.dart';
 import 'package:la_barber/features/admin/servicos/repository/models/servico_model.dart';
 import 'package:la_barber/features/admin/widgets/caixa_selecao_barbeiros.dart';
 
 class AgendamentoRapidoPage extends StatefulWidget {
   final AgendamentoCubit agendamentoCubit;
+  final BarberModel? barber;
   const AgendamentoRapidoPage({
     super.key,
     required this.agendamentoCubit,
+    this.barber,
   });
 
   @override
@@ -138,21 +142,40 @@ class _AgendamentoRapidoPageState extends State<AgendamentoRapidoPage> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Center(
-                            child: Text(
-                          ' Agendamento Rápido',
-                          style: AppTextStyles.titleLarge(),
-                        )),
+                        widget.barber != null
+                            ? Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Center(
+                                    child: Text(
+                                      widget.barber!.name.toUpperCase(),
+                                      style: AppTextStyles.titleLarge()
+                                          .copyWith(color: AppColor.corSecundaria, fontSize: 28),
+                                    ),
+                                  ),
+                                ],
+                              )
+                            : Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Center(
+                                    child: Text(
+                                      ' Agendamento Rápido',
+                                      style: AppTextStyles.titleLarge(),
+                                    ),
+                                  ),
+                                  const SizedBox(height: 16),
+                                  const Text(
+                                    ' Barbeiro',
+                                  ),
+                                  CaixaSelecaoBarbeiros(
+                                    barbeiroSelecionado: barbeiroSelecionado,
+                                    listaBarbeiros: widget.agendamentoCubit.barbeiros,
+                                    onChanged: _onBarbeiroSelecionado,
+                                  ),
+                                ],
+                              ),
                         const SizedBox(height: 24),
-                        const Text(
-                          ' Barbeiro',
-                        ),
-                        CaixaSelecaoBarbeiros(
-                          barbeiroSelecionado: barbeiroSelecionado,
-                          listaBarbeiros: widget.agendamentoCubit.barbeiros,
-                          onChanged: _onBarbeiroSelecionado,
-                        ),
-                        const SizedBox(height: 28),
                         TextFormField(
                           onTapOutside: (_) => context.unfocus(),
                           controller: nomeClienteController,

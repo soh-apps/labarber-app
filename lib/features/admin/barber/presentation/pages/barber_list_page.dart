@@ -87,47 +87,48 @@ class _BarberListPageState extends State<BarberListPage> {
                           ),
                         ),
                       );
-                    } else {}
-                    return Expanded(
-                      child: ListView.builder(
-                        itemCount: widget.barberCubit.barbers.length + 1,
-                        itemBuilder: (BuildContext context, int index) {
-                          if (index == widget.barberCubit.barbers.length) {
-                            return GestureDetector(
-                              onTap: () {
-                                context.pushNamed(Routes.barberRegister);
-                              },
-                              child: Container(
-                                  margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 24),
-                                  padding: const EdgeInsets.all(10),
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(8),
-                                    border: Border.all(color: ColorConstants.colorBrown),
-                                  ),
-                                  child: const Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text(
-                                        'Adicionar Barbeiro',
-                                        style: TextStyle(
-                                          color: Colors.black,
-                                          fontSize: 16, // Ajuste o tamanho da fonte conforme necessário
-                                          fontWeight: FontWeight.bold,
+                    } else {
+                      return Expanded(
+                        child: ListView.builder(
+                          itemCount: widget.barberCubit.barbers.length + 1,
+                          itemBuilder: (BuildContext context, int index) {
+                            if (index == widget.barberCubit.barbers.length) {
+                              return GestureDetector(
+                                onTap: () {
+                                  context.pushNamed(Routes.barberRegister);
+                                },
+                                child: Container(
+                                    margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 24),
+                                    padding: const EdgeInsets.all(10),
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(8),
+                                      border: Border.all(color: ColorConstants.colorBrown),
+                                    ),
+                                    child: const Row(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                        Text(
+                                          'Adicionar Barbeiro',
+                                          style: TextStyle(
+                                            color: Colors.black,
+                                            fontSize: 16, // Ajuste o tamanho da fonte conforme necessário
+                                            fontWeight: FontWeight.bold,
+                                          ),
                                         ),
-                                      ),
-                                      Icon(
-                                        BarbershopIcons.addEmplyeee,
-                                        size: 48,
-                                        color: Colors.green,
-                                      ),
-                                    ],
-                                  )),
-                            );
-                          }
-                          return BarberTile(barber: widget.barberCubit.barbers[index]);
-                        },
-                      ),
-                    );
+                                        Icon(
+                                          BarbershopIcons.addEmplyeee,
+                                          size: 48,
+                                          color: Colors.green,
+                                        ),
+                                      ],
+                                    )),
+                              );
+                            }
+                            return BarberTile(barber: widget.barberCubit.barbers[index]);
+                          },
+                        ),
+                      );
+                    }
                   } else {
                     return RefreshIndicator(
                       onRefresh: () async {

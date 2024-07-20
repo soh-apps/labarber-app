@@ -187,7 +187,7 @@ class Mocks {
     ),
   ];
 
-  static List<ServicoModel> servicosList = [
+  static final List<ServicoModel> servicosList = [
     ServicoModel(
       idServico: 1,
       nome: 'Corte de Cabelo',

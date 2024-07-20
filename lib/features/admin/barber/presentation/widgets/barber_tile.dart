@@ -83,7 +83,7 @@ class BarberTile extends StatelessWidget {
                               backgroundColor: Colors.green,
                               side: BorderSide(color: AppColor.corSecundaria)),
                           onPressed: () {
-                            context.pushNamed('/schedule', arguments: barber);
+                            context.pushNamed(Routes.agendamentoRapidoPage, arguments: barber);
                           },
                           child: const Text('AGENDAR'),
                         ),

@@ -37,7 +37,7 @@ Future<void> configureInjection() async {
   // Cubits
   getIt.registerLazySingleton<AuthCubit>(() => AuthCubit(getIt<AuthRepository>(), getIt<LocalSecureStorage>()));
   getIt.registerLazySingleton<ServicoCubit>(() => ServicoCubit(getIt<ServicosRepository>()));
-  getIt.registerFactory<AgendamentoCubit>(() => AgendamentoCubit(
+  getIt.registerLazySingleton<AgendamentoCubit>(() => AgendamentoCubit(
         getIt<AgendamentoRepository>(),
         getIt<BarberRepository>(),
         getIt<ServicosRepository>(),
