@@ -1,14 +1,16 @@
-import 'package:flutter/material.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
+import 'package:flutter/material.dart';
 
 class FormaPagamentoDropdown extends StatelessWidget {
   final String? dropdownValue;
   final ValueChanged<String?> onChanged;
+  final String? hintText;
 
   const FormaPagamentoDropdown({
     super.key,
     required this.dropdownValue,
     required this.onChanged,
+    this.hintText,
   });
 
   @override
@@ -57,6 +59,7 @@ class FormaPagamentoDropdown extends StatelessWidget {
           height: 40,
           padding: EdgeInsets.only(left: 14, right: 14),
         ),
+        hint: hintText != null ? Text(hintText!) : null,
       ),
     );
   }

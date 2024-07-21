@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:la_barber/core/ui/constants.dart';
 import 'package:la_barber/core/ui/helpers/extensions.dart';
 import 'package:la_barber/core/ui/styles/app_color.dart';
+import 'package:la_barber/core/ui/widgets/dialog_utils.dart';
 import 'package:la_barber/core/utils/enums/agendamento_status_enum.dart';
 import 'package:la_barber/features/admin/agendamento/repository/model/agendamento_model.dart';
 
@@ -35,7 +36,7 @@ class AgendamentoTile extends StatelessWidget {
             AgendamentoTextRow(title: 'Data', value: DateFormat('dd/MM/yyyy').format(agendamento.data)),
             AgendamentoTextRow(title: 'Horário', value: agendamento.horario),
             AgendamentoTextRow(title: 'Cliente', value: agendamento.nomeCliente),
-            AgendamentoTextRow(title: 'Serviço', value: agendamento.servicos.join(', ').toString()),
+            AgendamentoTextRow(title: 'Serviço', value: agendamento.servicos.join(', ')),
             AgendamentoTextRow(title: 'Comissao', value: 'R\$ ${agendamento.valorTotalComissao.transformaEmReal()}'),
             AgendamentoTextRow(title: 'Total', value: 'R\$ ${agendamento.valorTotal.transformaEmReal()}'),
             agendamento.status == AgendamentoStatus.realizado
@@ -55,15 +56,7 @@ class AgendamentoTile extends StatelessWidget {
                       backgroundColor: Colors.green,
                       side: BorderSide(color: AppColor.corSecundaria)),
                   onPressed: () {
-                    // Abrir um Dialog para finalizar o agendamento
-                    // Nesse Dialog deve ter um dropdown para informar a forma de pagamento
-                    // FormaPagamentoDropdown(
-                    //   dropdownValue: formaPagamentoValue,
-                    //   onChanged: _onDropdownChanged,
-                    // ),
-                    // Um TextformField para escrever alguma observacao
-                    // Um botao para finalizar o agendamento
-                    // Um botao para Fechar
+                    showFinalizarDialog(context: context, idAgendamento: agendamento.idAgendamento);
                   },
                   child: const Text('FINALIZAR'),
                 ),
@@ -76,11 +69,7 @@ class AgendamentoTile extends StatelessWidget {
                       backgroundColor: Colors.red,
                       side: BorderSide(color: AppColor.corSecundaria)),
                   onPressed: () {
-                    // Abrir um Dialog para Cancelar o agendamento
-                    // Nesse Dialog deve ter uma mensagem perguntando se tem certeza que deseja cancelar o agendamento
-                    // Um TextformField para escrever alguma observacao
-                    // Um botao para Cancelar o agendamento
-                    // Um botao para Fechar
+                    showCancelarDialog(context);
                   },
                   child: const Text('CANCELAR'),
                 ),
@@ -119,3 +108,29 @@ class AgendamentoTextRow extends StatelessWidget {
     );
   }
 }
+
+// class FormaPagamentoDropdown extends StatelessWidget {
+//   final String? dropdownValue;
+//   final ValueChanged<String?> onChanged;
+
+//   const FormaPagamentoDropdown({
+//     super.key,
+//     required this.dropdownValue,
+//     required this.onChanged,
+//   });
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return DropdownButton<String>(
+//       value: dropdownValue,
+//       items: <String>['Dinheiro', 'Cartão', 'Pix'].map<DropdownMenuItem<String>>((String value) {
+//         return DropdownMenuItem<String>(
+//           value: value,
+//           child: Text(value),
+//         );
+//       }).toList(),
+//       onChanged: onChanged,
+//       hint: const Text('Selecione a forma de pagamento'),
+//     );
+//   }
+// }

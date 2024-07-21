@@ -27,6 +27,10 @@ class AgendamentoCubit extends Cubit<AgendamentoState> {
   List<ServicoModel> servicos = [];
   List<BarberModel> barbeiros = [];
 
+  Future<void> resetStatus() async {
+    emit(AgendamentoInitial());
+  }
+
   Future<void> buscaAgendamentosEntreDatas(int idBarbeiro) async {
     emit(AgendamentoLoading());
     // final result = await servicosRepository.buscaAgendamentosEntreDatas(companyId);
@@ -112,6 +116,22 @@ class AgendamentoCubit extends Cubit<AgendamentoState> {
     // }
 
     agendamentos = Mocks.agendamentosList;
+    emit(AgendamentoSuccess());
+  }
+
+  Future<void> alterarStatusAgendamento(int agendamentoId) async {
+    emit(AgendamentoLoading());
+    //   final result = await servicosRepository.getAllAgendamentos(companyId);
+
+    //   switch (result) {
+    //     case Success():
+    //       servicos = result.value;
+    //       emit(AgendamentoSuccess());
+    //     case Failure():
+    //   }
+    // }
+
+    await Future.delayed(const Duration(seconds: 4));
     emit(AgendamentoSuccess());
   }
 }
