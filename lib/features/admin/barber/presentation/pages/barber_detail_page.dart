@@ -6,8 +6,8 @@ import 'package:la_barber/core/ui/helpers/context_extension.dart';
 import 'package:la_barber/core/ui/styles/app_color.dart';
 import 'package:la_barber/core/ui/styles/text_styles_typography.dart';
 import 'package:la_barber/core/ui/widgets/custom_button.dart';
-import 'package:la_barber/core/utils/user_status_enum.dart';
-import 'package:la_barber/core/utils/user_type_enum.dart';
+import 'package:la_barber/core/utils/enums/user_status_enum.dart';
+import 'package:la_barber/core/utils/enums/user_type_enum.dart';
 import 'package:la_barber/features/admin/barber/repository/models/barber_model.dart';
 import 'package:la_barber/features/admin/servicos/presentation/widgets/services_detail_tile.dart';
 

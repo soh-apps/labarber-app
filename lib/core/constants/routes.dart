@@ -20,4 +20,5 @@ class Routes {
 
   // Agendamento
   static const String agendamentoRapidoPage = '/agendamento/agendamento-rapido';
+  static const String agendamentoGetPorBarbeiro = '/agendamento/agendamento-por-barbeiro';
 }

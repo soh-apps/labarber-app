@@ -1,6 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:la_barber/core/constants/routes.dart';
 import 'package:la_barber/core/di/di.dart';
+import 'package:la_barber/features/admin/agendamento/presentation/pages/agendamentos_barbeiro_selecionado.dart';
 import 'package:la_barber/features/admin/barber/repository/models/barber_model.dart';
 import 'package:la_barber/features/admin/barbershop/presentation/pages/barbershop_list_page.dart';
 import 'package:la_barber/features/admin/barbershop/repository/models/barbershop_model.dart';
@@ -61,11 +62,19 @@ class AppRoutes {
 
     // Agendamento
     _AppRouteItem(
-        Routes.agendamentoRapidoPage,
-        (context) => AgendamentoRapidoPage(
-              agendamentoCubit: getIt(),
-              barber: routeArguments(context) != null ? routeArguments(context) as BarberModel : null,
-            )),
+      Routes.agendamentoRapidoPage,
+      (context) => AgendamentoRapidoPage(
+        agendamentoCubit: getIt(),
+        barber: routeArguments(context) != null ? routeArguments(context) as BarberModel : null,
+      ),
+    ),
+    _AppRouteItem(
+      Routes.agendamentoGetPorBarbeiro,
+      (context) => AgendamentosBarbeiroSelecionado(
+        // agendamentoCubit: getIt(),
+        barbeiro: routeArguments(context) as BarberModel,
+      ),
+    ),
   ];
 }
 

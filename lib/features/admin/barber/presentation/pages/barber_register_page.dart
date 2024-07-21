@@ -10,7 +10,7 @@ import 'package:la_barber/core/ui/helpers/context_extension.dart';
 import 'package:la_barber/core/ui/widgets/custom_check_box.dart';
 import 'package:la_barber/core/ui/widgets/image_picker.dart';
 import 'package:la_barber/core/utils/formatters.dart';
-import 'package:la_barber/core/utils/user_type_enum.dart';
+import 'package:la_barber/core/utils/enums/user_type_enum.dart';
 import 'package:la_barber/features/admin/barber/presentation/cubit/barber_cubit.dart';
 import 'package:la_barber/features/admin/barber/repository/models/barber_model.dart';
 import 'package:la_barber/features/admin/barbershop/repository/models/barbershop_model.dart';

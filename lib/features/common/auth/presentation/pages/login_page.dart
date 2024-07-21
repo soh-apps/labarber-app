@@ -8,7 +8,7 @@ import 'package:la_barber/core/ui/helpers/context_extension.dart';
 import 'package:la_barber/core/ui/helpers/form_helper.dart';
 import 'package:la_barber/core/ui/helpers/messages.dart';
 import 'package:la_barber/core/ui/widgets/dialog_utils.dart';
-import 'package:la_barber/core/utils/user_type_enum.dart';
+import 'package:la_barber/core/utils/enums/user_type_enum.dart';
 import 'package:la_barber/features/common/auth/model/user_model.dart';
 import 'package:la_barber/features/common/auth/presentation/cubits/auth_cubit.dart';
 import 'package:validatorless/validatorless.dart';

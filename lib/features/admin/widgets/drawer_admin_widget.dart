@@ -5,7 +5,7 @@ import 'package:la_barber/core/di/di.dart';
 import 'package:la_barber/core/ui/helpers/context_extension.dart';
 import 'package:la_barber/core/ui/styles/app_color.dart';
 import 'package:la_barber/core/ui/constants.dart';
-import 'package:la_barber/core/utils/user_type_enum.dart';
+import 'package:la_barber/core/utils/enums/user_type_enum.dart';
 import 'package:la_barber/features/admin/barbershop/repository/models/barbershop_model.dart';
 import 'package:la_barber/features/common/auth/model/user_model.dart';
 

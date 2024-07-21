@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:la_barber/core/utils/user_type_enum.dart';
+import 'package:la_barber/core/utils/enums/user_type_enum.dart';
 
 class UserModel {
   String token;

@@ -71,7 +71,7 @@ class BarberTile extends StatelessWidget {
                             padding: const EdgeInsets.symmetric(horizontal: 12),
                           ),
                           onPressed: () {
-                            context.pushNamed('/employee/schedule', arguments: barber);
+                            context.pushNamed(Routes.agendamentoGetPorBarbeiro, arguments: barber);
                           },
                           child: const Text('VER AGENDA'),
                         ),

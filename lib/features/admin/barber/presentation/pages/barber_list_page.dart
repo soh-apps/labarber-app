@@ -8,7 +8,7 @@ import 'package:la_barber/core/di/di.dart';
 import 'package:la_barber/core/ui/barbershop_icons.dart';
 import 'package:la_barber/core/ui/constants.dart';
 import 'package:la_barber/core/ui/helpers/context_extension.dart';
-import 'package:la_barber/core/utils/user_type_enum.dart';
+import 'package:la_barber/core/utils/enums/user_type_enum.dart';
 import 'package:la_barber/features/admin/barber/presentation/cubit/barber_cubit.dart';
 import 'package:la_barber/features/admin/barber/presentation/widgets/barber_header_widget.dart';
 import 'package:la_barber/features/admin/barber/presentation/widgets/barber_tile.dart';

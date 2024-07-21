@@ -5,7 +5,6 @@ import 'package:la_barber/features/admin/agendamento/repository/agendamento_repo
 import 'package:la_barber/features/admin/agendamento/repository/model/agendamento_model.dart';
 import 'package:la_barber/features/admin/barber/repository/barber_repository.dart';
 import 'package:la_barber/features/admin/barber/repository/models/barber_model.dart';
-import 'package:la_barber/features/admin/servicos/presentation/cubit/servico_cubit.dart';
 import 'package:la_barber/features/admin/servicos/repository/models/servico_model.dart';
 import 'package:la_barber/features/admin/servicos/repository/servicos_repository.dart';
 
@@ -27,6 +26,21 @@ class AgendamentoCubit extends Cubit<AgendamentoState> {
   List<AgendamentoModel> agendamentos = [];
   List<ServicoModel> servicos = [];
   List<BarberModel> barbeiros = [];
+
+  Future<void> buscaAgendamentosEntreDatas(int idBarbeiro) async {
+    emit(AgendamentoLoading());
+    // final result = await servicosRepository.buscaAgendamentosEntreDatas(companyId);
+
+    // switch (result) {
+    //   case Success():
+    //     agendamentos = result.value;
+    //     emit(AgendamentoSuccess());
+    //   case Failure():
+    // }
+
+    agendamentos = Mocks.agendamentosList;
+    emit(AgendamentoSuccess());
+  }
 
   Future<void> getAllInfo(int companyId) async {
     emit(AgendamentoLoading());

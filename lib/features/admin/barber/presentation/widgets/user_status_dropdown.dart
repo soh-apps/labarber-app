@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:la_barber/core/utils/user_status_enum.dart';
+import 'package:la_barber/core/utils/enums/user_status_enum.dart';
 
 class UserStatusDropdown extends StatefulWidget {
   final ValueChanged<UserStatus> onPressed;

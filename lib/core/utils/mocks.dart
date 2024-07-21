@@ -1,4 +1,5 @@
-import 'package:la_barber/core/utils/user_type_enum.dart';
+import 'package:la_barber/core/utils/enums/agendamento_status_enum.dart';
+import 'package:la_barber/core/utils/enums/user_type_enum.dart';
 import 'package:la_barber/features/admin/agendamento/repository/model/agendamento_model.dart';
 import 'package:la_barber/features/admin/barber/repository/models/barber_model.dart';
 import 'package:la_barber/features/admin/barbershop/repository/models/barbershop_model.dart';
@@ -244,7 +245,27 @@ class Mocks {
   ];
 
   static List<AgendamentoModel> agendamentosList = [
-    AgendamentoModel()
+    AgendamentoModel(
+      idAgendamento: 1,
+      idBarbeiro: 1,
+      idCliente: 1,
+      nomeCliente: 'João',
+      nomeBarbeiro: 'John Barber',
+      telefoneCliente: '123456789',
+      telefoneBarbeiro: '987654321',
+      servicos: ['Corte de Cabelo', 'Barba'],
+      data: DateTime.now(),
+      valorTotal: 50.0,
+      valorTotalComissao: 15.0,
+      restoDaComissao: 5.0,
+      horario: '10:00',
+      status: AgendamentoStatus.agendado,
+      desconto: 0.0,
+      comentario: 'Cliente pontual',
+      formaDePagamento: 'Dinheiro',
+      unidade: 'Penha',
+    ),
+    // AgendamentoModel()
     // ServicoModel(
     //   idServico: 1,
     //   nome: 'Corte de Cabelo',
